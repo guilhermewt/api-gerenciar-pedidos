@@ -86,5 +86,13 @@ public class Pedido implements Serializable {
 	public Set<ItemsDePedido> getItems() {
 		return items;
 	}
+	
+	public Double getTotal() {
+		double soma = 0;
+		for(ItemsDePedido x : items) {
+			soma += x.getSubTotal();
+		}
+		return soma;
+	}
 
 }

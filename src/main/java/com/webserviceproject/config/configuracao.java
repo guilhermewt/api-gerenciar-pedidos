@@ -36,6 +36,7 @@ public class configuracao implements CommandLineRunner{
 	
 	@Autowired
 	private ItemsDePedidoRepositorio itemsRepositorio;
+
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -88,7 +89,5 @@ public class configuracao implements CommandLineRunner{
 		ItemsDePedido items4 = new ItemsDePedido(p3, ped1, 4, p3.getPrice());
 		
 		itemsRepositorio.saveAll(Arrays.asList(items1,items2,items3,items4));
-		
-	}
-
+	}		
 }
