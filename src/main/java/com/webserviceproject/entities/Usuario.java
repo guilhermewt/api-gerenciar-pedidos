@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tb_usuario")
 public class Usuario implements Serializable{
-
+//run slq script
 	private static final long serialVersionUID = 1L;
 
 	@Id
