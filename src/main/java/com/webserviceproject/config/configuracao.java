@@ -13,6 +13,7 @@ import com.webserviceproject.entities.Pagamento;
 import com.webserviceproject.entities.Pedido;
 import com.webserviceproject.entities.Produto;
 import com.webserviceproject.entities.Usuario;
+import com.webserviceproject.entities.enums.OrderStatus;
 import com.webserviceproject.repository.CategoriaRepositorio;
 import com.webserviceproject.repository.ItemsDePedidoRepositorio;
 import com.webserviceproject.repository.PedidoRepositorio;
@@ -46,9 +47,9 @@ public class configuracao implements CommandLineRunner{
 		
 		repositorio.saveAll(Arrays.asList(user1,user2,user3));
 		
-		Pedido ped1 = new Pedido(null, Instant.parse("2019-06-20T16:40:05Z"),user1);
-		Pedido ped2 = new Pedido(null, Instant.parse("2019-04-03T16:50:04Z"),user2);
-		Pedido ped3 = new Pedido(null, Instant.parse("2022-04-20T16:51:59Z"),user1);
+		Pedido ped1 = new Pedido(null, Instant.parse("2019-06-20T16:40:05Z"),OrderStatus.PAID,user1);
+		Pedido ped2 = new Pedido(null, Instant.parse("2019-04-03T16:50:04Z"),OrderStatus.WAITING_PAYMENT,user2);
+		Pedido ped3 = new Pedido(null, Instant.parse("2022-04-20T16:51:59Z"),OrderStatus.WAITING_PAYMENT,user1);
 		
 		pedidoreposi.saveAll(Arrays.asList(ped1,ped2,ped3));
 		

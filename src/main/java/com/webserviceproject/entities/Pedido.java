@@ -17,36 +17,41 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.webserviceproject.entities.enums.OrderStatus;
 
 @Entity
 @Table(name = "tb_pedido")
 public class Pedido implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Instant moment;
 	
+	private Integer orderStatus;
+
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
-	
+
 	@JsonIgnore
 	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private Pagamento pagamento;
-	
+
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemsDePedido> items = new HashSet<>();
-	
+
+
 	public Pedido() {
 	}
 
-	public Pedido(Long id, Instant moment,Usuario usuario) {
+	public Pedido(Long id, Instant moment, OrderStatus orderStatus, Usuario usuario) {
 		super();
 		this.id = id;
 		this.moment = moment;
+		setOrderStatus(orderStatus);
 		this.usuario = usuario;
 	}
 
@@ -66,6 +71,16 @@ public class Pedido implements Serializable {
 		this.moment = moment;
 	}
 
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if (orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();
+		}
+	}
+
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -73,7 +88,6 @@ public class Pedido implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
 
 	public Pagamento getPagamento() {
 		return pagamento;
@@ -86,10 +100,10 @@ public class Pedido implements Serializable {
 	public Set<ItemsDePedido> getItems() {
 		return items;
 	}
-	
+
 	public Double getTotal() {
 		double soma = 0;
-		for(ItemsDePedido x : items) {
+		for (ItemsDePedido x : items) {
 			soma += x.getSubTotal();
 		}
 		return soma;
