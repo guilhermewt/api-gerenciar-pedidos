@@ -1,30 +1,16 @@
-# webservice-project
+# webservice de pedidos
 
-# sobre o projeto
+  webservice de um projeto onde um usuário pode fazer vários pedidos e associados a este pedido vem suas características <p>
+  como produtos e as categorias deste produto.
+  
+# tecnologias utilizadas
+  spring boot<p>
+  maven<p>
+  jpa/hibernate<p>
+  postgree  
 
-# layout backend
-
-# layout web
-https://www.alura.com.br/artigos/estruturas-de-dados-introducao
 
 
 ## modelo conceitual
 
-# tecnologias utilizadas
-
-## back-end
-
-## front-end
-
-## Implantação em produção
-
-# como executar o projeto
-
-## back-end
-pre-requisitos
-
-## fron-end
-pre-requisitos
-
-# autor
-guilherme silva
+<img src="https://github.com/guilhermewt/assets/blob/main/webservice%20pedidos.PNG">
