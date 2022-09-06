@@ -1,6 +1,6 @@
 # webservice de pedidos
 
-  webservice de um projeto onde que contem as funcionalidades de fazer pedidos, escolher produtos, o sistema pega estes pedidos e retornar as características como preço,preço tota dependendo da quantidade de produtos feitos e suas respectivas categorias, faz a verificação se o pagamento do pedido já foi efetuado ou em que etapa está (pago,aguardando pagamento...).  webService simula a administracao de pedido de uma loja virtual de vendas.
+Webservice de um projeto que contem as funcionalidades de fazer pedidos, escolher produtos, o sistema pega estes pedidos e retornar as características como preço,preço tota dependendo da quantidade de produtos feitos e suas respectivas categorias. Faz a verificação se o pagamento do pedido já foi efetuado ou em que etapa está (pago,aguardando pagamento...).  Um webService que trabalha com a venda de produtos  de uma loja virtual
   
   <br>
   
