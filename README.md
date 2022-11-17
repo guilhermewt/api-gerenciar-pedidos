@@ -1,4 +1,4 @@
-# gerenciador de pedidos
+# Gerenciador de pedidos
 
 Webservice gerenciador de pedidos, um projeto que contém as funcionalidades de fazer pedidos, escolher produtos. o sistema pega estes pedidos e retornar as características como preço,preço total dependendo da quantidade de produtos feitos. Faz a verificação do pagamento do pedido e em que etapa está (pago,aguardando pagamento...). O sistema foi construído com seguindo os conceitos de Rest e Json para transferência de dados
   
