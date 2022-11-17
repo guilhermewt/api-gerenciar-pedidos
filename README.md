@@ -1,6 +1,6 @@
 # gerenciador de pedidos
 
-Webservice gerenciador de pedidos, um projeto que contém as funcionalidades de fazer pedidos, escolher produtos. o sistema pega estes pedidos e retornar as características como preço,preço total dependendo da quantidade de produtos feitos. Faz a verificação se o pagamento do pedido já foi efetuado ou em que etapa está (pago,aguardando pagamento...).  Um webService que trabalha com a venda de produtos  de uma loja virtual
+Webservice gerenciador de pedidos, um projeto que contém as funcionalidades de fazer pedidos, escolher produtos. o sistema pega estes pedidos e retornar as características como preço,preço total dependendo da quantidade de produtos feitos. Faz a verificação do pagamento do pedido e em que etapa está (pago,aguardando pagamento...). O sistema foi construído com seguindo os conceitos de Rest e Json para transferência de dados
   
   <br>
   
@@ -29,15 +29,6 @@ Webservice gerenciador de pedidos, um projeto que contém as funcionalidades de 
     * PC GAMES
     * IPHONE 13
   
-  
-# tests
-  * TEST DE JPA
-  * TESTS UNITÁRIOS
-  * TESTS DE INTEGRACAO COM RESTTemplate
-  
-# security
-  * spring security
-  * auth
   
 # tecnologias utilizadas
   spring boot<p>
