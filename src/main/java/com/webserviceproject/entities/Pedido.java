@@ -19,8 +19,13 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.webserviceproject.entities.enums.OrderStatus;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "tb_pedido")
+@NoArgsConstructor
+@Data
 public class Pedido implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -43,32 +48,12 @@ public class Pedido implements Serializable {
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemsDePedido> items = new HashSet<>();
 
-
-	public Pedido() {
-	}
-
 	public Pedido(Long id, Instant moment, OrderStatus orderStatus, Usuario usuario) {
 		super();
 		this.id = id;
 		this.moment = moment;
 		setOrderStatus(orderStatus);
 		this.usuario = usuario;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Instant getMoment() {
-		return moment;
-	}
-
-	public void setMoment(Instant moment) {
-		this.moment = moment;
 	}
 
 	public OrderStatus getOrderStatus() {
@@ -79,26 +64,6 @@ public class Pedido implements Serializable {
 		if (orderStatus != null) {
 			this.orderStatus = orderStatus.getCode();
 		}
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
-	public Pagamento getPagamento() {
-		return pagamento;
-	}
-
-	public void setPagamento(Pagamento pagamento) {
-		this.pagamento = pagamento;
-	}
-
-	public Set<ItemsDePedido> getItems() {
-		return items;
 	}
 
 	public Double getTotal() {

@@ -11,8 +11,13 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "tb_pagamento")
+@NoArgsConstructor
+@Data
 public class Pagamento implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -25,31 +30,12 @@ public class Pagamento implements Serializable{
 	@OneToOne
 	@MapsId
 	private Pedido pedido;
-	
-	public Pagamento() {
-	}
 
 	public Pagamento(Long id, Instant moment, Pedido pedido) {
 		super();
 		this.id = id;
 		this.moment = moment;
 		this.pedido = pedido;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Instant getMoment() {
-		return moment;
-	}
-
-	public void setMoment(Instant moment) {
-		this.moment = moment;
 	}
 	
 }

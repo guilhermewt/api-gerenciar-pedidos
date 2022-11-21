@@ -11,8 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "tb_usuario")
+@NoArgsConstructor
+@Data
 public class Usuario implements Serializable{
 //run slq script
 	private static final long serialVersionUID = 1L;
@@ -27,9 +34,6 @@ public class Usuario implements Serializable{
 	
 	@OneToMany(mappedBy = "usuario")
 	private Set<Pedido> pedido = new HashSet<>();
-	
-	public Usuario() {
-	}
 
 	public Usuario(Long id, String nome, String email, String telefone, String senha) {
 		super();
@@ -40,44 +44,8 @@ public class Usuario implements Serializable{
 		this.senha = senha;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-	
+	@JsonIgnore
+	public Set<Pedido> getPedido() {
+		return pedido;
+	}	
 }

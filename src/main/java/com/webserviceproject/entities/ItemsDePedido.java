@@ -9,8 +9,13 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.webserviceproject.entities.pk.itemsDePedidoPK;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "tb_itemsDePedido")
+@Data
+@NoArgsConstructor
 public class ItemsDePedido implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -20,9 +25,6 @@ public class ItemsDePedido implements Serializable{
 	
 	private Integer quantidade;
 	private Double preco;
-	
-	public ItemsDePedido() {
-	}
 
 	public ItemsDePedido(Produto produto,Pedido pedido, Integer quantidade, Double preco) {
 		super();
@@ -45,26 +47,11 @@ public class ItemsDePedido implements Serializable{
 		return id.getPedido();
 	}
 	
+	@JsonIgnore
 	public void setPedido(Pedido pedido) {
 		id.setPedido(pedido);
 	}
 
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
-
-	public Double getPreco() {
-		return preco;
-	}
-
-	public void setPreco(Double preco) {
-		this.preco = preco;
-	}
-	
 	public Double getSubTotal() {
 		return quantidade * preco;
 	}

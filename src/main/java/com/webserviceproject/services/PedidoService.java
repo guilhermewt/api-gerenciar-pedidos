@@ -3,17 +3,18 @@ package com.webserviceproject.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webserviceproject.entities.Pedido;
 import com.webserviceproject.repository.PedidoRepositorio;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class PedidoService {
 	
-	@Autowired
-	private PedidoRepositorio repositorio;
+	private final PedidoRepositorio repositorio;
 	
 	public List<Pedido> findAll(){
 		return repositorio.findAll();

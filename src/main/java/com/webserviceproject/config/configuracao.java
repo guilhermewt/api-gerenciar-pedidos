@@ -64,6 +64,7 @@ public class configuracao implements CommandLineRunner{
 		Produto p3 = new Produto(null,"smart tv","samsung",2010.9,"");
 		Produto p4 = new Produto(null,"geladeira","phicon",4000.9,"");
 		Produto p5 = new Produto(null,"softskills","livro de profissão",200.9,"");
+
 		
 		produtoReposi.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
 		
@@ -76,11 +77,11 @@ public class configuracao implements CommandLineRunner{
 		categoriaReposi.saveAll(Arrays.asList(cat1,cat2,cat3));
 		
 		p1.getCategoria().add(cat1);
-		p2.getCategoria().add(cat3);
-		p3.getCategoria().add(cat2);
-		p3.getCategoria().add(cat3);
-		p4.getCategoria().add(cat2);
-		p5.getCategoria().add(cat1);
+//		p2.getCategoria().add(cat3);
+//		p3.getCategoria().add(cat2);
+//		p3.getCategoria().add(cat3);
+//		p4.getCategoria().add(cat2);
+//		p5.getCategoria().add(cat1);
 		
 		produtoReposi.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
 		

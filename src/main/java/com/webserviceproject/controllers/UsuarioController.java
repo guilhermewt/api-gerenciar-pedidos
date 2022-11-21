@@ -2,7 +2,6 @@ package com.webserviceproject.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,15 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.webserviceproject.entities.Usuario;
 import com.webserviceproject.services.UsuarioService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping(value = "/usuario")
 @Log4j2
+@RequiredArgsConstructor
 public class UsuarioController {
     
-	@Autowired
-	private UsuarioService service;
+	private final UsuarioService service;
 	
 	@RequestMapping()
 	public ResponseEntity<List<Usuario>> findAll(){

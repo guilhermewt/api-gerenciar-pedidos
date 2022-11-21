@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -15,11 +14,13 @@ import com.webserviceproject.repository.UsuarioRepositorio;
 import com.webserviceproject.services.exceptions.DataBaseException;
 import com.webserviceproject.services.exceptions.ResourceNotFoundException;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
 
-	@Autowired
-	private UsuarioRepositorio repositorio;
+	private final UsuarioRepositorio repositorio;
 
 	public List<Usuario> findAll() {
 		return repositorio.findAll();
@@ -47,7 +48,7 @@ public class UsuarioService {
 
 	public Usuario Update(Usuario atualizarUsuario, long id) {
 		try {
-			Usuario usuarioDoBanco = repositorio.getOne(id);
+			Usuario usuarioDoBanco = repositorio.findById(id).get();
 			updateData(usuarioDoBanco, atualizarUsuario);
 			return repositorio.save(usuarioDoBanco);
 		} catch (EntityNotFoundException e) {
