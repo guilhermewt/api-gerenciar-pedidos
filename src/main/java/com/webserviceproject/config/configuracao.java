@@ -77,18 +77,18 @@ public class configuracao implements CommandLineRunner{
 		categoriaReposi.saveAll(Arrays.asList(cat1,cat2,cat3));
 		
 		p1.getCategoria().add(cat1);
-//		p2.getCategoria().add(cat3);
-//		p3.getCategoria().add(cat2);
-//		p3.getCategoria().add(cat3);
-//		p4.getCategoria().add(cat2);
-//		p5.getCategoria().add(cat1);
+		p2.getCategoria().add(cat3);
+		p3.getCategoria().add(cat2);
+		p3.getCategoria().add(cat3);
+		p4.getCategoria().add(cat2);
+		p5.getCategoria().add(cat1);
 		
 		produtoReposi.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
 		
-		ItemsDePedido items1 = new ItemsDePedido(p1, ped1, 2, p1.getPrice());
-		ItemsDePedido items2 = new ItemsDePedido(p4, ped3, 3, p4.getPrice());
-		ItemsDePedido items3 = new ItemsDePedido(p2, ped2, 5, p2.getPrice());
-		ItemsDePedido items4 = new ItemsDePedido(p3, ped1, 4, p3.getPrice());
+		ItemsDePedido items1 = new ItemsDePedido(p1, ped1, 2, p1.getPreco());
+		ItemsDePedido items2 = new ItemsDePedido(p4, ped3, 3, p4.getPreco());
+		ItemsDePedido items3 = new ItemsDePedido(p2, ped2, 5, p2.getPreco());
+		ItemsDePedido items4 = new ItemsDePedido(p3, ped1, 4, p3.getPreco());
 		
 		itemsRepositorio.saveAll(Arrays.asList(items1,items2,items3,items4));
 	}		

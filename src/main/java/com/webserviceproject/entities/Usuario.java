@@ -30,18 +30,19 @@ public class Usuario implements Serializable{
 	private String nome;
 	private String email;
 	private String telefone;
-	private String senha;
+	private String password;
 	
 	@OneToMany(mappedBy = "usuario")
 	private Set<Pedido> pedido = new HashSet<>();
+	
 
-	public Usuario(Long id, String nome, String email, String telefone, String senha) {
+	public Usuario(Long id, String nome, String email, String telefone, String password) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.telefone = telefone;
-		this.senha = senha;
+		this.password = password;
 	}
 
 	@JsonIgnore

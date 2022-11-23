@@ -1,12 +1,17 @@
 package com.webserviceproject.services;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.webserviceproject.entities.Produto;
+import com.webserviceproject.mapper.ProdutoMapper;
 import com.webserviceproject.repository.ProdutoRepositorio;
+import com.webserviceproject.request.ProdutoPostRequestBody;
+import com.webserviceproject.request.ProdutoPutRequestBody;
+import com.webserviceproject.services.exceptions.DataBaseException;
+import com.webserviceproject.services.exceptions.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +26,28 @@ public class ProdutoService {
 	}
 	
 	public Produto findById(long id) {
-		Optional<Produto> produto = repositorio.findById(id);
-		return produto.get();
+		return repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+	}
+	
+	public Produto save(ProdutoPostRequestBody produtoPostRequestBody) {
+		return repositorio.save(ProdutoMapper.INSTANCE.toProduto(produtoPostRequestBody));
+	}
+	
+	public void deletarProduto(long id) {
+		try {
+			repositorio.delete(findById(id));
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new DataBaseException(e.getMessage());
+		}
+	}
+	
+	public void update (ProdutoPutRequestBody produtoPutRequestBody) {
+		Produto produtoSalvo = repositorio.findById(produtoPutRequestBody.getId())
+				.orElseThrow(() -> new ResourceNotFoundException(produtoPutRequestBody.getId()));
+		
+		ProdutoMapper.INSTANCE.updateProduto(produtoPutRequestBody, produtoSalvo);
+		
+		repositorio.save(produtoSalvo);
 	}
 }

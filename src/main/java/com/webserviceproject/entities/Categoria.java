@@ -13,13 +13,19 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "tb_categoria")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(of = {"id","nome"})
 public class Categoria implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -27,16 +33,16 @@ public class Categoria implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
+	private String nome;
 	
 	@ManyToMany(mappedBy = "categoria")
 	@JsonIgnore
 	private Set<Produto> Produto = new HashSet<>();
 
-	public Categoria(Long id, String name) {
+	public Categoria(Long id, String nome) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.nome = nome;
 	}
 	
 }

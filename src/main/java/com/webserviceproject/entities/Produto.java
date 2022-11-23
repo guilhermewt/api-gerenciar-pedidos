@@ -32,11 +32,10 @@ public class Produto implements Serializable{
 	private Long id;
 	private String nome;
 	private String descricao;
-	private Double price;
+	private Double preco;
 	private String imgUrl;
 	
 	@ManyToMany
-	@JsonIgnore
 	@JoinTable(name = "tb_produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private Set<Categoria> categoria = new HashSet<>();
 	
@@ -44,12 +43,12 @@ public class Produto implements Serializable{
 	@JsonIgnore
 	private Set<ItemsDePedido> items = new HashSet<>();
 
-	public Produto(Long id, String nome, String descricao, Double price, String imgUrl) {
+	public Produto(Long id, String nome, String descricao, Double preco, String imgUrl) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
-		this.price = price;
+		this.preco = preco;
 		this.imgUrl = imgUrl;
 	}
 	

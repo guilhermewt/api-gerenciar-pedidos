@@ -1,16 +1,15 @@
 package com.webserviceproject.services;
 
 import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.webserviceproject.entities.Usuario;
+import com.webserviceproject.mapper.UsuarioMapper;
 import com.webserviceproject.repository.UsuarioRepositorio;
+import com.webserviceproject.request.UsuarioPostRequestBody;
+import com.webserviceproject.request.UsuarioPutRequestBody;
 import com.webserviceproject.services.exceptions.DataBaseException;
 import com.webserviceproject.services.exceptions.ResourceNotFoundException;
 
@@ -27,40 +26,27 @@ public class UsuarioService {
 	}
 
 	public Usuario findById(long id) {
-		Optional<Usuario> usuario = repositorio.findById(id);
-		return usuario.orElseThrow(() -> new ResourceNotFoundException(id));
+		return repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	public Usuario insert(Usuario obj) {
-		return repositorio.save(obj);
+	public Usuario insert(UsuarioPostRequestBody usuarioPostRequestBody) {
+		return repositorio.save(UsuarioMapper.INSTANCE.toUsuario(usuarioPostRequestBody));
 	}
 
 	public void delete(long id) {
 		try {
-			repositorio.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new DataBaseException(e.getMessage());
-		} catch (DataIntegrityViolationException e) {
-			throw new DataBaseException(e.getMessage());
-		}
-	}
-	//EntityNotFoundException,
-
-	public Usuario Update(Usuario atualizarUsuario, long id) {
-		try {
-			Usuario usuarioDoBanco = repositorio.findById(id).get();
-			updateData(usuarioDoBanco, atualizarUsuario);
-			return repositorio.save(usuarioDoBanco);
-		} catch (EntityNotFoundException e) {
+			repositorio.delete(findById(id));
+		} 
+		catch (DataIntegrityViolationException e) {
 			throw new DataBaseException(e.getMessage());
 		}
 	}
 
-	private void updateData(Usuario usuarioDoBanco, Usuario atualizarUsuario) {
-		usuarioDoBanco.setNome(atualizarUsuario.getNome());
-		usuarioDoBanco.setEmail(atualizarUsuario.getEmail());
-		usuarioDoBanco.setTelefone(atualizarUsuario.getTelefone());
-		usuarioDoBanco.setSenha(atualizarUsuario.getSenha());
-
+	public void atualizarUsuario(UsuarioPutRequestBody usuarioPutRequestBody) {
+		Usuario usuario = repositorio.findById(usuarioPutRequestBody.getId())
+				          .orElseThrow(() -> new ResourceNotFoundException(usuarioPutRequestBody.getId()));
+		
+		UsuarioMapper.INSTANCE.AtualizarUsuario(usuarioPutRequestBody,usuario);
+		repositorio.save(usuario);
 	}
 }
