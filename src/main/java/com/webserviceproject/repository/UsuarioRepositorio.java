@@ -7,5 +7,6 @@ import com.webserviceproject.entities.Usuario;
 
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Long>{
-
+	
+	Usuario findByNome(String nome);
 }

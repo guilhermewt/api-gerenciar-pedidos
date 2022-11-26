@@ -20,6 +20,7 @@ public class ItemsDePedido implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@EmbeddedId
 	private itemsDePedidoPK id = new itemsDePedidoPK();
 	
@@ -47,7 +48,6 @@ public class ItemsDePedido implements Serializable{
 		return id.getPedido();
 	}
 	
-	@JsonIgnore
 	public void setPedido(Pedido pedido) {
 		id.setPedido(pedido);
 	}

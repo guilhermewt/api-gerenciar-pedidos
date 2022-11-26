@@ -48,12 +48,11 @@ public class Pedido implements Serializable {
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemsDePedido> items = new HashSet<>();
 
-	public Pedido(Long id, Instant moment, OrderStatus orderStatus, Usuario usuario) {
+	public Pedido(Long id, Instant moment, OrderStatus orderStatus) {
 		super();
 		this.id = id;
 		this.moment = moment;
 		setOrderStatus(orderStatus);
-		this.usuario = usuario;
 	}
 
 	public OrderStatus getOrderStatus() {
