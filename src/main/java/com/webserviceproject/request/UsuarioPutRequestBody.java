@@ -12,13 +12,15 @@ public class UsuarioPutRequestBody {
 	private String email;
 	private String telefone;
 	private String password;
+	private String username;
 	
-	public UsuarioPutRequestBody(long id,String nome, String email, String telefone, String senha) {
+	public UsuarioPutRequestBody(long id,String nome, String email, String telefone, String password, String username) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.telefone = telefone;
-		this.password = senha;
+		this.password = password;
+		this.username = username;
 	}
 }

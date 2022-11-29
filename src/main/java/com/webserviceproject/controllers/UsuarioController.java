@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webserviceproject.entities.Usuario;
@@ -26,33 +27,30 @@ public class UsuarioController {
     
 	private final UsuarioService service;
 	
-	@RequestMapping(value = "/all")
+	@GetMapping(value = "/admin/all")
 	public ResponseEntity<List<Usuario>> findAll(){
 		return ResponseEntity.ok(service.findAll());
 	}
 	
-	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	@GetMapping(value="/admin/{id}")
 	public ResponseEntity<Usuario> findById(@PathVariable long id){
 		return ResponseEntity.ok(service.findById(id));
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
-	@PreAuthorize("hasRole('ADMIN')")
+	@PostMapping(value = "/admin")
 	public ResponseEntity<Usuario> insert(@RequestBody UsuarioPostRequestBody usuarioPostRequestBody){
-		return new ResponseEntity<Usuario>(service.insert(usuarioPostRequestBody), HttpStatus.CREATED);
+		return new ResponseEntity<Usuario>(service.insertUsuarioAdmin(usuarioPostRequestBody), HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	@PreAuthorize("hasRole('ADMIN')")
+	@DeleteMapping(value = "/admin/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping
-	@PreAuthorize("hasRole('ADMIN')")
+	@PutMapping(value = "/admin")
 	public ResponseEntity<Void> update(@RequestBody UsuarioPutRequestBody usuarioPutRequestBody){
-		service.atualizarUsuario(usuarioPutRequestBody);
+		service.update(usuarioPutRequestBody);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }

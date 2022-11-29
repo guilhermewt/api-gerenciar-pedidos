@@ -4,13 +4,12 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webserviceproject.entities.Pedido;
@@ -27,20 +26,19 @@ public class PedidoController {
 	
 	private final PedidoService pedido;
 	
-	@RequestMapping
+	@GetMapping
 	public ResponseEntity<List<Pedido>> findAll(){
 		List<Pedido> listPedido = pedido.findAll();
 		return ResponseEntity.ok().body(listPedido);
 	}
 	
-	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	@GetMapping(value="/{id}")
 	public ResponseEntity<Pedido> findById(@PathVariable long id){
 		Pedido ped = pedido.findById(id);
 		return ResponseEntity.ok().body(ped);
 	}
 	
 	@PostMapping(value = "/{produtoId}/{quantidadeProduto}/{usuarioId}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Pedido> save(@RequestBody PedidoPostRequestBody pedidoPostRequestBody,
 									   @PathVariable long produtoId,@PathVariable int quantidadeProduto,
 									   @PathVariable long usuarioId){
@@ -49,7 +47,6 @@ public class PedidoController {
 	}
 	
 	@PutMapping
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> update(@RequestBody PedidoPutRequestBody pedidoPutRequestBody){
 		pedido.update(pedidoPutRequestBody);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

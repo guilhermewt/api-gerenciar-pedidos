@@ -16,14 +16,16 @@ public class UsuarioPostRequestBody {
 	private String email;
 	private String telefone;
 	private String password;
+	private String username;
 	
 	private Set<Pedido> pedido = new HashSet<>();
 	
-	public UsuarioPostRequestBody(String nome, String email, String telefone, String senha) {
+	public UsuarioPostRequestBody(String nome, String email, String telefone, String password,String username) {
 		super();
 		this.nome = nome;
 		this.email = email;
 		this.telefone = telefone;
-		this.password = senha;
+		this.password = password;
+		this.username = username;
 	}
 }
