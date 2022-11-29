@@ -15,10 +15,10 @@ import com.webserviceproject.services.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
 
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 	private final UsuarioService usuarioService;
@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		auth.userDetailsService(usuarioService).passwordEncoder(passwordEncoder());
 	}
 	
-	@Bean
+//	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}

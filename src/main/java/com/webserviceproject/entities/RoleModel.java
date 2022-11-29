@@ -49,6 +49,7 @@ public class RoleModel implements GrantedAuthority, Serializable{
 		this.roleName = roleName;
 	}
 
+	@JsonIgnore
 	@Override
 	public String getAuthority() {
 		return this.roleName.toString();
