@@ -79,7 +79,7 @@
 //		Produto p2 = new Produto(null,"asus 3012","computador asus",100.9,"");
 //		Produto p3 = new Produto(null,"smart tv","samsung",2010.9,"");
 //		Produto p4 = new Produto(null,"geladeira","phicon",4000.9,"");
-//		Produto p5 = new Produto(null,"softskills","livro de profissão",200.9,"");
+//		Produto p5 = new Produto(null,"softskills","A Menina Que Roubava Livros - Markus suzak",,"");
 //
 //		
 //		produtoReposi.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
@@ -87,7 +87,7 @@
 //		
 //		Categoria cat1 = new Categoria(null, "Books");
 //		Categoria cat2 = new Categoria(null, "Eletronicos");
-//		Categoria cat3 = new Categoria(null, "Computadores");
+//		Categoria cat3 = new Categoria(null, "Computadores");	
 //		
 //		
 //		categoriaReposi.saveAll(Arrays.asList(cat1,cat2,cat3));

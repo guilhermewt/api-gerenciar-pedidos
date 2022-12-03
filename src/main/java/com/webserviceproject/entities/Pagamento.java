@@ -12,12 +12,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tb_pagamento")
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(of= {"id"})
 public class Pagamento implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

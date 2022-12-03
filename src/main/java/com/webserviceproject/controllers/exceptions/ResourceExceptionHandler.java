@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.webserviceproject.services.exceptions.ConflictException;
 import com.webserviceproject.services.exceptions.DataBaseException;
 import com.webserviceproject.services.exceptions.ResourceNotFoundException;
 
@@ -31,6 +32,17 @@ public class ResourceExceptionHandler {
 		
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		String error = "database Error";
+		
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(ConflictException.class)
+	public ResponseEntity<StandardError> conflictException(ConflictException e, HttpServletRequest request){
+		
+		HttpStatus status = HttpStatus.CONFLICT;
+		String error = "conflict exception";
 		
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 		

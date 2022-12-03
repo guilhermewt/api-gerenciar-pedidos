@@ -20,12 +20,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.webserviceproject.entities.enums.OrderStatus;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tb_pedido")
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(of= {"id"})
 public class Pedido implements Serializable {
 
 	private static final long serialVersionUID = 1L;

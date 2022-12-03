@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class ProdutoService {
 	
 	private final ProdutoRepositorio repositorio;
+	private final CategoriaService categoriaService;
 	
 	public List<Produto> findAll(){
 		return repositorio.findAll();
@@ -29,8 +30,10 @@ public class ProdutoService {
 		return repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
-	public Produto save(ProdutoPostRequestBody produtoPostRequestBody) {
-		return repositorio.save(ProdutoMapper.INSTANCE.toProduto(produtoPostRequestBody));
+	public Produto save(ProdutoPostRequestBody produtoPostRequestBody,long categoriaId) {
+		Produto produto = ProdutoMapper.INSTANCE.toProduto(produtoPostRequestBody);
+		produto.getCategoria().add(categoriaService.findById(categoriaId));
+		return repositorio.save(produto);
 	}
 	
 	public void deletarProduto(long id) {

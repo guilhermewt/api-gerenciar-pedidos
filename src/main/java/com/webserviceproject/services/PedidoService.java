@@ -17,11 +17,9 @@ import com.webserviceproject.services.exceptions.DataBaseException;
 import com.webserviceproject.services.exceptions.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
 public class PedidoService {
 	
 	private final PedidoRepositorio pedidoRepositorio;
@@ -60,7 +58,6 @@ public class PedidoService {
 		
 		pedidoRepositorio.save(PedidoMapper.INSTANCE.updatePedido(pedidoPostRequestBody, pedidoSalvo));
 		
-		log.info(pedidoSalvo.getPagamento().getMoment());
 	}
 	
 	public void verificarPedido(Pedido pedido) {

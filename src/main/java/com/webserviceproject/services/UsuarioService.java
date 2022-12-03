@@ -18,19 +18,19 @@ import com.webserviceproject.repository.RoleModelRepositorio;
 import com.webserviceproject.repository.UsuarioRepositorio;
 import com.webserviceproject.request.UsuarioPostRequestBody;
 import com.webserviceproject.request.UsuarioPutRequestBody;
+import com.webserviceproject.services.exceptions.ConflictException;
 import com.webserviceproject.services.exceptions.DataBaseException;
 import com.webserviceproject.services.exceptions.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
 @Transactional
 public class UsuarioService implements UserDetailsService{
-
+	
 	private final UsuarioRepositorio repositorio;
+	
 	private final RoleModelRepositorio roleModelRepositorio;
 
 	public List<Usuario> findAll() {
@@ -42,14 +42,19 @@ public class UsuarioService implements UserDetailsService{
 	}
 
 	public Usuario insertUsuarioUser(UsuarioPostRequestBody usuarioPostRequestBody) {
+		checkIfObjectAlreadyExistsInDatabase(usuarioPostRequestBody.getUsername());
+		
 		Usuario usuario = UsuarioMapper.INSTANCE.toUsuario(usuarioPostRequestBody);
 		usuario.getRoles().add(roleModelRepositorio.findById(2l).get());//role user
 		usuario.setPassword(new BCryptPasswordEncoder().encode(usuario.getPassword()));
 		
 		return repositorio.save(usuario);
+		
 	}
 	
 	public Usuario insertUsuarioAdmin(UsuarioPostRequestBody usuarioPostRequestBody) {
+		checkIfObjectAlreadyExistsInDatabase(usuarioPostRequestBody.getUsername());
+		
 		Usuario usuario = UsuarioMapper.INSTANCE.toUsuario(usuarioPostRequestBody);
 		usuario.getRoles().add(roleModelRepositorio.findById(1l).get());//role admin
 		usuario.setPassword(new BCryptPasswordEncoder().encode(usuario.getPassword()));
@@ -81,7 +86,13 @@ public class UsuarioService implements UserDetailsService{
 		
 		Usuario usuario = repositorio.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("userDomain not found"));
-		log.info(usuario);
 		return new User(usuario.getUsername(), usuario.getPassword(), true, true, true, true, usuario.getAuthorities());
 	}
+	
+	public void checkIfObjectAlreadyExistsInDatabase(String username) {
+		if(repositorio.findByUsername(username).isPresent()) {
+			throw new ConflictException("this object already exists");
+		}
+	}
+	
 }

@@ -38,8 +38,13 @@ public class UsuarioController {
 	}
 	
 	@PostMapping(value = "/admin")
-	public ResponseEntity<Usuario> insert(@RequestBody UsuarioPostRequestBody usuarioPostRequestBody){
+	public ResponseEntity<Usuario> insertUserAdmin(@RequestBody UsuarioPostRequestBody usuarioPostRequestBody){
 		return new ResponseEntity<Usuario>(service.insertUsuarioAdmin(usuarioPostRequestBody), HttpStatus.CREATED);
+	}
+	
+	@PostMapping(value = "/user")
+	public ResponseEntity<Usuario> insertUser(@RequestBody UsuarioPostRequestBody usuarioPostRequestBody){
+		return new ResponseEntity<Usuario>(service.insertUsuarioUser(usuarioPostRequestBody), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value = "/admin/{id}")

@@ -37,9 +37,9 @@ public class ProdutoController {
 		return ResponseEntity.ok(service.findById(id));
 	}
 	
-	@PostMapping(value = "/admin")
-	public ResponseEntity<Produto> save(@RequestBody ProdutoPostRequestBody produtoPostRequestBody){
-		return new ResponseEntity<Produto>(service.save(produtoPostRequestBody), HttpStatus.CREATED);
+	@PostMapping(value = "/admin/{categoriaId}")
+	public ResponseEntity<Produto> save(@RequestBody ProdutoPostRequestBody produtoPostRequestBody,@PathVariable long categoriaId){
+		return new ResponseEntity<Produto>(service.save(produtoPostRequestBody,categoriaId), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value = "/admin/{id}")

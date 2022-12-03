@@ -2,6 +2,7 @@ package com.webserviceproject.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ public class WebSecurityConfig {
 		.antMatchers("/usuarios/admin/**").hasRole("ADMIN")
 		.antMatchers("/categorias/admin/**").hasRole("ADMIN")
 		.antMatchers("/produtos/admin/**").hasRole("ADMIN")
+		.antMatchers(HttpMethod.POST,"/usuarios/user").permitAll()
 		.antMatchers("/h2-console/**").permitAll()
 		.anyRequest()
 		.authenticated()

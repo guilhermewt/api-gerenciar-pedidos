@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,12 +25,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "tb_usuario")
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(of= {"id","nome"})
+@ToString(exclude = {"pedido"})
 public class Usuario implements Serializable,UserDetails{
 	
 	private static final long serialVersionUID = 1L;
@@ -41,6 +46,7 @@ public class Usuario implements Serializable,UserDetails{
 	private String email;
 	private String telefone;
 	private String password;
+	@Column(nullable = false,unique = true)
 	private String username;
 	
 	@ManyToMany(cascade = CascadeType.PERSIST)
@@ -79,7 +85,6 @@ public class Usuario implements Serializable,UserDetails{
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
