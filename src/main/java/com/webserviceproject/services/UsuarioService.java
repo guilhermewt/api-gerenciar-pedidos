@@ -18,20 +18,24 @@ import com.webserviceproject.repository.RoleModelRepositorio;
 import com.webserviceproject.repository.UsuarioRepositorio;
 import com.webserviceproject.request.UsuarioPostRequestBody;
 import com.webserviceproject.request.UsuarioPutRequestBody;
+import com.webserviceproject.services.authentication.GetAuthenticatedUser;
 import com.webserviceproject.services.exceptions.ConflictException;
 import com.webserviceproject.services.exceptions.DataBaseException;
 import com.webserviceproject.services.exceptions.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.log4j.Log4j2;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Log4j2
 public class UsuarioService implements UserDetailsService{
 	
 	private final UsuarioRepositorio repositorio;
 	
 	private final RoleModelRepositorio roleModelRepositorio;
+	
+	private final GetAuthenticatedUser authenticatedUser;
 
 	public List<Usuario> findAll() {
 		return repositorio.findAll();
@@ -39,6 +43,10 @@ public class UsuarioService implements UserDetailsService{
 
 	public Usuario findById(long id) {
 		return repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+	}
+	
+	public Usuario getMyUser() {
+		return authenticatedUser.userAuthenticated();
 	}
 
 	public Usuario insertUsuarioUser(UsuarioPostRequestBody usuarioPostRequestBody) {
@@ -72,8 +80,7 @@ public class UsuarioService implements UserDetailsService{
 	}
 
 	public void update(UsuarioPutRequestBody usuarioPutRequestBody) {
-		Usuario usuario = repositorio.findById(usuarioPutRequestBody.getId())
-				          .orElseThrow(() -> new ResourceNotFoundException(usuarioPutRequestBody.getId()));
+		Usuario usuario = getMyUser();
 		
 		UsuarioMapper.INSTANCE.AtualizarUsuario(usuarioPutRequestBody,usuario);
 		

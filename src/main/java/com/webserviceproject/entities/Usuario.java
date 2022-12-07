@@ -54,7 +54,7 @@ public class Usuario implements Serializable,UserDetails{
 													   inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private List<RoleModel> roles = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "usuario")
+	@OneToMany(mappedBy = "usuario",cascade = CascadeType.REMOVE)
 	private Set<Pedido> pedido = new HashSet<>();
 
 	public Usuario(Long id, String nome, String email, String telefone, String password,String username) {

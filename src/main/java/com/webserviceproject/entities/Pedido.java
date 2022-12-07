@@ -39,7 +39,7 @@ public class Pedido implements Serializable {
 	
 	private Integer orderStatus;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
@@ -47,7 +47,7 @@ public class Pedido implements Serializable {
 	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private Pagamento pagamento;
 
-	@OneToMany(mappedBy = "id.pedido")
+	@OneToMany(mappedBy = "id.pedido",cascade = CascadeType.ALL)
 	private Set<ItemsDePedido> items = new HashSet<>();
 
 	public Pedido(Long id, Instant moment, OrderStatus orderStatus) {

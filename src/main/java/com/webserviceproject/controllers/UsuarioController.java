@@ -53,7 +53,7 @@ public class UsuarioController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping(value = "/admin")
+	@PutMapping
 	public ResponseEntity<Void> update(@RequestBody UsuarioPutRequestBody usuarioPutRequestBody){
 		service.update(usuarioPutRequestBody);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);

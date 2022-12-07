@@ -2,6 +2,7 @@ package com.webserviceproject.entities.pk;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,11 +20,11 @@ public class itemsDePedidoPK implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "produto_id")
 	private Produto produto;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "pedido_id")
 	private Pedido pedido;
 
