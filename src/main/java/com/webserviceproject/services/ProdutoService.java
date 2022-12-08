@@ -3,6 +3,8 @@ package com.webserviceproject.services;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.webserviceproject.entities.Produto;
@@ -22,7 +24,11 @@ public class ProdutoService {
 	private final ProdutoRepositorio repositorio;
 	private final CategoriaService categoriaService;
 	
-	public List<Produto> findAll(){
+	public Page<Produto> findAllPageable(Pageable pageable){
+		return repositorio.findAll(pageable);
+	}
+	
+	public List<Produto> findAllNonPageable(){
 		return repositorio.findAll();
 	}
 	

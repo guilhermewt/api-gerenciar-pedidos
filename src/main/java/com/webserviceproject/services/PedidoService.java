@@ -5,6 +5,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.webserviceproject.entities.ItemsDePedido;
@@ -34,8 +36,12 @@ public class PedidoService {
 	private final GetAuthenticatedUser authenthicatedUser;
 	
 	
-	public List<Pedido> findAll(){
+	public List<Pedido> findAllNonPageable(){
 		return pedidoRepositorio.findByUsuarioId(authenthicatedUser.userAuthenticated().getId());
+	}
+	
+	public Page<Pedido> findAllPageable(Pageable pageable){
+		return pedidoRepositorio.findByUsuarioId(authenthicatedUser.userAuthenticated().getId(),pageable);
 	}
 	
 	public Pedido findById(long idPedido) {

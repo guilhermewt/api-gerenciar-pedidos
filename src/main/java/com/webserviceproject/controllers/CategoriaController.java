@@ -2,6 +2,10 @@ package com.webserviceproject.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,9 +31,14 @@ public class CategoriaController {
 
 	private final CategoriaService service;
 
+	@GetMapping(value = "/all/pageable")
+	public ResponseEntity<Page<Categoria>> findAllPageable(Pageable pageable) {
+		return ResponseEntity.ok(service.findAllPageable(pageable));
+	}
+	
 	@GetMapping(value = "/all")
-	public ResponseEntity<List<Categoria>> findAll() {
-		return ResponseEntity.ok(service.findAll());
+	public ResponseEntity<List<Categoria>> findAllNonPageable() {
+		return ResponseEntity.ok(service.findAllNonPageable());
 	}
 
 	@GetMapping(value = "/{id}")
@@ -38,7 +47,7 @@ public class CategoriaController {
 	}
 	
 	@PostMapping(value = "/admin")
-	public ResponseEntity<Categoria> insert(@RequestBody CategoriaPostRequestBody categoriaPostRequestBody){
+	public ResponseEntity<Categoria> insert(@RequestBody @Valid CategoriaPostRequestBody categoriaPostRequestBody){
 		return new ResponseEntity<Categoria>(service.insert(categoriaPostRequestBody), HttpStatus.CREATED);
 	}
 	

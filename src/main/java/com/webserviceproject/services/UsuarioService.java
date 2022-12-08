@@ -5,6 +5,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,8 +39,12 @@ public class UsuarioService implements UserDetailsService{
 	
 	private final GetAuthenticatedUser authenticatedUser;
 
-	public List<Usuario> findAll() {
+	public List<Usuario> findAllNonPageable() {
 		return repositorio.findAll();
+	}
+	
+	public Page<Usuario> findAllPageable(Pageable pageable) {
+		return repositorio.findAll(pageable);
 	}
 
 	public Usuario findById(long id) {

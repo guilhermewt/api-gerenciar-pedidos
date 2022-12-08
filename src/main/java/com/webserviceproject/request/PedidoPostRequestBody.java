@@ -4,6 +4,9 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import com.webserviceproject.entities.ItemsDePedido;
 import com.webserviceproject.entities.Pagamento;
 import com.webserviceproject.entities.Usuario;
@@ -17,7 +20,9 @@ import lombok.NoArgsConstructor;
 public class PedidoPostRequestBody {
 	
 	
+	@NotNull(message = "the moment cannot be empty")
 	private Instant moment;
+	@NotEmpty(message = "orderStatus cannot be empty")
 	private Integer orderStatus;
 
 	private Usuario usuario;

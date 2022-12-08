@@ -18,6 +18,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,16 +37,24 @@ import lombok.ToString;
 @EqualsAndHashCode(of= {"id","nome"})
 @ToString(exclude = {"pedido"})
 public class Usuario implements Serializable,UserDetails{
-	
+	/*
+	 *fizemos o validation de todos 
+	 *fizemos o pageable de todos falta o do pedido
+	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotEmpty(message = "the nome cannot be empty")
 	private String nome;
+	@NotEmpty(message = "the email cannot be empty")
 	private String email;
+	@NotEmpty(message = "the telefone nome cannot be empty")
 	private String telefone;
+	@NotEmpty(message = "the password cannot be empty")
 	private String password;
+	@NotEmpty(message = "the username cannot be empty")
 	@Column(nullable = false,unique = true)
 	private String username;
 	

@@ -2,6 +2,10 @@ package com.webserviceproject.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,8 +33,13 @@ public class PedidoController {
 	
 	@GetMapping
 	public ResponseEntity<List<Pedido>> findAll(){
-		List<Pedido> listPedido = pedidoService.findAll();
+		List<Pedido> listPedido = pedidoService.findAllNonPageable();
 		return ResponseEntity.ok().body(listPedido);
+	}
+	
+	@GetMapping(value = "/pageable")
+	public ResponseEntity<Page<Pedido>> findAllPageable(Pageable pageable){
+		return ResponseEntity.ok().body(pedidoService.findAllPageable(pageable));
 	}
 	
 	@GetMapping(value="/{id}")
@@ -40,7 +49,7 @@ public class PedidoController {
 	}
 	
 	@PostMapping(value = "/{produtoId}/{quantidadeProduto}")
-	public ResponseEntity<Pedido> save(@RequestBody PedidoPostRequestBody pedidoServicePostRequestBody,
+	public ResponseEntity<Pedido> save(@RequestBody @Valid PedidoPostRequestBody pedidoServicePostRequestBody,
 									   @PathVariable long produtoId,@PathVariable int quantidadeProduto){
 		return new ResponseEntity<Pedido>(pedidoService.save(pedidoServicePostRequestBody, produtoId, quantidadeProduto), 
 													  HttpStatus.CREATED);

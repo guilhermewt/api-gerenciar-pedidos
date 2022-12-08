@@ -19,7 +19,7 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long>{
 	
 	List<Pedido> findByUsuarioId(long UserDomainId);
 	
-	Page<Pedido> findByUsuarioId(long UserDomainId,Pageable pageable);
+	Page<Pedido> findByUsuarioId(long userDomainId,Pageable pageable);
 	
 	@Query("select u from Pedido u where u.id = ?1 and u.usuario.id = ?2")
 	Optional<Pedido> findAuthenticatedUserPedidoById(long idPedido,long usuarioId);

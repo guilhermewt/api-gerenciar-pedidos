@@ -3,6 +3,8 @@ package com.webserviceproject.request;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotEmpty;
+
 import com.webserviceproject.entities.Categoria;
 import com.webserviceproject.entities.ItemsDePedido;
 
@@ -13,8 +15,11 @@ import lombok.NoArgsConstructor;
 @Data
 public class ProdutoPostRequestBody {
 	
+	@NotEmpty(message = "the nome cannot be empty")
 	private String nome;
+	@NotEmpty(message = "the descricao cannot be empty")
 	private String descricao;
+	@NotEmpty(message = "the preco cannot be empty")
 	private Double preco;
 	private String imgUrl;
 	
