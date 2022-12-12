@@ -1,6 +1,7 @@
 package com.webserviceproject.request;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ public class ProdutoPutRequestBody {
 	private String nome;
 	@NotEmpty(message = "the descricao cannot be empty")
 	private String descricao;
-	@NotEmpty(message = "the preco cannot be empty")
+	@NotNull(message = "the preco cannot be empty")
 	private Double preco;
 	private String imgUrl;
 

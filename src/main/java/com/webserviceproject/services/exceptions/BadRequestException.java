@@ -1,10 +1,10 @@
 package com.webserviceproject.services.exceptions;
 
-public class DataBaseException extends RuntimeException{
+public class BadRequestException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
 	
-	public DataBaseException(String msg) {
+	public BadRequestException(String msg) {
 		super(msg);
 	}
 

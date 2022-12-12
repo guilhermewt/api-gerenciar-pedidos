@@ -21,9 +21,8 @@ import com.webserviceproject.repository.UsuarioRepositorio;
 import com.webserviceproject.request.UsuarioPostRequestBody;
 import com.webserviceproject.request.UsuarioPutRequestBody;
 import com.webserviceproject.services.authentication.GetAuthenticatedUser;
+import com.webserviceproject.services.exceptions.BadRequestException;
 import com.webserviceproject.services.exceptions.ConflictException;
-import com.webserviceproject.services.exceptions.DataBaseException;
-import com.webserviceproject.services.exceptions.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -48,7 +47,7 @@ public class UsuarioService implements UserDetailsService{
 	}
 
 	public Usuario findById(long id) {
-		return repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		return repositorio.findById(id).orElseThrow(() -> new BadRequestException("usuario not found"));
 	}
 	
 	public Usuario getMyUser() {
@@ -81,7 +80,7 @@ public class UsuarioService implements UserDetailsService{
 			repositorio.delete(findById(id));
 		} 
 		catch (DataIntegrityViolationException e) {
-			throw new DataBaseException(e.getMessage());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 

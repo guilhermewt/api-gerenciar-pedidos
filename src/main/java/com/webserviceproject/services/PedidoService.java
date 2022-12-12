@@ -19,8 +19,7 @@ import com.webserviceproject.repository.PedidoRepositorio;
 import com.webserviceproject.request.PedidoPostRequestBody;
 import com.webserviceproject.request.PedidoPutRequestBody;
 import com.webserviceproject.services.authentication.GetAuthenticatedUser;
-import com.webserviceproject.services.exceptions.DataBaseException;
-import com.webserviceproject.services.exceptions.ResourceNotFoundException;
+import com.webserviceproject.services.exceptions.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,7 +45,7 @@ public class PedidoService {
 	
 	public Pedido findById(long idPedido) {
 		return pedidoRepositorio.findAuthenticatedUserPedidoById(idPedido, authenthicatedUser.userAuthenticated().getId())
-				.orElseThrow(() -> new ResourceNotFoundException(idPedido));
+				.orElseThrow(() -> new BadRequestException("pedido not found"));
 	}
 	
 	public Pedido save(PedidoPostRequestBody pedidoPostRequestBody,long produtoId,int quantidadeProduto) {
@@ -65,11 +64,11 @@ public class PedidoService {
 		return  pedido;
 	}
 	
-	public void update(PedidoPutRequestBody pedidoPostRequestBody) {
-		Pedido pedidoSalvo = pedidoRepositorio.findById(pedidoPostRequestBody.getId()).get();
+	public void update(PedidoPutRequestBody pedidoPutRequestBody) {
+		Pedido pedidoSalvo = findById(pedidoPutRequestBody.getId());
 		checkIfOrderIsNotPaid(pedidoSalvo);
 		
-		pedidoRepositorio.save(PedidoMapper.INSTANCE.updatePedido(pedidoPostRequestBody, pedidoSalvo));		
+		pedidoRepositorio.save(PedidoMapper.INSTANCE.updatePedido(pedidoPutRequestBody, pedidoSalvo));		
 	}
 	
 	@Transactional
@@ -79,13 +78,13 @@ public class PedidoService {
 		pedidoRepositorio.delete(findById(idPedido));
 		} 
 		catch (DataIntegrityViolationException e) {
-			throw new DataBaseException(e.getMessage());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 	
 	public void checkIfOrderIsNotPaid(Pedido pedido) {
 		if(pedido.getOrderStatus().name() == "PAID") {
-			throw new DataBaseException("this order is already paid!");
+			throw new BadRequestException("this order is already paid!");
 		}
 	}
 }

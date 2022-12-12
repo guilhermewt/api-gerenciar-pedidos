@@ -38,8 +38,7 @@ import lombok.ToString;
 @ToString(exclude = {"pedido"})
 public class Usuario implements Serializable,UserDetails{
 	/*
-	 *fizemos o validation de todos 
-	 *fizemos o pageable de todos falta o do pedido
+	 * comeca a usar os novos tratamento de excessoes
 	 */
 	private static final long serialVersionUID = 1L;
 	

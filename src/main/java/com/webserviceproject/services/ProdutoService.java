@@ -12,8 +12,7 @@ import com.webserviceproject.mapper.ProdutoMapper;
 import com.webserviceproject.repository.ProdutoRepositorio;
 import com.webserviceproject.request.ProdutoPostRequestBody;
 import com.webserviceproject.request.ProdutoPutRequestBody;
-import com.webserviceproject.services.exceptions.DataBaseException;
-import com.webserviceproject.services.exceptions.ResourceNotFoundException;
+import com.webserviceproject.services.exceptions.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +32,7 @@ public class ProdutoService {
 	}
 	
 	public Produto findById(long id) {
-		return repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		return repositorio.findById(id).orElseThrow(() -> new BadRequestException("produto not found"));
 	}
 	
 	public Produto save(ProdutoPostRequestBody produtoPostRequestBody,long categoriaId) {
@@ -47,13 +46,12 @@ public class ProdutoService {
 			repositorio.delete(findById(id));
 		}
 		catch(DataIntegrityViolationException e) {
-			throw new DataBaseException(e.getMessage());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 	
 	public void update (ProdutoPutRequestBody produtoPutRequestBody) {
-		Produto produtoSalvo = repositorio.findById(produtoPutRequestBody.getId())
-				.orElseThrow(() -> new ResourceNotFoundException(produtoPutRequestBody.getId()));
+		Produto produtoSalvo = findById(produtoPutRequestBody.getId());
 		
 		ProdutoMapper.INSTANCE.updateProduto(produtoPutRequestBody, produtoSalvo);
 		

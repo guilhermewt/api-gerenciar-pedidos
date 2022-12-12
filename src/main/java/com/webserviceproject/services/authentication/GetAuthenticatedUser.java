@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.webserviceproject.entities.Usuario;
 import com.webserviceproject.repository.UsuarioRepositorio;
-import com.webserviceproject.services.exceptions.DataBaseException;
+import com.webserviceproject.services.exceptions.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +22,6 @@ public class GetAuthenticatedUser {
 	public Usuario userAuthenticated() {
 		Authentication authentication = authenticationFacade.getAuthentication();
 		return usuarioRepositorio.findByUsername(authentication.getName()).orElseThrow(
-				() -> new DataBaseException(authentication.getName()));
+				() -> new BadRequestException(authentication.getName()));
 	}
 }

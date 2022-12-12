@@ -12,8 +12,7 @@ import com.webserviceproject.mapper.CategoriaMapper;
 import com.webserviceproject.repository.CategoriaRepositorio;
 import com.webserviceproject.request.CategoriaPostRequestBody;
 import com.webserviceproject.request.CategoriaPutRequestBody;
-import com.webserviceproject.services.exceptions.DataBaseException;
-import com.webserviceproject.services.exceptions.ResourceNotFoundException;
+import com.webserviceproject.services.exceptions.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +31,7 @@ public class CategoriaService {
 	}
 	
 	public Categoria findById(long id) {
-		return repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		return repositorio.findById(id).orElseThrow(() -> new BadRequestException("categoria not found"));
 	}
 	
 	public Categoria insert(CategoriaPostRequestBody categoriaPostRequestBody) {
@@ -43,14 +42,13 @@ public class CategoriaService {
 		try {
 			repositorio.delete(findById(idBook));
 		} catch (DataIntegrityViolationException e) {
-			throw new DataBaseException(e.getMessage());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 	
 	public void atualizarCategoria(CategoriaPutRequestBody categoriaPutRequestBody) {
-		Categoria categoria = repositorio.findById(categoriaPutRequestBody.getId())
-				          .orElseThrow(() -> new ResourceNotFoundException(categoriaPutRequestBody.getId()));
-		
+		Categoria categoria = findById(categoriaPutRequestBody.getId());
+				          
 		CategoriaMapper.INSTANCE.atualizarCategoria(categoriaPutRequestBody,categoria);
 		repositorio.save(categoria);
 	}

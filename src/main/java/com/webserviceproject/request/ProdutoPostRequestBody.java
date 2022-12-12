@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.webserviceproject.entities.Categoria;
 import com.webserviceproject.entities.ItemsDePedido;
@@ -19,7 +20,7 @@ public class ProdutoPostRequestBody {
 	private String nome;
 	@NotEmpty(message = "the descricao cannot be empty")
 	private String descricao;
-	@NotEmpty(message = "the preco cannot be empty")
+	@NotNull(message = "the preco cannot be empty")
 	private Double preco;
 	private String imgUrl;
 	

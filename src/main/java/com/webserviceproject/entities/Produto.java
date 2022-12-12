@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,7 +36,7 @@ public class Produto implements Serializable{
 	private String nome;
 	@NotEmpty(message = "the descricao cannot be empty")
 	private String descricao;
-	@NotEmpty(message = "the preco cannot be empty")
+	@NotNull(message = "the preco cannot be empty")
 	private Double preco;
 	private String imgUrl;
 	
