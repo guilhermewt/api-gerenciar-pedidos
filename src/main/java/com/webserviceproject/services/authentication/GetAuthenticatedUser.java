@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.webserviceproject.entities.Usuario;
-import com.webserviceproject.repository.UsuarioRepositorio;
+import com.webserviceproject.entities.UserDomain;
+import com.webserviceproject.repository.UserDomainRepository;
 import com.webserviceproject.services.exceptions.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
@@ -17,11 +17,11 @@ public class GetAuthenticatedUser {
 	@Autowired
 	private AuthenticationFacade authenticationFacade;
 	
-	private final UsuarioRepositorio usuarioRepositorio;
+	private final UserDomainRepository userDomainRepository;
 	
-	public Usuario userAuthenticated() {
+	public UserDomain userAuthenticated() {
 		Authentication authentication = authenticationFacade.getAuthentication();
-		return usuarioRepositorio.findByUsername(authentication.getName()).orElseThrow(
+		return userDomainRepository.findByUsername(authentication.getName()).orElseThrow(
 				() -> new BadRequestException(authentication.getName()));
 	}
 }

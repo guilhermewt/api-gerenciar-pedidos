@@ -29,6 +29,7 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<ExceptionDetails>(BadRequestExceptionDetails.builder()
 				.timestamp(Instant.now())
 				.status(HttpStatus.BAD_REQUEST.value())
+				
 				.error("Bad Request Exception, check the documentation")
 				.details(bre.getMessage())
 				.developerMessage(bre.getClass().getName())
