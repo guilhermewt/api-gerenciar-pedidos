@@ -40,6 +40,7 @@ public class Order implements Serializable {
 	private Instant moment;
 	@NotNull(message = "the order orderStatus cannot be null")
 	private Integer orderStatus;
+	
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "user_domain_id")

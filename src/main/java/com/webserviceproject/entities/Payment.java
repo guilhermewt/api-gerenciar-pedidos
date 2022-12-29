@@ -15,12 +15,14 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "tb_payment")
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(of= {"id"})
+@ToString(exclude = "order")
 public class Payment implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
