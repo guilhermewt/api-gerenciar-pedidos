@@ -53,13 +53,13 @@ public class CategoryController {
 	
 	@DeleteMapping(value = "/admin/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
-		categoryService.deletarUsuario(id);
+		categoryService.deleteCategory(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@PutMapping(value = "/admin")
 	public ResponseEntity<Void> update(@RequestBody CategoryPutRequestBody categoryPutRequestBody){
-		categoryService.atualizarCategoria(categoryPutRequestBody);
+		categoryService.updateCategory(categoryPutRequestBody);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }

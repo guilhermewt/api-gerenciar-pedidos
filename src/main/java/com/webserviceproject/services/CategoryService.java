@@ -38,7 +38,7 @@ public class CategoryService {
 		return categoryRepository.save(CategoryMapper.INSTANCE.toCategory(categoryPostRequestBody));
 	}
 	
-	public void deletarUsuario(long bookId) {
+	public void deleteCategory(long bookId) {
 		try {
 			categoryRepository.delete(findById(bookId));
 		} catch (DataIntegrityViolationException e) {
@@ -46,7 +46,7 @@ public class CategoryService {
 		}
 	}
 	
-	public void atualizarCategoria(CategoryPutRequestBody categoryPutRequestBody) {
+	public void updateCategory(CategoryPutRequestBody categoryPutRequestBody) {
 		Category category = findById(categoryPutRequestBody.getId());
 				          
 		CategoryMapper.INSTANCE.updateCategory(categoryPutRequestBody,category);

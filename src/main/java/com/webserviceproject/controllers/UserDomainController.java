@@ -48,12 +48,12 @@ public class UserDomainController {
 	
 	@PostMapping(value = "/admin")
 	public ResponseEntity<UserDomain> insertUserAdmin(@RequestBody @Valid UserDomainPostRequestBody userDomainPostRequestBody){
-		return new ResponseEntity<UserDomain>(userDomainsService.insertUsuarioAdmin(userDomainPostRequestBody), HttpStatus.CREATED);
+		return new ResponseEntity<UserDomain>(userDomainsService.insertUserDomainAdmin(userDomainPostRequestBody), HttpStatus.CREATED);
 	}
 	
 	@PostMapping(value = "/saveuserdomain")
 	public ResponseEntity<UserDomain> insertUser(@RequestBody @Valid UserDomainPostRequestBody userDomainPostRequestBody){
-		return new ResponseEntity<UserDomain>(userDomainsService.insertUsuarioUser(userDomainPostRequestBody), HttpStatus.CREATED);
+		return new ResponseEntity<UserDomain>(userDomainsService.insertUserDomainWithRoleUser(userDomainPostRequestBody), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value = "/admin/{id}")

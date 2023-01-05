@@ -1,7 +1,5 @@
 package com.webserviceproject.util;
 
-import java.time.Instant;
-
 import com.webserviceproject.entities.Category;
 
 public class CategoryCreator {

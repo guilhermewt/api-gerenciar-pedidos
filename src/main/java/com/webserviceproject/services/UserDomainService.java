@@ -54,7 +54,7 @@ public class UserDomainService implements UserDetailsService{
 		return authenticatedUser.userAuthenticated();
 	}
 
-	public UserDomain insertUsuarioUser(UserDomainPostRequestBody userDomainPostRequestBody) {
+	public UserDomain insertUserDomainWithRoleUser(UserDomainPostRequestBody userDomainPostRequestBody) {
 		checkIfObjectAlreadyExistsInDatabase(userDomainPostRequestBody.getUsername());
 		
 		UserDomain userDomain = UserDomainMapper.INSTANCE.toUserDomain(userDomainPostRequestBody);
@@ -65,7 +65,7 @@ public class UserDomainService implements UserDetailsService{
 		
 	}
 	
-	public UserDomain insertUsuarioAdmin(UserDomainPostRequestBody userDomainPostRequestBody) {
+	public UserDomain insertUserDomainAdmin(UserDomainPostRequestBody userDomainPostRequestBody) {
 		checkIfObjectAlreadyExistsInDatabase(userDomainPostRequestBody.getUsername());
 		
 		UserDomain userDomain = UserDomainMapper.INSTANCE.toUserDomain(userDomainPostRequestBody);

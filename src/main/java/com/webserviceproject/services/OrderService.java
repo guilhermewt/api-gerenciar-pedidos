@@ -22,11 +22,13 @@ import com.webserviceproject.services.authentication.GetAuthenticatedUser;
 import com.webserviceproject.services.exceptions.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Log4j2
 public class OrderService {
 	
 	private final OrderRepository orderRepository;
@@ -58,10 +60,10 @@ public class OrderService {
 		Product product = productService.findById(productId);
 		
 		OrderItems items = new OrderItems(product, order, quantityProduct, product.getPrice());
-		
-		orderRepository.save(order);
 		orderItemsRepository.save(items);
-		return  order;
+        order = orderRepository.save(order);	
+		
+		return order;
 	}
 	
 	public void update(OrderPutRequestBody orderPutRequestBody) {
