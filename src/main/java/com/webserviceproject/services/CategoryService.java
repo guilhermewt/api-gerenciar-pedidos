@@ -30,7 +30,7 @@ public class CategoryService {
 		return categoryRepository.findAll();
 	}
 	
-	public Category findById(long id) {
+	public Category findByIdOrElseThrowBadRequestException(long id) {
 		return categoryRepository.findById(id).orElseThrow(() -> new BadRequestException("category not found"));
 	}
 	
@@ -40,14 +40,14 @@ public class CategoryService {
 	
 	public void deleteCategory(long bookId) {
 		try {
-			categoryRepository.delete(findById(bookId));
+			categoryRepository.delete(findByIdOrElseThrowBadRequestException(bookId));
 		} catch (DataIntegrityViolationException e) {
 			throw new BadRequestException(e.getMessage());
 		}
 	}
 	
 	public void updateCategory(CategoryPutRequestBody categoryPutRequestBody) {
-		Category category = findById(categoryPutRequestBody.getId());
+		Category category = findByIdOrElseThrowBadRequestException(categoryPutRequestBody.getId());
 				          
 		CategoryMapper.INSTANCE.updateCategory(categoryPutRequestBody,category);
 		categoryRepository.save(category);

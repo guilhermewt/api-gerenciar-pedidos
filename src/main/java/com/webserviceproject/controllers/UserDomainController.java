@@ -43,8 +43,13 @@ public class UserDomainController {
 	
 	@GetMapping(value="/admin/{id}")
 	public ResponseEntity<UserDomain> findById(@PathVariable long id){
-		return ResponseEntity.ok(userDomainsService.findById(id));
+		return ResponseEntity.ok(userDomainsService.findByIdOrElseThrowBadRequestException(id));
 	}
+	
+	@GetMapping(value="/admin/getUserAuthenticated")
+	public ResponseEntity<UserDomain> getMyUser(@PathVariable long id){
+		return ResponseEntity.ok(userDomainsService.getMyUser());
+	}	
 	
 	@PostMapping(value = "/admin")
 	public ResponseEntity<UserDomain> insertUserAdmin(@RequestBody @Valid UserDomainPostRequestBody userDomainPostRequestBody){

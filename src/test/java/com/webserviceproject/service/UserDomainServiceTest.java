@@ -93,7 +93,7 @@ public class UserDomainServiceTest {
 	void findById_ReturnLivro_whenSuccessful() {
 		UserDomain userDomainSaved = UserDomainCreator.createUserDomain();
 
-		UserDomain userDomain = this.userDomainService.findById(userDomainSaved.getId());
+		UserDomain userDomain = this.userDomainService.findByIdOrElseThrowBadRequestException(userDomainSaved.getId());
 
 		Assertions.assertThat(userDomain).isNotNull();
 		Assertions.assertThat(userDomain.getId()).isNotNull();

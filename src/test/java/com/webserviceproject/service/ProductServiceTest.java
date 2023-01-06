@@ -52,7 +52,7 @@ public class ProductServiceTest {
 
 		BDDMockito.doNothing().when(productRepositoryMock).delete(ArgumentMatchers.any(Product.class));
 		
-		BDDMockito.when(categoryRepositoryMock.findById(ArgumentMatchers.anyLong())).thenReturn(CategoryCreator.createCategory());
+		BDDMockito.when(categoryRepositoryMock.findByIdOrElseThrowBadRequestException(ArgumentMatchers.anyLong())).thenReturn(CategoryCreator.createCategory());
 
 	}
 	
@@ -84,7 +84,7 @@ public class ProductServiceTest {
 	void findById_ReturnLivro_whenSuccessful() {
 		Product productSaved = ProductCreator.createProduct();
 
-		Product product = this.productService.findById(productSaved.getId());
+		Product product = this.productService.findByIdOrElseThrowBadRequestException(productSaved.getId());
 
 		Assertions.assertThat(product).isNotNull();
 		Assertions.assertThat(product.getId()).isNotNull();

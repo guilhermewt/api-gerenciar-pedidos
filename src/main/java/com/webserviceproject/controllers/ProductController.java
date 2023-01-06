@@ -43,7 +43,7 @@ public class ProductController {
 	
 	@GetMapping(value="/{id}")
 	public ResponseEntity<Product> findById(@PathVariable long id){
-		return ResponseEntity.ok(productService.findById(id));
+		return ResponseEntity.ok(productService.findByIdOrElseThrowBadRequestException(id));
 	}
 	
 	@PostMapping(value = "/admin/{categoryId}")

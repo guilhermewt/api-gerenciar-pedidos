@@ -46,7 +46,7 @@ public class UserDomainService implements UserDetailsService{
 		return userDomainRepository.findAll(pageable);
 	}
 
-	public UserDomain findById(long id) {
+	public UserDomain findByIdOrElseThrowBadRequestException(long id) {
 		return userDomainRepository.findById(id).orElseThrow(() -> new BadRequestException("userDomain not found"));
 	}
 	
@@ -77,7 +77,7 @@ public class UserDomainService implements UserDetailsService{
 
 	public void delete(long id) {
 		try {
-			userDomainRepository.delete(findById(id));
+			userDomainRepository.delete(findByIdOrElseThrowBadRequestException(id));
 		} 
 		catch (DataIntegrityViolationException e) {
 			throw new BadRequestException(e.getMessage());

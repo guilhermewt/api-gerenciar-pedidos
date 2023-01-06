@@ -81,7 +81,7 @@ public class CategoryServiceTest {
 	void findById_ReturnLivro_whenSuccessful() {
 		Category categorySaved = CategoryCreator.createCategory();
 
-		Category category = this.categoryService.findById(categorySaved.getId());
+		Category category = this.categoryService.findByIdOrElseThrowBadRequestException(categorySaved.getId());
 
 		Assertions.assertThat(category).isNotNull();
 		Assertions.assertThat(category.getId()).isNotNull();

@@ -9,8 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.webserviceproject.entities.OrderItems;
 import com.webserviceproject.entities.Order;
+import com.webserviceproject.entities.OrderItems;
 import com.webserviceproject.entities.Product;
 import com.webserviceproject.entities.UserDomain;
 import com.webserviceproject.mapper.OrderMapper;
@@ -22,20 +22,17 @@ import com.webserviceproject.services.authentication.GetAuthenticatedUser;
 import com.webserviceproject.services.exceptions.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Log4j2
 public class OrderService {
 	
 	private final OrderRepository orderRepository;
 	private final OrderItemsRepository orderItemsRepository;
 	private final ProductService productService;
 	private final GetAuthenticatedUser authenthicatedUser;
-	
 	
 	public List<Order> findAllNonPageable(){
 		return orderRepository.findByUserDomainId(authenthicatedUser.userAuthenticated().getId());
@@ -45,7 +42,7 @@ public class OrderService {
 		return orderRepository.findByUserDomainId(authenthicatedUser.userAuthenticated().getId(),pageable);
 	}
 	
-	public Order findById(long orderId) {
+	public Order findByIdOrElseThrowNewBadRequestException(long orderId) {
 		return orderRepository.findAuthenticatedUserDomainOrderById(orderId, authenthicatedUser.userAuthenticated().getId())
 				.orElseThrow(() -> new BadRequestException("order not found"));
 	}
@@ -57,7 +54,7 @@ public class OrderService {
 		
 		order.setUserDomain(userDomain);
 		
-		Product product = productService.findById(productId);
+		Product product = productService.findByIdOrElseThrowBadRequestException(productId);
 		
 		OrderItems items = new OrderItems(product, order, quantityProduct, product.getPrice());
 		orderItemsRepository.save(items);
@@ -67,7 +64,7 @@ public class OrderService {
 	}
 	
 	public void update(OrderPutRequestBody orderPutRequestBody) {
-		Order orderSave = findById(orderPutRequestBody.getId());
+		Order orderSave = findByIdOrElseThrowNewBadRequestException(orderPutRequestBody.getId());
 		checkIfOrderIsNotPaid(orderSave);
 		
 		orderRepository.save(OrderMapper.INSTANCE.updateOrder(orderPutRequestBody, orderSave));		
@@ -77,7 +74,7 @@ public class OrderService {
 	public void delete(long orderId) {
 		try {
 			
-		orderRepository.delete(findById(orderId));
+		orderRepository.delete(findByIdOrElseThrowNewBadRequestException(orderId));
 		} 
 		catch (DataIntegrityViolationException e) {
 			throw new BadRequestException(e.getMessage());

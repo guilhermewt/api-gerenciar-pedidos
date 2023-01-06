@@ -43,6 +43,7 @@ public class UserDomain implements Serializable,UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@NotEmpty(message = "the name cannot be empty")
 	private String name;
 	@NotEmpty(message = "the email cannot be empty")

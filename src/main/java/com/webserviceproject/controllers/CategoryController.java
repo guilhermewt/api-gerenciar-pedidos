@@ -43,7 +43,7 @@ public class CategoryController {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Category> findById(@PathVariable long id) {
-		return ResponseEntity.ok(categoryService.findById(id));
+		return ResponseEntity.ok(categoryService.findByIdOrElseThrowBadRequestException(id));
 	}
 	
 	@PostMapping(value = "/admin")

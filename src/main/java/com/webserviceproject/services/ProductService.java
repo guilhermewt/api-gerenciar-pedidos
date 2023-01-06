@@ -31,19 +31,19 @@ public class ProductService {
 		return productRepository.findAll();
 	}
 	
-	public Product findById(long id) {
+	public Product findByIdOrElseThrowBadRequestException(long id) {
 		return productRepository.findById(id).orElseThrow(() -> new BadRequestException("product not found"));
 	}
 	
 	public Product save(ProductPostRequestBody productPostRequestBody,long categoryId) {
 		Product product = ProductMapper.INSTANCE.toProduct(productPostRequestBody);
-		product.getCategory().add(categoryService.findById(categoryId));
+		product.getCategory().add(categoryService.findByIdOrElseThrowBadRequestException(categoryId));
 		return productRepository.save(product);
 	}
 	
 	public void deleteProduct(long id) {
 		try {
-			productRepository.delete(findById(id));
+			productRepository.delete(findByIdOrElseThrowBadRequestException(id));
 		}
 		catch(DataIntegrityViolationException e) {
 			throw new BadRequestException(e.getMessage());
@@ -51,7 +51,7 @@ public class ProductService {
 	}
 	
 	public void update (ProductPutRequestBody productPutRequestBody) {
-		Product productSave = findById(productPutRequestBody.getId());
+		Product productSave = findByIdOrElseThrowBadRequestException(productPutRequestBody.getId());
 		
 		ProductMapper.INSTANCE.updateProduct(productPutRequestBody, productSave);
 		

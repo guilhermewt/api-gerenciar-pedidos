@@ -43,7 +43,7 @@ public class OrderController {
 	
 	@GetMapping(value="/{id}")
 	public ResponseEntity<Order> findById(@PathVariable long id){
-		Order ped = orderService.findById(id);
+		Order ped = orderService.findByIdOrElseThrowNewBadRequestException(id);
 		return ResponseEntity.ok().body(ped);
 	}
 	

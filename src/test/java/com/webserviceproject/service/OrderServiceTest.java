@@ -68,9 +68,9 @@ public class OrderServiceTest {
 		
 		BDDMockito.doNothing().when(orderRepositoryMock).delete(ArgumentMatchers.any(Order.class));
 		
-		BDDMockito.when(categoryRepositoryMock.findById(ArgumentMatchers.anyLong())).thenReturn(CategoryCreator.createCategory());
+		BDDMockito.when(categoryRepositoryMock.findByIdOrElseThrowBadRequestException(ArgumentMatchers.anyLong())).thenReturn(CategoryCreator.createCategory());
 
-		BDDMockito.when(productRepositoryMock.findById(ArgumentMatchers.anyLong())).thenReturn(ProductCreator.createProduct());
+		BDDMockito.when(productRepositoryMock.findByIdOrElseThrowBadRequestException(ArgumentMatchers.anyLong())).thenReturn(ProductCreator.createProduct());
 		
 		BDDMockito.when(getAuthenticatedUser.userAuthenticated()).thenReturn(UserDomainCreator.createUserDomain());
 		
@@ -105,7 +105,7 @@ public class OrderServiceTest {
 	void findById_Returnorder_whenSuccessful() {
 		Order orderSaved = OrderCreator.createOrder();
 
-		Order order = this.orderService.findById(orderSaved.getId());
+		Order order = this.orderService.findByIdOrElseThrowNewBadRequestException(orderSaved.getId());
 
 		Assertions.assertThat(order).isNotNull();
 		Assertions.assertThat(order.getId()).isNotNull();
