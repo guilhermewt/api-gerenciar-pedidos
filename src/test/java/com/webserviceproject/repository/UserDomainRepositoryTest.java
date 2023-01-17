@@ -1,6 +1,5 @@
 package com.webserviceproject.repository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,11 +25,16 @@ public class UserDomainRepositoryTest {
 	@Autowired
 	private UserDomainRepository userDomainRepository;
 	
+	public static UserDomain createUserDomainAdmin() {
+		UserDomain userDomain = new UserDomain(1l, "testName", "test@gmail", "33333333", "$2a$10$zoylFI1DPUqViPq0dA9T1./y9X.5FBdWoxP65B8G6wyXV3//4Ky9m", "username admin test");
+		return userDomain;
+	}
+	
 	@Test
 	@DisplayName("find all user books by id return list of object inside page whensuccessful")
 	void findAll_returnListOfObjectInsidePage_whenSuccessful() {
 	
-		UserDomain userDomainToBeSaved = userDomainRepository.save(UserDomainCreator.createUserDomain());
+		UserDomain userDomainToBeSaved = userDomainRepository.save(createUserDomainAdmin());
 		Page<UserDomain> userDomainSaved = this.userDomainRepository.findAll(PageRequest.of(0, 5));
 		
 		Assertions.assertThat(userDomainSaved).isNotNull().isNotEmpty();
@@ -40,7 +44,7 @@ public class UserDomainRepositoryTest {
 	@Test
 	@DisplayName("findall return all userDomain whenSuccessful")
 	void findAll_returnAllUserDomain_whenSuccessful() {
-		UserDomain userDomainToBeSaved = userDomainRepository.save(UserDomainCreator.createUserDomain());
+		UserDomain userDomainToBeSaved = userDomainRepository.save(createUserDomainAdmin());
 		List<UserDomain> userDomainList = this.userDomainRepository.findAll();
 		
 		Assertions.assertThat(userDomainList).isNotNull();
@@ -51,7 +55,7 @@ public class UserDomainRepositoryTest {
 	@Test
 	@DisplayName("findById return userDomain whenSuccessful")
 	void findByid_returnuserDomain_whenSuccessful() {			
-		UserDomain userDomainToBeSaved = userDomainRepository.save(UserDomainCreator.createUserDomain());
+		UserDomain userDomainToBeSaved = userDomainRepository.save(createUserDomainAdmin());
 		UserDomain userDomainSaved = this.userDomainRepository.findById(userDomainToBeSaved.getId()).get();
 		
 		Assertions.assertThat(userDomainSaved).isNotNull();
@@ -62,7 +66,7 @@ public class UserDomainRepositoryTest {
 	@Test
 	@DisplayName("save return userDomain whenSuccessful")
 	void save_returnuserDomain_whenSuccessful() {	
-		UserDomain userDomainToBeSaved = userDomainRepository.save(UserDomainCreator.createUserDomain());
+		UserDomain userDomainToBeSaved = userDomainRepository.save(createUserDomainAdmin());
 		UserDomain userDomainSaved = this.userDomainRepository.save(userDomainToBeSaved);
 		
 		Assertions.assertThat(userDomainSaved).isNotNull();
@@ -74,7 +78,7 @@ public class UserDomainRepositoryTest {
 	@DisplayName("delete removes userDomain whenSuccessful")
 	void delete_removesuserDomain_whenSuccessful() {
 		
-		UserDomain userDomainToBeSaved = userDomainRepository.save(UserDomainCreator.createUserDomain());
+		UserDomain userDomainToBeSaved = userDomainRepository.save(createUserDomainAdmin());
 	
 	    this.userDomainRepository.delete(userDomainToBeSaved);
 	    
@@ -86,7 +90,7 @@ public class UserDomainRepositoryTest {
 	@Test
 	@DisplayName("update replace userDomain whenSuccessful")
 	void update_replaceuserDomain_whenSuccessful() {
-		this.userDomainRepository.save(UserDomainCreator.createUserDomain());
+		this.userDomainRepository.save(createUserDomainAdmin());
 			
 		UserDomain userDomainToBeUpdate = UserDomainCreator.createUserDomainToBeUpdate();
 	

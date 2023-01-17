@@ -57,9 +57,9 @@ public class OrderService {
 		Product product = productService.findByIdOrElseThrowBadRequestException(productId);
 		
 		OrderItems items = new OrderItems(product, order, quantityProduct, product.getPrice());
+		order = orderRepository.save(order);
 		orderItemsRepository.save(items);
-        order = orderRepository.save(order);	
-		
+  
 		return order;
 	}
 	

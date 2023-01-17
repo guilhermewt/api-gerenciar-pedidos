@@ -12,9 +12,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import com.webserviceproject.entities.OrderItems;
+import com.webserviceproject.entities.UserDomain;
 import com.webserviceproject.util.OrderCreator;
 import com.webserviceproject.util.OrderItemsCreator;
 import com.webserviceproject.util.ProductCreator;
+import com.webserviceproject.util.UserDomainCreator;
 
 @DataJpaTest
 @DisplayName("test for orderItems repository")
@@ -29,10 +31,19 @@ public class OrderItemsRepositoryTest {
 	
 	@Autowired
 	private OrderRepository orderRepository;
+	
+	@Autowired
+	private UserDomainRepository userDomainRepository;
+	
+	public static UserDomain createUserDomainAdmin() {
+		UserDomain userDomain = new UserDomain(1l, "testName", "test@gmail", "33333333", "$2a$10$zoylFI1DPUqViPq0dA9T1./y9X.5FBdWoxP65B8G6wyXV3//4Ky9m", "username admin test");
+		return userDomain;
+	}
 		
 	@Test
 	@DisplayName("find all orderItems by id return list of object inside page whensuccessful")
 	void findAll_returnListOfObjectInsidePage_whenSuccessful() {
+		userDomainRepository.save(createUserDomainAdmin());
 		productRepository.save(ProductCreator.createProduct());
 		orderRepository.save(OrderCreator.createOrder());
 		
@@ -47,6 +58,7 @@ public class OrderItemsRepositoryTest {
 	@Test
 	@DisplayName("findall return all orderItems whenSuccessful")
 	void findAll_returnAllOrderItems_whenSuccessful() {
+		userDomainRepository.save(createUserDomainAdmin());
 		productRepository.save(ProductCreator.createProduct());
 		orderRepository.save(OrderCreator.createOrder());
 		
@@ -61,6 +73,7 @@ public class OrderItemsRepositoryTest {
 	@Test
 	@DisplayName("save return orderItems whenSuccessful")
 	void save_returnorderItems_whenSuccessful() {	
+		userDomainRepository.save(createUserDomainAdmin());
 		OrderItems orderItemsToBeSaved = orderItemsRepository.save(OrderItemsCreator.createOrderItems());
 		OrderItems orderItemsSaved = this.orderItemsRepository.save(orderItemsToBeSaved);
 		

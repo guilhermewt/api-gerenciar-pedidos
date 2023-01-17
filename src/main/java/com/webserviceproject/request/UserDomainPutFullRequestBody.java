@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserDomainPutRequestBody {
+public class UserDomainPutFullRequestBody {
 	
 	@NotEmpty(message = "the name cannot be empty")
 	private String name;
@@ -20,7 +20,7 @@ public class UserDomainPutRequestBody {
 	@NotEmpty(message = "the username cannot be empty")
 	private String username;
 	
-	public UserDomainPutRequestBody(String name, String email, String phone, String password, String username) {
+	public UserDomainPutFullRequestBody(String name, String email, String phone, String password, String username) {
 		super();
 		this.name = name;
 		this.email = email;

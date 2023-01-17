@@ -16,5 +16,6 @@ public abstract class UserDomainMapper {
 	public abstract UserDomain toUserDomain(UserDomainPostRequestBody userDomainPostRequestBody); 
 	
 	public abstract UserDomain updateUserDomain(UserDomainPutRequestBody userDomainPutRequestBody,
-										  @MappingTarget UserDomain userDomin);	
+										  @MappingTarget UserDomain userDomain);	
+	
 }

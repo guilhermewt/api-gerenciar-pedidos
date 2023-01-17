@@ -72,7 +72,7 @@ public class OrderServiceTest {
 
 		BDDMockito.when(productRepositoryMock.findByIdOrElseThrowBadRequestException(ArgumentMatchers.anyLong())).thenReturn(ProductCreator.createProduct());
 		
-		BDDMockito.when(getAuthenticatedUser.userAuthenticated()).thenReturn(UserDomainCreator.createUserDomain());
+		BDDMockito.when(getAuthenticatedUser.userAuthenticated()).thenReturn(UserDomainCreator.createUserDomainAdmin());
 		
 		BDDMockito.when(orderItemsRepository.save(ArgumentMatchers.any(OrderItems.class))).thenReturn(OrderItemsCreator.createOrderItems());
 	}

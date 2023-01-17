@@ -1,12 +1,9 @@
 package com.webserviceproject.request;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
-import com.webserviceproject.entities.OrderItems;
 import com.webserviceproject.entities.enums.OrderStatus;
 
 import lombok.Data;
@@ -21,8 +18,6 @@ public class OrderPutRequestBody {
 	private Instant moment;
 	@NotNull(message = "orderStatus cannot be null")
 	private Integer orderStatus;
-
-	private Set<OrderItems> items = new HashSet<>();
 
 	public OrderPutRequestBody(long id,Instant moment, OrderStatus orderStatus) {
 		super();

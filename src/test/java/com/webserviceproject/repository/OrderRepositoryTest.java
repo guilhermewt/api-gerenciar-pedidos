@@ -1,5 +1,6 @@
 package com.webserviceproject.repository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import com.webserviceproject.entities.Order;
+import com.webserviceproject.entities.enums.OrderStatus;
 import com.webserviceproject.util.OrderCreator;
+import com.webserviceproject.util.UserDomainCreator;
 
 @DataJpaTest
 @DisplayName("test for order repository")
@@ -25,11 +28,15 @@ public class OrderRepositoryTest {
 	@Autowired
 	private OrderRepository orderRepository;
 	
+	public static Order createOrder() {
+		Order order = new Order(1l, Instant.parse("2022-12-31T00:00:00Z"), OrderStatus.WAITING_PAYMENT);
+		return order;
+	}
 	
 	@Test
 	@DisplayName("find all order by id return list of object inside page whensuccessful")
 	void findAll_returnListOfObjectInsidePage_whenSuccessful() {
-		Order orderToBeSaved = orderRepository.save(OrderCreator.createOrder());
+		Order orderToBeSaved = orderRepository.save(createOrder());
 		Page<Order> orderSaved = this.orderRepository.findAll(PageRequest.of(0, 5));
 		
 		Assertions.assertThat(orderSaved).isNotNull().isNotEmpty();
@@ -39,7 +46,7 @@ public class OrderRepositoryTest {
 	@Test
 	@DisplayName("findall return all order whenSuccessful")
 	void findAll_returnAllOrder_whenSuccessful() {
-		Order orderToBeSaved = orderRepository.save(OrderCreator.createOrder());
+		Order orderToBeSaved = orderRepository.save(createOrder());
 		List<Order> orderList = this.orderRepository.findAll();
 		
 		Assertions.assertThat(orderList).isNotNull();
@@ -50,7 +57,7 @@ public class OrderRepositoryTest {
 	@Test
 	@DisplayName("findById return order whenSuccessful")
 	void findByid_returnorder_whenSuccessful() {			
-		Order orderToBeSaved = orderRepository.save(OrderCreator.createOrder());
+		Order orderToBeSaved = orderRepository.save(createOrder());
 		Order orderSaved = this.orderRepository.findById(orderToBeSaved.getId()).get();
 		
 		Assertions.assertThat(orderSaved).isNotNull();
@@ -61,7 +68,7 @@ public class OrderRepositoryTest {
 	@Test
 	@DisplayName("save return order whenSuccessful")
 	void save_returnorder_whenSuccessful() {	
-		Order orderToBeSaved = orderRepository.save(OrderCreator.createOrder());
+		Order orderToBeSaved = orderRepository.save(createOrder());
 		Order orderSaved = this.orderRepository.save(orderToBeSaved);
 		
 		Assertions.assertThat(orderSaved).isNotNull();
@@ -72,7 +79,7 @@ public class OrderRepositoryTest {
 	@Test
 	@DisplayName("delete removes order whenSuccessful")
 	void delete_removesorder_whenSuccessful() {
-		Order orderToBeSaved = orderRepository.save(OrderCreator.createOrder());
+		Order orderToBeSaved = orderRepository.save(createOrder());
 	
 	    this.orderRepository.delete(orderToBeSaved);
 	    
@@ -84,7 +91,7 @@ public class OrderRepositoryTest {
 	@Test
 	@DisplayName("update replace order whenSuccessful")
 	void update_replaceOrder_whenSuccessful() {
-		this.orderRepository.save(OrderCreator.createOrder());
+		this.orderRepository.save(createOrder());
 			
 		Order orderToBeUpdate = OrderCreator.createOrderToBeUpdate();
 	

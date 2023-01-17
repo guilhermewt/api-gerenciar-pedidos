@@ -45,30 +45,30 @@ public class UserDomainServiceTest {
 	
 	@BeforeEach
 	void setUp() {
-		BDDMockito.when(userDomainRepositoryMock.findAll()).thenReturn(List.of(UserDomainCreator.createUserDomain()));
+		BDDMockito.when(userDomainRepositoryMock.findAll()).thenReturn(List.of(UserDomainCreator.createUserDomainAdmin()));
 		
-		PageImpl<UserDomain> userPage = new PageImpl<>(List.of(UserDomainCreator.createUserDomain()));
+		PageImpl<UserDomain> userPage = new PageImpl<>(List.of(UserDomainCreator.createUserDomainAdmin()));
 		BDDMockito.when(userDomainRepositoryMock.findAll(ArgumentMatchers.any(PageRequest.class))).thenReturn(userPage);
 
 		BDDMockito.when(userDomainRepositoryMock.findById(ArgumentMatchers.anyLong()))
-				.thenReturn(Optional.of(UserDomainCreator.createUserDomain()));
+				.thenReturn(Optional.of(UserDomainCreator.createUserDomainAdmin()));
 		
-		BDDMockito.when(userDomainRepositoryMock.save(ArgumentMatchers.any(UserDomain.class))).thenReturn(UserDomainCreator.createUserDomain());
+		BDDMockito.when(userDomainRepositoryMock.save(ArgumentMatchers.any(UserDomain.class))).thenReturn(UserDomainCreator.createUserDomainAdmin());
 
 		BDDMockito.doNothing().when(userDomainRepositoryMock).delete(ArgumentMatchers.any(UserDomain.class));
 
-		BDDMockito.when(getAuthenticatedUserMock.userAuthenticated()).thenReturn(UserDomainCreator.createUserDomain());
+		BDDMockito.when(getAuthenticatedUserMock.userAuthenticated()).thenReturn(UserDomainCreator.createUserDomainAdmin());
 		
-		BDDMockito.when(roleModelRepositoryMock.findById(ArgumentMatchers.eq(1l))).thenReturn(Optional.of(RoleModelCreator.createRoleModel()));
+		BDDMockito.when(roleModelRepositoryMock.findById(ArgumentMatchers.eq(1l))).thenReturn(Optional.of(RoleModelCreator.createRoleModelADMIN()));
 		
-		BDDMockito.when(roleModelRepositoryMock.findById(ArgumentMatchers.eq(2l))).thenReturn(Optional.of(RoleModelCreator.createRoleModel()));
+		BDDMockito.when(roleModelRepositoryMock.findById(ArgumentMatchers.eq(2l))).thenReturn(Optional.of(RoleModelCreator.createRoleModelADMIN()));
 
 	}
 	
 	@Test
 	@DisplayName("find all return list of userDomain whenSuccessfull")
 	void findAll_returnListOfUserDomain_whenSuccessful() {
-		UserDomain listUserDomainToComparable = UserDomainCreator.createUserDomain();
+		UserDomain listUserDomainToComparable = UserDomainCreator.createUserDomainAdmin();
 		List<UserDomain> listUserDomain = userDomainService.findAllNonPageable();
 		
 		Assertions.assertThat(listUserDomain).isNotNull();
@@ -79,7 +79,7 @@ public class UserDomainServiceTest {
 	@Test
 	@DisplayName("find all Return List Of Object Inside Page whenSuccessful")
 	void findAll_returnListOfObjectInsidePage_whenSuccessful() {
-		UserDomain userDomainSaved = UserDomainCreator.createUserDomain();
+		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
 
 		Page<UserDomain> userPage = userDomainService.findAllPageable(PageRequest.of(0, 1));
 
@@ -91,7 +91,7 @@ public class UserDomainServiceTest {
 	@Test
 	@DisplayName("findById return livro whenSuccessful")
 	void findById_ReturnLivro_whenSuccessful() {
-		UserDomain userDomainSaved = UserDomainCreator.createUserDomain();
+		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
 
 		UserDomain userDomain = this.userDomainService.findByIdOrElseThrowBadRequestException(userDomainSaved.getId());
 
@@ -103,7 +103,7 @@ public class UserDomainServiceTest {
 	@Test
 	@DisplayName("findUser return user authenticated whenSuccessful")
 	void findUser_ReturnUser_whenSuccessful() {
-		UserDomain userDomainSaved = UserDomainCreator.createUserDomain();
+		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
 
 		UserDomain userDomain = this.userDomainService.getMyUser();
 
@@ -115,7 +115,7 @@ public class UserDomainServiceTest {
 	@Test
 	@DisplayName("save return userDomain with role admin whenSuccessful")
 	void save_ReturnUserAdmin_whenSuccessful() {
-		UserDomain userDomainSaved = UserDomainCreator.createUserDomain();
+		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
 
 		UserDomain userDomain = this.userDomainService
 				.insertUserDomainAdmin(UserDomainPostRequestBodyCreator.createUserPostRequestBodyCreator());
@@ -128,7 +128,7 @@ public class UserDomainServiceTest {
 	@Test
 	@DisplayName("save return userDomain with role user whenSuccessful")
 	void save_ReturnUserWithRoleUser_whenSuccessful() {
-		UserDomain userDomainSaved = UserDomainCreator.createUserDomain();
+		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
 
 		UserDomain userDomain = this.userDomainService
 				.insertUserDomainWithRoleUser(UserDomainPostRequestBodyCreator.createUserPostRequestBodyCreator());

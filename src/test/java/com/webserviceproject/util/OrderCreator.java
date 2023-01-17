@@ -9,7 +9,7 @@ public class OrderCreator {
 	
 	public static Order createOrder() {
 		Order order = new Order(1l, Instant.parse("2022-12-31T00:00:00Z"), OrderStatus.WAITING_PAYMENT);
-		order.setUserDomain(UserDomainCreator.createUserDomain());
+		order.setUserDomain(UserDomainCreator.createUserDomainAdmin());
 		return order;
 	}
 	

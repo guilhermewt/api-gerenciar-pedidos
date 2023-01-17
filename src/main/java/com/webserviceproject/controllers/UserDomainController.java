@@ -46,8 +46,8 @@ public class UserDomainController {
 		return ResponseEntity.ok(userDomainsService.findByIdOrElseThrowBadRequestException(id));
 	}
 	
-	@GetMapping(value="/admin/getUserAuthenticated")
-	public ResponseEntity<UserDomain> getMyUser(@PathVariable long id){
+	@GetMapping(value="/get-user-authenticated")
+	public ResponseEntity<UserDomain> getMyUser(){
 		return ResponseEntity.ok(userDomainsService.getMyUser());
 	}	
 	
@@ -70,6 +70,12 @@ public class UserDomainController {
 	@PutMapping
 	public ResponseEntity<Void> update(@RequestBody UserDomainPutRequestBody userDomainPutRequestBody){
 		userDomainsService.update(userDomainPutRequestBody);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@PutMapping(value = "/admin/update-full/{id}")
+	public ResponseEntity<Void> updateFull(@RequestBody UserDomainPutRequestBody  userDomainPutRequestBody, @PathVariable long id){
+		userDomainsService.updateAnyUserDomain(userDomainPutRequestBody,id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

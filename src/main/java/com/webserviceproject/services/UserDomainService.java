@@ -85,9 +85,18 @@ public class UserDomainService implements UserDetailsService{
 	}
 
 	public void update(UserDomainPutRequestBody userDomainPutRequestBody) {
-		UserDomain userDomain = getMyUser();
+		UserDomain savedUserDomain = userDomainRepository.findById(authenticatedUser.userAuthenticated().getId()).get();
 		
-		UserDomainMapper.INSTANCE.updateUserDomain(userDomainPutRequestBody,userDomain);
+		UserDomain userDomain = UserDomainMapper.INSTANCE.updateUserDomain(userDomainPutRequestBody,savedUserDomain);
+		
+		userDomain.setPassword(new BCryptPasswordEncoder().encode(userDomain.getPassword()));
+		userDomainRepository.save(userDomain);
+	}
+	
+	public void updateAnyUserDomain(UserDomainPutRequestBody userDomainPutRequestBody,long id) {
+		UserDomain savedUserDomain = userDomainRepository.findById(id).get();
+		
+		UserDomain userDomain = UserDomainMapper.INSTANCE.updateUserDomain(userDomainPutRequestBody,savedUserDomain);
 		
 		userDomain.setPassword(new BCryptPasswordEncoder().encode(userDomain.getPassword()));
 		userDomainRepository.save(userDomain);
@@ -103,7 +112,7 @@ public class UserDomainService implements UserDetailsService{
 	
 	public void checkIfObjectAlreadyExistsInDatabase(String username) {
 		if(userDomainRepository.findByUsername(username).isPresent()) {
-			throw new ConflictException("this object already exists");
+			throw new ConflictException("this username already exists");
 		}
 	}
 	

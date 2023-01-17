@@ -5,8 +5,13 @@ import com.webserviceproject.enums.RoleName;
 
 public class RoleModelCreator {
 	
-	public static RoleModel createRoleModel() {
+	public static RoleModel createRoleModelADMIN() {
 		RoleModel roleModel = new RoleModel(1l, RoleName.ROLE_ADMIN);
+		return roleModel;
+	}
+	
+	public static RoleModel createRoleModelUSER() {
+		RoleModel roleModel = new RoleModel(2l, RoleName.ROLE_USER);
 		return roleModel;
 	}
 	
