@@ -18,7 +18,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import com.webserviceproject.entities.Order;
 import com.webserviceproject.entities.enums.OrderStatus;
 import com.webserviceproject.util.OrderCreator;
-import com.webserviceproject.util.UserDomainCreator;
 
 @DataJpaTest
 @DisplayName("test for order repository")
