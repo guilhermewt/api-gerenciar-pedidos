@@ -151,6 +151,7 @@ public class ProductControllerIT {
 		this.userDomainRepository.save(ADMIN);
 		this.categoryRepository.save(CategoryCreator.createCategory());
 		
+		
 		ProductPostRequestBody producPostRequestBody = ProductPostRequestBodyCreator.createProductPostRequestBodyCreator();
 		
 		ResponseEntity<Product> productEntity = testRestTemplateRoleAdmin.postForEntity("/products/admin/{categoryId}", producPostRequestBody, 

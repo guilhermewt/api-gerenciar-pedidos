@@ -1,13 +1,7 @@
 package com.webserviceproject.request;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import com.webserviceproject.entities.Category;
-import com.webserviceproject.entities.OrderItems;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,10 +17,6 @@ public class ProductPostRequestBody {
 	@NotNull(message = "the price cannot be empty")
 	private Double price;
 	private String imgUrl;
-	
-	private Set<Category> category = new HashSet<>();
-	
-	private Set<OrderItems> items = new HashSet<>();
 
 	public ProductPostRequestBody(String name, String description, Double price, String imgUrl) {
 		super();

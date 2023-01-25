@@ -22,6 +22,9 @@ import com.webserviceproject.request.CategoryPostRequestBody;
 import com.webserviceproject.request.CategoryPutRequestBody;
 import com.webserviceproject.services.CategoryService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,34 +33,44 @@ import lombok.RequiredArgsConstructor;
 public class CategoryController {
 
 	private final CategoryService categoryService;
-
+	
 	@GetMapping(value = "/all/pageable")
-	public ResponseEntity<Page<Category>> findAllPageable(Pageable pageable) {
+	@Operation(summary = "find all categories non paginated")
+	public ResponseEntity<Page<Category>> findAllPageable(Pageable pageable){
 		return ResponseEntity.ok(categoryService.findAllPageable(pageable));
 	}
 	
 	@GetMapping(value = "/all")
+	@Operation(summary = "find all categories paginated", description = "the default size is 20, use the parameter to change the default value")
 	public ResponseEntity<List<Category>> findAllNonPageable() {
 		return ResponseEntity.ok(categoryService.findAllNonPageable());
 	}
 
 	@GetMapping(value = "/{id}")
+	@Operation(summary = "find category by id")
 	public ResponseEntity<Category> findById(@PathVariable long id) {
 		return ResponseEntity.ok(categoryService.findByIdOrElseThrowBadRequestException(id));
 	}
 	
 	@PostMapping(value = "/admin")
+	@Operation(description="the user has to be admin")
 	public ResponseEntity<Category> insert(@RequestBody @Valid CategoryPostRequestBody categoryPostRequestBody){
 		return new ResponseEntity<Category>(categoryService.insert(categoryPostRequestBody), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value = "/admin/{id}")
+	@Operation(description="the user has to be admin")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "successful operation"),
+			@ApiResponse(responseCode = "400", description = "when category does not exist in the dataBase")
+	})
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		categoryService.deleteCategory(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@PutMapping(value = "/admin")
+	@Operation(description="the user has to be admin")
 	public ResponseEntity<Void> update(@RequestBody CategoryPutRequestBody categoryPutRequestBody){
 		categoryService.updateCategory(categoryPutRequestBody);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);

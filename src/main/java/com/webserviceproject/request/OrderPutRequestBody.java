@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import com.webserviceproject.entities.enums.OrderStatus;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,8 +16,11 @@ public class OrderPutRequestBody {
 	
 	private long id;
 	@NotNull(message = "the moment cannot be empty")
+	@Schema(description = "moment of order")
 	private Instant moment;
+	
 	@NotNull(message = "orderStatus cannot be null")
+	@Schema(description = "status of the order",example="WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, CANCELED")
 	private Integer orderStatus;
 
 	public OrderPutRequestBody(long id,Instant moment, OrderStatus orderStatus) {

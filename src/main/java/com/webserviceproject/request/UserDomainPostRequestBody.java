@@ -1,11 +1,6 @@
 package com.webserviceproject.request;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.validation.constraints.NotEmpty;
-
-import com.webserviceproject.entities.Order;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,9 +19,7 @@ public class UserDomainPostRequestBody {
 	private String password;
 	@NotEmpty(message = "the username cannot be empty")
 	private String username;
-	
-	private Set<Order> order = new HashSet<>();
-	
+
 	public UserDomainPostRequestBody(String name, String email, String phone, String password,String username) {
 		super();
 		this.name = name;

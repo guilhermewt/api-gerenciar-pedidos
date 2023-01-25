@@ -11,6 +11,7 @@ import com.webserviceproject.entities.Payment;
 import com.webserviceproject.entities.UserDomain;
 import com.webserviceproject.entities.enums.OrderStatus;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,13 +20,12 @@ import lombok.NoArgsConstructor;
 public class OrderPostRequestBody {
 	
 	@NotNull(message = "the moment cannot be empty")
+	@Schema(description = "moment of order")
 	private Instant moment;
+	
 	@NotNull(message = "orderStatus cannot be null")
+	@Schema(description = "status of the order",example="WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, CANCELED")
 	private Integer orderStatus;
-
-	private UserDomain userDomain;
-	private Payment payment;
-	private Set<OrderItems> items = new HashSet<>();
 
 	public OrderPostRequestBody(Instant moment, OrderStatus orderStatus) {
 		super();
