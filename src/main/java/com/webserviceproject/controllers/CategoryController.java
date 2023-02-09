@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -34,14 +35,15 @@ public class CategoryController {
 
 	private final CategoryService categoryService;
 	
+	
 	@GetMapping(value = "/all/pageable")
-	@Operation(summary = "find all categories non paginated")
-	public ResponseEntity<Page<Category>> findAllPageable(Pageable pageable){
+	@Operation(summary = "find all categories paginated")
+	public ResponseEntity<Page<Category>> findAllPageable(@ParameterObject Pageable pageable){
 		return ResponseEntity.ok(categoryService.findAllPageable(pageable));
 	}
 	
 	@GetMapping(value = "/all")
-	@Operation(summary = "find all categories paginated", description = "the default size is 20, use the parameter to change the default value")
+	@Operation(summary = "find all categories non paginated")
 	public ResponseEntity<List<Category>> findAllNonPageable() {
 		return ResponseEntity.ok(categoryService.findAllNonPageable());
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -42,7 +43,7 @@ public class UserDomainController {
 	
 	@GetMapping(value = "/admin/all/Pageable")
 	@Operation(summary = "find all userdomain paginated", description = "the default size is 20, use the parameter to change the default value, the user has to be admin")
-	public ResponseEntity<Page<UserDomain>> findAllPageable(Pageable pageable){
+	public ResponseEntity<Page<UserDomain>> findAllPageable(@ParameterObject Pageable pageable){
 		return ResponseEntity.ok(userDomainsService.findAllPageable(pageable));
 	}
 	
@@ -64,7 +65,7 @@ public class UserDomainController {
 	}
 	
 	@PostMapping(value = "/saveuserdomain")
-	@Operation(summary = "create user",description="the user has to be admin")
+	@Operation(summary = "create user",description="for a common user to register")
 	public ResponseEntity<UserDomain> insertUser(@RequestBody @Valid UserDomainPostRequestBody userDomainPostRequestBody){
 		return new ResponseEntity<UserDomain>(userDomainsService.insertUserDomainWithRoleUser(userDomainPostRequestBody), HttpStatus.CREATED);
 	}

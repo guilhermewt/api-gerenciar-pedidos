@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class ProductController {
 	
 	@GetMapping(value = "/all/pageable")
 	@Operation(summary = "find all products paginated", description = "the default size is 20, use the parameter to change the default value")
-	public ResponseEntity<Page<Product>> findAllPageable(Pageable pageable){
+	public ResponseEntity<Page<Product>> findAllPageable(@ParameterObject Pageable pageable){
 		return ResponseEntity.ok(productService.findAllPageable(pageable));
 	}
 	
