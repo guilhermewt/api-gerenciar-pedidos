@@ -1,19 +1,20 @@
 package com.webserviceproject.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.webserviceproject.data.UserDomainDetails;
 import com.webserviceproject.entities.UserDomain;
 import com.webserviceproject.mapper.UserDomainMapper;
 import com.webserviceproject.repository.RoleModelRepository;
@@ -103,11 +104,14 @@ public class UserDomainService implements UserDetailsService{
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
-		UserDomain userDomain = userDomainRepository.findByUsername(username)
-				.orElseThrow(() -> new UsernameNotFoundException("userDomain not found"));
-		return new User(userDomain.getUsername(), userDomain.getPassword(), true, true, true, true, userDomain.getAuthorities());
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {		
+		Optional<UserDomain> userDomain = userDomainRepository.findByUsername(username);
+				
+				if(userDomain == null) {
+					throw new UsernameNotFoundException("userDomain not found");
+				}
+				
+		return new UserDomainDetails(userDomain);
 	}
 	
 	public void checkIfObjectAlreadyExistsInDatabase(String username) {
