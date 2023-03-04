@@ -35,6 +35,7 @@ public class CategoryController {
 
 	private final CategoryService categoryService;
 	
+	/*no downgrade as exception estao funcionando mas vale resaltar que a url estava errada*/
 	
 	@GetMapping(value = "/all/pageable")
 	@Operation(summary = "find all categories paginated")

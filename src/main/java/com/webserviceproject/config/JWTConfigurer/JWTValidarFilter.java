@@ -1,6 +1,6 @@
 package com.webserviceproject.config.JWTConfigurer;
 
-
+import static java.util.Arrays.stream;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,71 +19,57 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
-import lombok.extern.log4j.Log4j2;
+public class JWTValidarFilter extends BasicAuthenticationFilter {
 
-import static java.util.Arrays.stream;
+	public static final String HEADER_ATTRIBUTE = "Authorization";
+	public static final String ATTRIBUTE_PREFIX = "Bearer ";
 
-@Log4j2
-public class JWTValidarFilter extends BasicAuthenticationFilter{
-	
+	public JWTValidarFilter(AuthenticationManager authenticationManager) {
+		super(authenticationManager);
+	}
 
-    public static final String HEADER_ATRIBUTO = "Authorization";
-    public static final String ATRIBUTO_PREFIXO = "Bearer ";
-    
-    
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 
-    public JWTValidarFilter(AuthenticationManager authenticationManager) {
-        super(authenticationManager);
-    }
+		String attribute = request.getHeader(HEADER_ATTRIBUTE);
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain chain) throws IOException, ServletException {
+		if (attribute == null) {
+			chain.doFilter(request, response);
+			return;
+		}
 
-        String atributo = request.getHeader(HEADER_ATRIBUTO);
+		if (!attribute.startsWith(ATTRIBUTE_PREFIX)) {
+			chain.doFilter(request, response);
+			return;
+		}
 
-        if (atributo == null) {
-            chain.doFilter(request, response);
-            return;
-        }
+		String token = attribute.replace(ATTRIBUTE_PREFIX, "");
+		UsernamePasswordAuthenticationToken authenticationToken = getAuthenticationToken(token);
 
-        if (!atributo.startsWith(ATRIBUTO_PREFIXO)) {
-            chain.doFilter(request, response);
-            return;
-        }
+		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+		chain.doFilter(request, response);
+	}
 
-        String token = atributo.replace(ATRIBUTO_PREFIXO, "");
-        UsernamePasswordAuthenticationToken authenticationToken = getAuthenticationToken(token);
-     
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        chain.doFilter(request, response);
-    }
+	private UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
 
-    private UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
+		DecodedJWT decode = JWT.require(Algorithm.HMAC512(JWTAutenticationFilter.TOKEN_PASSWORD)).build().verify(token);
 
-        String usuario = JWT.require(Algorithm.HMAC512(JWTAutenticarFilter.TOKEN_SENHA))
-                .build()
-                .verify(token)
-                .getSubject();
-        
-        String[] roles = JWT.require(Algorithm.HMAC512(JWTAutenticarFilter.TOKEN_SENHA))
-                .build()
-                .verify(token)
-                .getClaim("roles")
-                .asArray(String.class);
-        
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        stream(roles).forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role));
-        });
-        
+		String userDomain = decode.getSubject();
 
-        if (usuario == null) {
-            return null;
-        }
+		String[] roles = decode.getClaim("roles").asArray(String.class);
 
-        return new UsernamePasswordAuthenticationToken(usuario,null, authorities);
-    }
+		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		stream(roles).forEach(role -> {
+			authorities.add(new SimpleGrantedAuthority(role));
+		});
+
+		if (userDomain == null) {
+			return null;
+		}
+
+		return new UsernamePasswordAuthenticationToken(userDomain, null, authorities);
+	}
 }

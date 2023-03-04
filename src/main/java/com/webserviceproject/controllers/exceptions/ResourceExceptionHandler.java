@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,12 +25,33 @@ import com.webserviceproject.services.exceptions.ValidationExceptionDetails;
 @ControllerAdvice
 public class ResourceExceptionHandler extends ResponseEntityExceptionHandler{
 	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ExceptionDetails> Error500(Exception ex) {
+		return new ResponseEntity<ExceptionDetails>(BadRequestExceptionDetails.builder()
+				.timestamp(Instant.now())
+				.status(HttpStatus.BAD_REQUEST.value())				
+				.error("Bad Request Exception, check the documentation")
+				.details(ex.getMessage())
+				.developerMessage(ex.getClass().getName())
+				.build(), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(AuthenticationException.class)
+	public ResponseEntity<ExceptionDetails> AuthenticationException(AuthenticationException ex) {
+		return new ResponseEntity<ExceptionDetails>(BadRequestExceptionDetails.builder()
+				.status(HttpStatus.BAD_REQUEST.value())			
+				.error("token invalid, expired or not present")
+				.details(ex.getMessage())
+				.developerMessage(ex.getClass().getName())
+				.build(), HttpStatus.BAD_REQUEST);
+	}
+	
+	
 	@ExceptionHandler(BadRequestException.class)
 	public ResponseEntity<ExceptionDetails> resouceNotFound(BadRequestException bre){
 		return new ResponseEntity<ExceptionDetails>(BadRequestExceptionDetails.builder()
 				.timestamp(Instant.now())
-				.status(HttpStatus.BAD_REQUEST.value())
-				
+				.status(HttpStatus.BAD_REQUEST.value())			
 				.error("Bad Request Exception, check the documentation")
 				.details(bre.getMessage())
 				.developerMessage(bre.getClass().getName())
@@ -79,4 +101,5 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler{
 				.build();
 		return new ResponseEntity<>(exceptionDetails, headers, status);
 	}
+	
 }
