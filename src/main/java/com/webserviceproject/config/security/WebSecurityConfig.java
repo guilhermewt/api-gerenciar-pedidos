@@ -45,7 +45,7 @@ public class WebSecurityConfig {
 					@Override
 					public void commence(HttpServletRequest request, HttpServletResponse response,
 							AuthenticationException authException) throws IOException, ServletException {
-						response.setStatus(400);
+						response.setStatus(403);
 						response.setCharacterEncoding("UTF-8");
 						response.setContentType(APPLICATION_JSON_VALUE);
 						new ObjectMapper().writeValue(response.getOutputStream(),

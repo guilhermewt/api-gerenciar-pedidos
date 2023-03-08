@@ -39,7 +39,7 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler{
 	@ExceptionHandler(AuthenticationException.class)
 	public ResponseEntity<ExceptionDetails> AuthenticationException(AuthenticationException ex) {
 		return new ResponseEntity<ExceptionDetails>(BadRequestExceptionDetails.builder()
-				.status(HttpStatus.BAD_REQUEST.value())			
+				.status(HttpStatus.FORBIDDEN.value())			
 				.error("token invalid, expired or not present")
 				.details(ex.getMessage())
 				.developerMessage(ex.getClass().getName())
