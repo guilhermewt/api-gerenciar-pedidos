@@ -18,10 +18,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 
+import com.webserviceproject.data.JwtObject;
 import com.webserviceproject.entities.Category;
 import com.webserviceproject.entities.Order;
 import com.webserviceproject.entities.Product;
@@ -32,6 +35,7 @@ import com.webserviceproject.repository.OrderRepository;
 import com.webserviceproject.repository.ProductRepository;
 import com.webserviceproject.repository.RoleModelRepository;
 import com.webserviceproject.repository.UserDomainRepository;
+import com.webserviceproject.request.LoginGetRequestBody;
 import com.webserviceproject.request.OrderPostRequestBody;
 import com.webserviceproject.request.OrderPutRequestBody;
 import com.webserviceproject.util.CategoryCreator;
@@ -43,11 +47,9 @@ import com.webserviceproject.util.RoleModelCreator;
 import com.webserviceproject.util.UserDomainCreator;
 import com.webserviceproject.wrapper.PageableResponse;
 
-import lombok.extern.log4j.Log4j2;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-@Log4j2
+@ActiveProfiles("test")
 public class OrderControllerIT {
 	
 	@Autowired
@@ -82,10 +84,21 @@ public class OrderControllerIT {
 		@Bean(name = "testRestTemplateRoleAdmin")
 		public TestRestTemplate testRestTemplateRoleAdmin(@Value("${local.server.port}")int port) {
 			RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder()
-					.rootUri("http://localhost:" + port)
-					.basicAuthentication("username admin test", "test");
+					.rootUri("http://localhost:" + port);
 			return new TestRestTemplate(restTemplateBuilder);
 		}
+	}
+	
+	public HttpHeaders headers() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "Bearer " + jwtObject().getToken());
+		return headers;
+	}
+	
+	public JwtObject jwtObject() {
+		LoginGetRequestBody login = new LoginGetRequestBody("username admin test","test");
+		ResponseEntity<JwtObject> jwt = testRestTemplateRoleAdmin.postForEntity("/login", login, JwtObject.class);
+		return jwt.getBody();
 	}
 	
 	@Test
@@ -97,7 +110,7 @@ public class OrderControllerIT {
 		//o error esta aqui,mas se tirar o data.sql o sistema funciona
 		Order order = this.orderRepository.save(OrderCreator.createOrder());
 		
-		List<Order> orderEntity = testRestTemplateRoleAdmin.exchange("/orders", HttpMethod.GET, null, new ParameterizedTypeReference<List<Order>>() {
+		List<Order> orderEntity = testRestTemplateRoleAdmin.exchange("/orders", HttpMethod.GET, new HttpEntity<>(headers()), new ParameterizedTypeReference<List<Order>>() {
 		}).getBody();
 		
 		Assertions.assertThat(orderEntity).isNotNull();
@@ -113,7 +126,7 @@ public class OrderControllerIT {
 		
 		Order order = this.orderRepository.save(OrderCreator.createOrder());
 		
-		PageableResponse<Order> orderEntity = testRestTemplateRoleAdmin.exchange("/orders/pageable", HttpMethod.GET,null,
+		PageableResponse<Order> orderEntity = testRestTemplateRoleAdmin.exchange("/orders/pageable", HttpMethod.GET,new HttpEntity<>(headers()),
 										new ParameterizedTypeReference<PageableResponse<Order>>() {
 										}).getBody();
 		
@@ -130,7 +143,7 @@ public class OrderControllerIT {
 		
 		Order order = this.orderRepository.save(OrderCreator.createOrder());
 			
-		Order orderEntity = testRestTemplateRoleAdmin.getForObject("/orders/{id}", Order.class, order.getId());
+		Order orderEntity = testRestTemplateRoleAdmin.exchange("/orders/{id}", HttpMethod.GET,new HttpEntity<>(headers()),Order.class, order.getId()).getBody();
 		
 		Assertions.assertThat(orderEntity).isNotNull();
 		Assertions.assertThat(orderEntity.getId()).isNotNull();
@@ -151,7 +164,7 @@ public class OrderControllerIT {
 		
 		OrderPostRequestBody orderPostRequestBody = OrderPostRequestBodyCreator.createOrderPostRequestBodyCreator();
 		
-		ResponseEntity<Order> orderEntity = testRestTemplateRoleAdmin.postForEntity("/orders/{productId}/{quantityOfProduct}", orderPostRequestBody, 
+		ResponseEntity<Order> orderEntity = testRestTemplateRoleAdmin.exchange("/orders/{productId}/{quantityOfProduct}", HttpMethod.POST,new HttpEntity<>(orderPostRequestBody,headers()), 
 					Order.class,product.getId(),1);
 		
 		Assertions.assertThat(orderEntity).isNotNull();
@@ -167,7 +180,7 @@ public class OrderControllerIT {
 		this.userDomainRepository.save(ADMIN);
 		this.orderRepository.save(OrderCreator.createOrder());
 	
-		ResponseEntity<Void> orderEntity = testRestTemplateRoleAdmin.exchange("/orders/{orderId}", HttpMethod.DELETE, null, Void.class,
+		ResponseEntity<Void> orderEntity = testRestTemplateRoleAdmin.exchange("/orders/{orderId}", HttpMethod.DELETE, new HttpEntity<>(headers()), Void.class,
 				OrderCreator.createOrder().getId());		
 		Assertions.assertThat(orderEntity).isNotNull();
 		Assertions.assertThat(orderEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);			
@@ -178,13 +191,12 @@ public class OrderControllerIT {
 	void update_ReplaceOrder_whenSuccessful() {
 		this.roleModelRepository.save(ROLE_ADMIN);
 		this.userDomainRepository.save(ADMIN);
-		
 		this.orderRepository.save(OrderCreator.createOrder());
 		
 		OrderPutRequestBody orderpost = OrderPutRequestBodyCreator.createOrderPutRequestBodyCreator();
 			
 		ResponseEntity<Void> orderEntity = testRestTemplateRoleAdmin.exchange("/orders", HttpMethod.PUT, 
-				new HttpEntity<>(orderpost), Void.class);
+				new HttpEntity<>(orderpost,headers()), Void.class);
 		
 		Assertions.assertThat(orderEntity).isNotNull();
 		Assertions.assertThat(orderEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);			

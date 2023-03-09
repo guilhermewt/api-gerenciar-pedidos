@@ -69,6 +69,7 @@ public class UserDomainControllerIT {
 	private static UserDomain ADMIN = UserDomainCreator.createUserDomainAdmin();
 	private static final UserDomain USER = UserDomainCreator.createUserDomainRoleUser();
 	
+	
 	private static RoleModel ROLE_ADMIN = RoleModelCreator.createRoleModelADMIN();
 	private static RoleModel ROLE_USER = RoleModelCreator.createRoleModelUSER();
 	
@@ -109,22 +110,6 @@ public class UserDomainControllerIT {
 		LoginGetRequestBody login = new LoginGetRequestBody("username admin test","test");		
 		ResponseEntity<JwtObject> jwt = testRestTemplateRoleAdmin.postForEntity("/login", login, JwtObject.class);		
         return jwt.getBody();
-	}
-	
-	@Test
-	@DisplayName("findall return list of userDomain whenSuccessful")
-	void testJWT() {
-		this.roleModelRepository.save(roleModelRepository.save(ROLE_ADMIN));
-		this.userDomainRepository.save(ADMIN);
-		
-		LoginGetRequestBody login = new LoginGetRequestBody("guilhermeSilva","produto");
-		
-		ResponseEntity<JwtObject> jwt = testRestTemplateRoleAdmin.postForEntity("/login", login, JwtObject.class);
-			
-		Assertions.assertThat(jwt).isNotNull();
-		
-		log.info("JWT=====================" + jwt.getBody());
-        
 	}
 
 	@Test

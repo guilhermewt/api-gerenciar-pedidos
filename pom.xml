@@ -112,7 +112,7 @@
 
 	<profiles>
 		<profile>
-			<id>run-all-test</id>
+			<id>run-all-tests</id>
 			<build>
 				<plugins>
 					<plugin>

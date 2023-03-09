@@ -1,5 +1,6 @@
 package com.webserviceproject.integration;
 
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,24 +20,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
+import com.webserviceproject.data.JwtObject;
 import com.webserviceproject.entities.Category;
-import com.webserviceproject.entities.Product;
 import com.webserviceproject.entities.RoleModel;
 import com.webserviceproject.entities.UserDomain;
 import com.webserviceproject.repository.CategoryRepository;
 import com.webserviceproject.repository.RoleModelRepository;
 import com.webserviceproject.repository.UserDomainRepository;
 import com.webserviceproject.request.CategoryPostRequestBody;
-import com.webserviceproject.request.ProductPostRequestBody;
+import com.webserviceproject.request.LoginGetRequestBody;
 import com.webserviceproject.util.CategoryCreator;
 import com.webserviceproject.util.CategoryPostRequestBodyCreator;
-import com.webserviceproject.util.ProductCreator;
-import com.webserviceproject.util.ProductPostRequestBodyCreator;
 import com.webserviceproject.util.RoleModelCreator;
 import com.webserviceproject.util.UserDomainCreator;
 import com.webserviceproject.wrapper.PageableResponse;
@@ -44,6 +45,7 @@ import com.webserviceproject.wrapper.PageableResponse;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@ActiveProfiles("test")
 public class CategoryControllerIT {
 	
 	@Autowired
@@ -79,18 +81,28 @@ public class CategoryControllerIT {
 		@Bean(name = "testRestTemplateRoleAdmin")
 		public TestRestTemplate testRestTemplateRoleAdmin(@Value("${local.server.port}") int port) {
 			RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder()
-					.rootUri("http://localhost:" + port)
-					.basicAuthentication("username admin test", "test");
+					.rootUri("http://localhost:" + port);
 			return new TestRestTemplate(restTemplateBuilder);
 		}
 		
 		@Bean(name = "testRestTemplateRoleUser")
 		public TestRestTemplate testRestTemplateRoleUser(@Value("${local.server.port}") int port) {
 			RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder()
-					.rootUri("http://localhost:" + port)
-					.basicAuthentication("username test","test");
+					.rootUri("http://localhost:" + port);
 			return new TestRestTemplate(restTemplateBuilder);
 		}
+	}
+	
+	public HttpHeaders headers() {
+		 HttpHeaders httpHeaders = new HttpHeaders();
+		 httpHeaders.add("Authorization", "Bearer " + jwtObject().getToken());
+		 return httpHeaders;
+	}
+	
+	public JwtObject jwtObject() {
+		LoginGetRequestBody login = new LoginGetRequestBody("username admin test","test");
+		ResponseEntity<JwtObject> jwt = testRestTemplateRoleAdmin.postForEntity("/login", login, JwtObject.class);
+		return jwt.getBody();
 	}
 	
 	@Test
@@ -101,7 +113,7 @@ public class CategoryControllerIT {
 		
 		Category category = this.categoryRepository.save(CategoryCreator.createCategory());
 		
-		List<Category> entityCategory = testRestTemplateRoleAdmin.exchange("/categories/all", HttpMethod.GET,null,
+		List<Category> entityCategory = testRestTemplateRoleAdmin.exchange("/categories/all", HttpMethod.GET,new HttpEntity<>(headers()),
 				new ParameterizedTypeReference<List<Category>>() {
 		}).getBody();
 		
@@ -119,7 +131,7 @@ public class CategoryControllerIT {
 		
 		Category category = this.categoryRepository.save(CategoryCreator.createCategory());
 		
-		PageableResponse<Category> categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/all/pageable", HttpMethod.GET,null,
+		PageableResponse<Category> categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/all/pageable", HttpMethod.GET,new HttpEntity<>(headers()),
 										new ParameterizedTypeReference<PageableResponse<Category>>() {
 										}).getBody();
 		
@@ -136,7 +148,7 @@ public class CategoryControllerIT {
 		
 		Category category = this.categoryRepository.save(CategoryCreator.createCategory());
 			
-		Category categoryEntity = testRestTemplateRoleAdmin.getForObject("/categories/{id}", Category.class, category.getId());
+		Category categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/{id}", HttpMethod.GET,new HttpEntity<>(headers()), Category.class, category.getId()).getBody();
 		
 		Assertions.assertThat(categoryEntity).isNotNull();
 		Assertions.assertThat(categoryEntity.getId()).isNotNull();
@@ -151,7 +163,7 @@ public class CategoryControllerIT {
 		
 		CategoryPostRequestBody categoryPostRequestBody = CategoryPostRequestBodyCreator.createCategoryPostRequestBodyCreator();
 		
-		ResponseEntity<Category> categoryEntity = testRestTemplateRoleAdmin.postForEntity("/categories/admin", categoryPostRequestBody, 
+		ResponseEntity<Category> categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/admin",HttpMethod.POST,new HttpEntity<>(categoryPostRequestBody,headers()), 
 					Category.class);
 		
 		Assertions.assertThat(categoryEntity).isNotNull();
@@ -167,7 +179,7 @@ public class CategoryControllerIT {
 		this.userDomainRepository.save(ADMIN);
 		this.categoryRepository.save(CategoryCreator.createCategory());
 	
-		ResponseEntity<Void> categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/admin/{id}", HttpMethod.DELETE, null, Void.class,
+		ResponseEntity<Void> categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/admin/{id}", HttpMethod.DELETE, new HttpEntity<>(headers()), Void.class,
 				CategoryCreator.createCategory().getId());		
 		Assertions.assertThat(categoryEntity).isNotNull();
 		Assertions.assertThat(categoryEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);			
@@ -183,7 +195,7 @@ public class CategoryControllerIT {
 		category.setName("name test 2");
 			
 		ResponseEntity<Void> categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/admin", HttpMethod.PUT, 
-				new HttpEntity<>(category), Void.class);
+				new HttpEntity<>(category,headers()), Void.class);
 		
 		Assertions.assertThat(categoryEntity).isNotNull();
 		Assertions.assertThat(categoryEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);			
@@ -197,7 +209,7 @@ public class CategoryControllerIT {
 		
 		categoryRepository.save(CategoryCreator.createCategory());
 		
-		ResponseEntity<Void> categoryEntity = testRestTemplateRoleUser.exchange("/categories/admin/{id}", HttpMethod.DELETE, null, Void.class,
+		ResponseEntity<Void> categoryEntity = testRestTemplateRoleUser.exchange("/categories/admin/{id}", HttpMethod.DELETE, new HttpEntity<>(headers()), Void.class,
 				CategoryCreator.createCategory().getId());		
 
         Assertions.assertThat(categoryEntity).isNotNull();
