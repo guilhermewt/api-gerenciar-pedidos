@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webserviceproject.entities.UserDomain;
+import com.webserviceproject.mapper.UserDomainMapper;
+import com.webserviceproject.request.UserDomainGetRequestBody;
 import com.webserviceproject.request.UserDomainPostRequestBody;
 import com.webserviceproject.request.UserDomainPutRequestBody;
 import com.webserviceproject.services.UserDomainService;
@@ -37,8 +39,8 @@ public class UserDomainController {
 	
 	@GetMapping(value = "/admin/all/")
 	@Operation(summary = "find all user domain non paginated, the user has to be admin")
-	public ResponseEntity<List<UserDomain>> findAllNonPageable(){
-		return ResponseEntity.ok(userDomainsService.findAllNonPageable());
+	public ResponseEntity<List<UserDomainGetRequestBody>> findAllNonPageable(){
+		return ResponseEntity.ok(UserDomainMapper.INSTANCE.toUserDomainGetRequestBody(userDomainsService.findAllNonPageable()));
 	}
 	
 	@GetMapping(value = "/admin/all/Pageable")
@@ -49,25 +51,25 @@ public class UserDomainController {
 	
 	@GetMapping(value="/admin/{id}")
 	@Operation(summary = "find userdomain by id",description="the user has to be admin")
-	public ResponseEntity<UserDomain> findById(@PathVariable long id){
-		return ResponseEntity.ok(userDomainsService.findByIdOrElseThrowBadRequestException(id));
+	public ResponseEntity<UserDomainGetRequestBody> findById(@PathVariable long id){	
+		return ResponseEntity.ok(UserDomainMapper.INSTANCE.toUserDomainGetRequestBody(userDomainsService.findByIdOrElseThrowBadRequestException(id)));
 	}
 	
 	@GetMapping(value="/get-user-authenticated")
-	public ResponseEntity<UserDomain> getMyUser(){
-		return ResponseEntity.ok(userDomainsService.getMyUser());
+	public ResponseEntity<UserDomainGetRequestBody> getMyUser(){	
+		return ResponseEntity.ok(UserDomainMapper.INSTANCE.toUserDomainGetRequestBody(userDomainsService.getMyUser()));
 	}	
 	
 	@PostMapping(value = "/admin")
 	@Operation(summary = "create user admin",description="the user has to be admin")
-	public ResponseEntity<UserDomain> insertUserAdmin(@RequestBody @Valid UserDomainPostRequestBody userDomainPostRequestBody){
-		return new ResponseEntity<UserDomain>(userDomainsService.insertUserDomainAdmin(userDomainPostRequestBody), HttpStatus.CREATED);
+	public ResponseEntity<UserDomainGetRequestBody> insertUserAdmin(@RequestBody @Valid UserDomainPostRequestBody userDomainPostRequestBody){
+		return new ResponseEntity<UserDomainGetRequestBody>(UserDomainMapper.INSTANCE.toUserDomainGetRequestBody(userDomainsService.insertUserDomainAdmin(userDomainPostRequestBody)), HttpStatus.CREATED);
 	}
 	
 	@PostMapping(value = "/saveuserdomain")
 	@Operation(summary = "create user",description="for a common user to register")
-	public ResponseEntity<UserDomain> insertUser(@RequestBody @Valid UserDomainPostRequestBody userDomainPostRequestBody){
-		return new ResponseEntity<UserDomain>(userDomainsService.insertUserDomainWithRoleUser(userDomainPostRequestBody), HttpStatus.CREATED);
+	public ResponseEntity<UserDomainGetRequestBody> insertUser(@RequestBody @Valid UserDomainPostRequestBody userDomainPostRequestBody){	
+		return new ResponseEntity<UserDomainGetRequestBody>(UserDomainMapper.INSTANCE.toUserDomainGetRequestBody(userDomainsService.insertUserDomainWithRoleUser(userDomainPostRequestBody)), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value = "/admin/{id}")

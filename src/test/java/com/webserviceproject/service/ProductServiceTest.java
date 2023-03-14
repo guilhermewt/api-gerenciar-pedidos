@@ -23,8 +23,6 @@ import com.webserviceproject.services.CategoryService;
 import com.webserviceproject.services.ProductService;
 import com.webserviceproject.util.CategoryCreator;
 import com.webserviceproject.util.ProductCreator;
-import com.webserviceproject.util.ProductPostRequestBodyCreator;
-import com.webserviceproject.util.ProductPutRequestBodyCreator;
 
 @ExtendWith(SpringExtension.class)
 public class ProductServiceTest {
@@ -98,7 +96,7 @@ public class ProductServiceTest {
 		Product productSaved = ProductCreator.createProduct();
 
 		Product product = this.productService
-				.save(ProductPostRequestBodyCreator.createProductPostRequestBodyCreator(),1l);
+				.save(ProductCreator.createProductPostRequestBodyCreator(),1l);
 
 		Assertions.assertThat(product).isNotNull();
 		Assertions.assertThat(product.getId()).isNotNull();
@@ -116,7 +114,7 @@ public class ProductServiceTest {
 	void update_ReplaveLivro_whenSuccessful() {
 		Assertions
 				.assertThatCode(
-						() -> this.productService.update(ProductPutRequestBodyCreator.createProductPutRequestBodyCreator()))
+						() -> this.productService.update(ProductCreator.createProductPutRequestBodyCreator()))
 				.doesNotThrowAnyException();
 	}
 }

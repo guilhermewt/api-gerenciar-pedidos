@@ -21,8 +21,6 @@ import com.webserviceproject.entities.Category;
 import com.webserviceproject.repository.CategoryRepository;
 import com.webserviceproject.services.CategoryService;
 import com.webserviceproject.util.CategoryCreator;
-import com.webserviceproject.util.CategoryPostRequestBodyCreator;
-import com.webserviceproject.util.CategoryPutRequestBodyCreator;
 
 
 @ExtendWith(SpringExtension.class)
@@ -95,7 +93,7 @@ public class CategoryServiceTest {
 		Category categorySaved = CategoryCreator.createCategory();
 
 		Category category = this.categoryService
-				.insert(CategoryPostRequestBodyCreator.createCategoryPostRequestBodyCreator());
+				.insert(CategoryCreator.createCategoryPostRequestBodyCreator());
 		
 		Assertions.assertThat(category).isNotNull();
 		Assertions.assertThat(category.getId()).isNotNull();
@@ -113,7 +111,7 @@ public class CategoryServiceTest {
 	void update_ReplaveLivro_whenSuccessful() {
 		Assertions
 				.assertThatCode(
-						() -> this.categoryService.updateCategory(CategoryPutRequestBodyCreator.createCategoryPutRequestBodyCreator()))
+						() -> this.categoryService.updateCategory(CategoryCreator.createCategoryPutRequestBodyCreator()))
 				.doesNotThrowAnyException();
 	}
 }

@@ -18,12 +18,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.webserviceproject.controllers.CategoryController;
 import com.webserviceproject.entities.Category;
+import com.webserviceproject.request.CategoryGetRequestBody;
 import com.webserviceproject.request.CategoryPostRequestBody;
 import com.webserviceproject.services.CategoryService;
 import com.webserviceproject.services.authentication.GetAuthenticatedUser;
 import com.webserviceproject.util.CategoryCreator;
-import com.webserviceproject.util.CategoryPostRequestBodyCreator;
-import com.webserviceproject.util.CategoryPutRequestBodyCreator;
 
 @ExtendWith(SpringExtension.class)
 public class CategoryControllerTest {
@@ -64,9 +63,9 @@ public class CategoryControllerTest {
 	@Test
 	@DisplayName("findAll return list of category whenSuccessful")
 	void findAll_returnListOfCategory_WhenSucceful() {
-		Category categorySaved = CategoryCreator.createCategory();
+		CategoryGetRequestBody categorySaved = CategoryCreator.createCategoryGetRequestBodyCreator();
 
-		List<Category> categoryEntity = this.categoryController.findAllNonPageable().getBody();
+		List<CategoryGetRequestBody> categoryEntity = this.categoryController.findAllNonPageable().getBody();
 
 		Assertions.assertThat(categoryEntity).isNotNull();
 		Assertions.assertThat(categoryEntity.get(0).getId()).isNotNull();
@@ -88,9 +87,9 @@ public class CategoryControllerTest {
 	@Test
 	@DisplayName("findById return category whenSuccessful")
 	void findById_ReturnCategory_whenSuccessful() {
-		Category categorySaved = CategoryCreator.createCategory();
+		CategoryGetRequestBody categorySaved = CategoryCreator.createCategoryGetRequestBodyCreator();
 
-		Category category = this.categoryController.findById(categorySaved.getId()).getBody();
+		CategoryGetRequestBody category = this.categoryController.findById(categorySaved.getId()).getBody();
 
 		Assertions.assertThat(category).isNotNull();
 		Assertions.assertThat(category.getId()).isNotNull();
@@ -100,10 +99,10 @@ public class CategoryControllerTest {
 	@Test
 	@DisplayName("save return category whenSuccessful")
 	void save_ReturnCategory_whenSuccessful() {
-		Category categorySaved = CategoryCreator.createCategory();
+		CategoryGetRequestBody categorySaved = CategoryCreator.createCategoryGetRequestBodyCreator();
 
-		Category category = this.categoryController
-				.insert(CategoryPostRequestBodyCreator.createCategoryPostRequestBodyCreator()).getBody();
+		CategoryGetRequestBody category = this.categoryController
+				.insert(CategoryCreator.createCategoryPostRequestBodyCreator()).getBody();
 
 		Assertions.assertThat(category).isNotNull();
 		Assertions.assertThat(category.getId()).isNotNull();
@@ -120,7 +119,8 @@ public class CategoryControllerTest {
 	@DisplayName("update replace category whenSuccessful")
 	void update_ReplaveCategory_whenSuccessful() {
 		Assertions.assertThatCode(
-				() -> this.categoryController.update(CategoryPutRequestBodyCreator.createCategoryPutRequestBodyCreator()))
+				() -> this.categoryController.update(CategoryCreator.createCategoryPutRequestBodyCreator()))
 				.doesNotThrowAnyException();
 	}
+	
 }

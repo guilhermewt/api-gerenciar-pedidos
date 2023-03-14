@@ -24,15 +24,13 @@ import com.webserviceproject.services.UserDomainService;
 import com.webserviceproject.services.authentication.GetAuthenticatedUser;
 import com.webserviceproject.util.RoleModelCreator;
 import com.webserviceproject.util.UserDomainCreator;
-import com.webserviceproject.util.UserDomainPostRequestBodyCreator;
-import com.webserviceproject.util.UserDomainPutRequestBodyCreator;
 
 @ExtendWith(SpringExtension.class)
 public class UserDomainServiceTest {
 
 	@InjectMocks
 	private UserDomainService userDomainService;
-	
+		
 	@Mock
 	private UserDomainRepository userDomainRepositoryMock;
 	
@@ -41,8 +39,7 @@ public class UserDomainServiceTest {
 	
 	@Mock
 	private GetAuthenticatedUser getAuthenticatedUserMock;
-	
-	
+		
 	@BeforeEach
 	void setUp() {
 		BDDMockito.when(userDomainRepositoryMock.findAll()).thenReturn(List.of(UserDomainCreator.createUserDomainAdmin()));
@@ -118,7 +115,7 @@ public class UserDomainServiceTest {
 		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
 
 		UserDomain userDomain = this.userDomainService
-				.insertUserDomainAdmin(UserDomainPostRequestBodyCreator.createUserPostRequestBodyCreator());
+				.insertUserDomainAdmin(UserDomainCreator.createUserPostRequestBodyCreator());
 
 		Assertions.assertThat(userDomain).isNotNull();
 		Assertions.assertThat(userDomain.getId()).isNotNull();
@@ -131,7 +128,7 @@ public class UserDomainServiceTest {
 		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
 
 		UserDomain userDomain = this.userDomainService
-				.insertUserDomainWithRoleUser(UserDomainPostRequestBodyCreator.createUserPostRequestBodyCreator());
+				.insertUserDomainWithRoleUser(UserDomainCreator.createUserPostRequestBodyCreator());
 
 		Assertions.assertThat(userDomain).isNotNull();
 		Assertions.assertThat(userDomain.getId()).isNotNull();
@@ -149,7 +146,7 @@ public class UserDomainServiceTest {
 	void update_ReplaceUserDomain_whenSuccessful() {
 		Assertions
 				.assertThatCode(
-						() -> this.userDomainService.update(UserDomainPutRequestBodyCreator.createUserDomainPutRequestBodyCreator()))
+						() -> this.userDomainService.update(UserDomainCreator.createUserDomainPutRequestBodyCreator()))
 				.doesNotThrowAnyException();
 	}
 }

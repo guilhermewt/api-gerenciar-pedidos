@@ -18,12 +18,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.webserviceproject.controllers.OrderController;
 import com.webserviceproject.entities.Order;
+import com.webserviceproject.request.OrderGetRequestBody;
 import com.webserviceproject.request.OrderPostRequestBody;
 import com.webserviceproject.services.OrderService;
 import com.webserviceproject.services.authentication.GetAuthenticatedUser;
 import com.webserviceproject.util.OrderCreator;
-import com.webserviceproject.util.OrderPostRequestBodyCreator;
-import com.webserviceproject.util.OrderPutRequestBodyCreator;
 import com.webserviceproject.util.ProductCreator;
 
 @ExtendWith(SpringExtension.class)
@@ -65,9 +64,9 @@ public class OrderControllerTest {
 	@Test
 	@DisplayName("findAll return list of order whenSuccessful")
 	void findAll_returnListOfOrder_WhenSucceful() {
-		Order orderSaved = OrderCreator.createOrder();
+		OrderGetRequestBody orderSaved = OrderCreator.createOrderGetRequestBodyCreator();
 
-		List<Order> orderEntity = this.orderController.findAll().getBody();
+		List<OrderGetRequestBody> orderEntity = this.orderController.findAll().getBody();
 
 		Assertions.assertThat(orderEntity).isNotNull();
 		Assertions.assertThat(orderEntity.get(0).getId()).isNotNull();
@@ -89,9 +88,9 @@ public class OrderControllerTest {
 	@Test
 	@DisplayName("findById return order whenSuccessful")
 	void findById_ReturnOrder_whenSuccessful() {
-		Order orderSaved = OrderCreator.createOrder();
+		OrderGetRequestBody orderSaved = OrderCreator.createOrderGetRequestBodyCreator();
 
-		Order order = this.orderController.findById(orderSaved.getId()).getBody();
+		OrderGetRequestBody order = this.orderController.findById(orderSaved.getId()).getBody();
 
 		Assertions.assertThat(order).isNotNull();
 		Assertions.assertThat(order.getId()).isNotNull();
@@ -101,10 +100,10 @@ public class OrderControllerTest {
 	@Test
 	@DisplayName("save return order whenSuccessful")
 	void save_ReturnOrder_whenSuccessful() {
-		Order orderSaved = OrderCreator.createOrder();
+		OrderGetRequestBody orderSaved = OrderCreator.createOrderGetRequestBodyCreator();
 
-		Order order = this.orderController
-				.save(OrderPostRequestBodyCreator.createOrderPostRequestBodyCreator(),ProductCreator.createProduct().getId(),1).getBody();
+		OrderGetRequestBody order = this.orderController
+				.save(OrderCreator.createOrderPostRequestBodyCreator(),ProductCreator.createProduct().getId(),1).getBody();
 
 		Assertions.assertThat(order).isNotNull();
 		Assertions.assertThat(order.getId()).isNotNull();
@@ -121,7 +120,8 @@ public class OrderControllerTest {
 	@DisplayName("update replace order whenSuccessful")
 	void update_ReplaveOrder_whenSuccessful() {
 		Assertions.assertThatCode(
-				() -> this.orderController.update(OrderPutRequestBodyCreator.createOrderPutRequestBodyCreator()))
+				() -> this.orderController.update(OrderCreator.createOrderPutRequestBodyCreator()))
 				.doesNotThrowAnyException();
 	}
+	
 }

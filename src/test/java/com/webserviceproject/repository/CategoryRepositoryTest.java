@@ -87,7 +87,7 @@ public class CategoryRepositoryTest {
 	void update_replaceCategory_whenSuccessful() {
 		this.categoryRepository.save(CategoryCreator.createCategory());
 			
-		Category categoryToBeUpdate = CategoryCreator.createCategoryToBeUpdate();
+		Category categoryToBeUpdate = CategoryCreator.createCategoryToBeUpdateCreator();
 	
 	    Category categoryUpdated = this.categoryRepository.save(categoryToBeUpdate);
 	    

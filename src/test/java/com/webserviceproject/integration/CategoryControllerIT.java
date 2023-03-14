@@ -34,10 +34,10 @@ import com.webserviceproject.entities.UserDomain;
 import com.webserviceproject.repository.CategoryRepository;
 import com.webserviceproject.repository.RoleModelRepository;
 import com.webserviceproject.repository.UserDomainRepository;
+import com.webserviceproject.request.CategoryGetRequestBody;
 import com.webserviceproject.request.CategoryPostRequestBody;
 import com.webserviceproject.request.LoginGetRequestBody;
 import com.webserviceproject.util.CategoryCreator;
-import com.webserviceproject.util.CategoryPostRequestBodyCreator;
 import com.webserviceproject.util.RoleModelCreator;
 import com.webserviceproject.util.UserDomainCreator;
 import com.webserviceproject.wrapper.PageableResponse;
@@ -111,16 +111,16 @@ public class CategoryControllerIT {
 		this.roleModelRepository.save(ROLE_ADMIN);
 		this.userDomainRepository.save(ADMIN);
 		
-		Category category = this.categoryRepository.save(CategoryCreator.createCategory());
+		this.categoryRepository.save(CategoryCreator.createCategory());
 		
-		List<Category> entityCategory = testRestTemplateRoleAdmin.exchange("/categories/all", HttpMethod.GET,new HttpEntity<>(headers()),
-				new ParameterizedTypeReference<List<Category>>() {
+		List<CategoryGetRequestBody> entityCategory = testRestTemplateRoleAdmin.exchange("/categories/all", HttpMethod.GET,new HttpEntity<>(headers()),
+				new ParameterizedTypeReference<List<CategoryGetRequestBody>>() {
 		}).getBody();
 		
 		
 		Assertions.assertThat(entityCategory).isNotNull();
 		Assertions.assertThat(entityCategory.get(0)).isNotNull();
-		Assertions.assertThat(entityCategory.get(0)).isEqualTo(category);
+		Assertions.assertThat(entityCategory.get(0)).isEqualTo(CategoryCreator.createCategoryGetRequestBodyCreator());
 	}
 	
 	@Test
@@ -148,11 +148,11 @@ public class CategoryControllerIT {
 		
 		Category category = this.categoryRepository.save(CategoryCreator.createCategory());
 			
-		Category categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/{id}", HttpMethod.GET,new HttpEntity<>(headers()), Category.class, category.getId()).getBody();
+		CategoryGetRequestBody categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/{id}", HttpMethod.GET,new HttpEntity<>(headers()), CategoryGetRequestBody.class, category.getId()).getBody();
 		
 		Assertions.assertThat(categoryEntity).isNotNull();
 		Assertions.assertThat(categoryEntity.getId()).isNotNull();
-		Assertions.assertThat(categoryEntity).isEqualTo(category);
+		Assertions.assertThat(categoryEntity).isEqualTo(CategoryCreator.createCategoryGetRequestBodyCreator());
 	}
 	
 	@Test
@@ -161,10 +161,10 @@ public class CategoryControllerIT {
 		this.roleModelRepository.save(ROLE_ADMIN);
 		this.userDomainRepository.save(ADMIN);
 		
-		CategoryPostRequestBody categoryPostRequestBody = CategoryPostRequestBodyCreator.createCategoryPostRequestBodyCreator();
+		CategoryPostRequestBody categoryPostRequestBody = CategoryCreator.createCategoryPostRequestBodyCreator();
 		
-		ResponseEntity<Category> categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/admin",HttpMethod.POST,new HttpEntity<>(categoryPostRequestBody,headers()), 
-					Category.class);
+		ResponseEntity<CategoryGetRequestBody> categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/admin",HttpMethod.POST,new HttpEntity<>(categoryPostRequestBody,headers()), 
+					CategoryGetRequestBody.class);
 		
 		Assertions.assertThat(categoryEntity).isNotNull();
 		Assertions.assertThat(categoryEntity.getBody()).isNotNull();

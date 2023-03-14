@@ -18,14 +18,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.webserviceproject.controllers.ProductController;
 import com.webserviceproject.entities.Product;
+import com.webserviceproject.request.ProductGetRequestBody;
 import com.webserviceproject.request.ProductPostRequestBody;
 import com.webserviceproject.services.CategoryService;
 import com.webserviceproject.services.ProductService;
 import com.webserviceproject.services.authentication.GetAuthenticatedUser;
 import com.webserviceproject.util.CategoryCreator;
 import com.webserviceproject.util.ProductCreator;
-import com.webserviceproject.util.ProductPostRequestBodyCreator;
-import com.webserviceproject.util.ProductPutRequestBodyCreator;
 
 @ExtendWith(SpringExtension.class)
 public class ProductControllerTest {
@@ -69,9 +68,9 @@ public class ProductControllerTest {
 	@Test
 	@DisplayName("findAll return list of product whenSuccessful")
 	void findAll_returnListOfProduct_WhenSucceful() {
-		Product productSaved = ProductCreator.createProduct();
+		ProductGetRequestBody productSaved = ProductCreator.createProductGetRequestBodyCreator();
 
-		List<Product> productEntity = this.productController.findAllNonPageable().getBody();
+		List<ProductGetRequestBody> productEntity = this.productController.findAllNonPageable().getBody();
 
 		Assertions.assertThat(productEntity).isNotNull();
 		Assertions.assertThat(productEntity.get(0).getId()).isNotNull();
@@ -93,9 +92,9 @@ public class ProductControllerTest {
 	@Test
 	@DisplayName("findById return category whenSuccessful")
 	void findById_ReturnProduct_whenSuccessful() {
-		Product productSaved = ProductCreator.createProduct();
+		ProductGetRequestBody productSaved = ProductCreator.createProductGetRequestBodyCreator();
 
-		Product product = this.productController.findById(productSaved.getId()).getBody();
+		ProductGetRequestBody product = this.productController.findById(productSaved.getId()).getBody();
 
 		Assertions.assertThat(product).isNotNull();
 		Assertions.assertThat(product.getId()).isNotNull();
@@ -105,11 +104,11 @@ public class ProductControllerTest {
 	@Test
 	@DisplayName("save return product whenSuccessful")
 	void save_ReturnProduct_whenSuccessful() {
-		Product productSaved = ProductCreator.createProduct();
+		ProductGetRequestBody productSaved = ProductCreator.createProductGetRequestBodyCreator();
 
-		Product product = this.productController
-				.save(ProductPostRequestBodyCreator.createProductPostRequestBodyCreator(),
-						ProductCreator.createProduct().getId()).getBody();
+		ProductGetRequestBody product = this.productController
+				.save(ProductCreator.createProductPostRequestBodyCreator(),
+						CategoryCreator.createCategory().getId()).getBody();
 
 		Assertions.assertThat(product).isNotNull();
 		Assertions.assertThat(product.getId()).isNotNull();
@@ -126,7 +125,7 @@ public class ProductControllerTest {
 	@DisplayName("update replace product whenSuccessful")
 	void update_ReplaveProduct_whenSuccessful() {
 		Assertions.assertThatCode(
-				() -> this.productController.update(ProductPutRequestBodyCreator.createProductPutRequestBodyCreator()))
+				() -> this.productController.update(ProductCreator.createProductPutRequestBodyCreator()))
 				.doesNotThrowAnyException();
 	}
 }

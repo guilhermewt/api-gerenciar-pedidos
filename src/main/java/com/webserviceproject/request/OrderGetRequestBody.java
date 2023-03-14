@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class OrderPostRequestBody {
+public class OrderGetRequestBody {
 	
+	private Long id;
 	@NotNull(message = "the moment cannot be empty")
 	@Schema(description = "moment of order")
 	private Instant moment;
@@ -22,8 +23,9 @@ public class OrderPostRequestBody {
 	@Schema(description = "status of the order",example="WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, CANCELED")
 	private Integer orderStatus;
 
-	public OrderPostRequestBody(Instant moment, OrderStatus orderStatus) {
+	public OrderGetRequestBody(Long id,Instant moment, OrderStatus orderStatus) {
 		super();
+		this.id = id;
 		this.moment = moment;
 		setOrderStatus(orderStatus);
 	}

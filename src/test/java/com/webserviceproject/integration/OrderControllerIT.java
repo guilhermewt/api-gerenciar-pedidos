@@ -36,12 +36,11 @@ import com.webserviceproject.repository.ProductRepository;
 import com.webserviceproject.repository.RoleModelRepository;
 import com.webserviceproject.repository.UserDomainRepository;
 import com.webserviceproject.request.LoginGetRequestBody;
+import com.webserviceproject.request.OrderGetRequestBody;
 import com.webserviceproject.request.OrderPostRequestBody;
 import com.webserviceproject.request.OrderPutRequestBody;
 import com.webserviceproject.util.CategoryCreator;
 import com.webserviceproject.util.OrderCreator;
-import com.webserviceproject.util.OrderPostRequestBodyCreator;
-import com.webserviceproject.util.OrderPutRequestBodyCreator;
 import com.webserviceproject.util.ProductCreator;
 import com.webserviceproject.util.RoleModelCreator;
 import com.webserviceproject.util.UserDomainCreator;
@@ -107,15 +106,14 @@ public class OrderControllerIT {
 		this.roleModelRepository.save(ROLE_ADMIN);
 		this.userDomainRepository.save(ADMIN);
 		
-		//o error esta aqui,mas se tirar o data.sql o sistema funciona
-		Order order = this.orderRepository.save(OrderCreator.createOrder());
+		this.orderRepository.save(OrderCreator.createOrder());
 		
-		List<Order> orderEntity = testRestTemplateRoleAdmin.exchange("/orders", HttpMethod.GET, new HttpEntity<>(headers()), new ParameterizedTypeReference<List<Order>>() {
+		List<OrderGetRequestBody> orderEntity = testRestTemplateRoleAdmin.exchange("/orders", HttpMethod.GET, new HttpEntity<>(headers()), new ParameterizedTypeReference<List<OrderGetRequestBody>>() {
 		}).getBody();
 		
 		Assertions.assertThat(orderEntity).isNotNull();
 		Assertions.assertThat(orderEntity.get(0).getId()).isNotNull();
-		Assertions.assertThat(orderEntity.get(0)).isEqualTo(order);
+		Assertions.assertThat(orderEntity.get(0)).isEqualTo(OrderCreator.createOrderGetRequestBodyCreator());
 	}
 	
 	@Test
@@ -143,11 +141,11 @@ public class OrderControllerIT {
 		
 		Order order = this.orderRepository.save(OrderCreator.createOrder());
 			
-		Order orderEntity = testRestTemplateRoleAdmin.exchange("/orders/{id}", HttpMethod.GET,new HttpEntity<>(headers()),Order.class, order.getId()).getBody();
+		OrderGetRequestBody orderEntity = testRestTemplateRoleAdmin.exchange("/orders/{id}", HttpMethod.GET,new HttpEntity<>(headers()),OrderGetRequestBody.class, order.getId()).getBody();
 		
 		Assertions.assertThat(orderEntity).isNotNull();
 		Assertions.assertThat(orderEntity.getId()).isNotNull();
-		Assertions.assertThat(orderEntity).isEqualTo(order);
+		Assertions.assertThat(orderEntity).isEqualTo(OrderCreator.createOrderGetRequestBodyCreator());
 	}
 	
 	@Test
@@ -162,10 +160,10 @@ public class OrderControllerIT {
 		
 		this.productRepository.save(product);
 		
-		OrderPostRequestBody orderPostRequestBody = OrderPostRequestBodyCreator.createOrderPostRequestBodyCreator();
+		OrderPostRequestBody orderPostRequestBody = OrderCreator.createOrderPostRequestBodyCreator();
 		
-		ResponseEntity<Order> orderEntity = testRestTemplateRoleAdmin.exchange("/orders/{productId}/{quantityOfProduct}", HttpMethod.POST,new HttpEntity<>(orderPostRequestBody,headers()), 
-					Order.class,product.getId(),1);
+		ResponseEntity<OrderGetRequestBody> orderEntity = testRestTemplateRoleAdmin.exchange("/orders/{productId}/{quantityOfProduct}", HttpMethod.POST,new HttpEntity<>(orderPostRequestBody,headers()), 
+					OrderGetRequestBody.class,product.getId(),1);
 		
 		Assertions.assertThat(orderEntity).isNotNull();
 		Assertions.assertThat(orderEntity.getBody()).isNotNull();
@@ -193,7 +191,7 @@ public class OrderControllerIT {
 		this.userDomainRepository.save(ADMIN);
 		this.orderRepository.save(OrderCreator.createOrder());
 		
-		OrderPutRequestBody orderpost = OrderPutRequestBodyCreator.createOrderPutRequestBodyCreator();
+		OrderPutRequestBody orderpost = OrderCreator.createOrderPutRequestBodyCreator();
 			
 		ResponseEntity<Void> orderEntity = testRestTemplateRoleAdmin.exchange("/orders", HttpMethod.PUT, 
 				new HttpEntity<>(orderpost,headers()), Void.class);
@@ -201,5 +199,6 @@ public class OrderControllerIT {
 		Assertions.assertThat(orderEntity).isNotNull();
 		Assertions.assertThat(orderEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);			
 	}
+	
 	
 }

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webserviceproject.entities.Product;
+import com.webserviceproject.mapper.ProductMapper;
+import com.webserviceproject.request.ProductGetRequestBody;
 import com.webserviceproject.request.ProductPostRequestBody;
 import com.webserviceproject.request.ProductPutRequestBody;
 import com.webserviceproject.services.ProductService;
@@ -32,48 +34,50 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/products")
 @RequiredArgsConstructor
 public class ProductController {
-    
+
 	private final ProductService productService;
 	
+
 	@GetMapping(value = "/all/pageable")
 	@Operation(summary = "find all products paginated", description = "the default size is 20, use the parameter to change the default value")
-	public ResponseEntity<Page<Product>> findAllPageable(@ParameterObject Pageable pageable){
+	public ResponseEntity<Page<Product>> findAllPageable(@ParameterObject Pageable pageable) {
 		return ResponseEntity.ok(productService.findAllPageable(pageable));
 	}
-	
+
 	@GetMapping(value = "/all")
 	@Operation(summary = "find all products non paginated")
-	public ResponseEntity<List<Product>> findAllNonPageable(){
-		return ResponseEntity.ok(productService.findAllNonPageable());
+	public ResponseEntity<List<ProductGetRequestBody>> findAllNonPageable() {
+		return ResponseEntity.ok(ProductMapper.INSTANCE.toProductGetRequestBody(productService.findAllNonPageable()));
 	}
-	
-	@GetMapping(value="/{id}")
+
+	@GetMapping(value = "/{id}")
 	@Operation(summary = "find product by id")
-	public ResponseEntity<Product> findById(@PathVariable long id){
-		return ResponseEntity.ok(productService.findByIdOrElseThrowBadRequestException(id));
+	public ResponseEntity<ProductGetRequestBody> findById(@PathVariable long id) {
+		return ResponseEntity.ok(ProductMapper.INSTANCE
+				.toProductGetRequestBody(productService.findByIdOrElseThrowBadRequestException(id)));
 	}
-	
+
 	@PostMapping(value = "/admin/{categoryId}")
 	@Operation(description = "for the product to be made,the category Id are required and the user has to be admin")
-	public ResponseEntity<Product> save(@RequestBody @Valid ProductPostRequestBody productPostRequestBody,
-										@PathVariable long categoryId){
-		return new ResponseEntity<Product>(productService.save(productPostRequestBody,categoryId), HttpStatus.CREATED);
+	public ResponseEntity<ProductGetRequestBody> save(@RequestBody @Valid ProductPostRequestBody productPostRequestBody,
+			@PathVariable long categoryId) {
+		return new ResponseEntity<ProductGetRequestBody>(
+				ProductMapper.INSTANCE.toProductGetRequestBody(productService.save(productPostRequestBody, categoryId)),
+				HttpStatus.CREATED);
 	}
-	
+
 	@DeleteMapping(value = "/admin/{id}")
 	@Operation(description = "the user has to be admin")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "204", description = "successful operation"),
-			@ApiResponse(responseCode = "400", description = "when product does not exist in the dataBase")
-	})
-	public ResponseEntity<Void> delete(@PathVariable long id){
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "successful operation"),
+			                @ApiResponse(responseCode = "400", description = "when product does not exist in the dataBase") })
+	public ResponseEntity<Void> delete(@PathVariable long id) {	
 		productService.deleteProduct(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 	@PutMapping(value = "/admin")
 	@Operation(description = "the user has to be admin")
-	public ResponseEntity<Void> update(@RequestBody ProductPutRequestBody productPutRequestBody){
+	public ResponseEntity<Void> update(@RequestBody ProductPutRequestBody productPutRequestBody) {	
 		productService.update(productPutRequestBody);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

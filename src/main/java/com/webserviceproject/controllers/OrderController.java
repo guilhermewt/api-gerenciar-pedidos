@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webserviceproject.entities.Order;
+import com.webserviceproject.mapper.OrderMapper;
+import com.webserviceproject.request.OrderGetRequestBody;
 import com.webserviceproject.request.OrderPostRequestBody;
 import com.webserviceproject.request.OrderPutRequestBody;
 import com.webserviceproject.services.OrderService;
@@ -34,12 +36,11 @@ import lombok.RequiredArgsConstructor;
 public class OrderController {
 	
 	private final OrderService orderService;
-	
-		
+			
 	@GetMapping
 	@Operation(summary = "find all books non paginated")
-	public ResponseEntity<List<Order>> findAll(){
-		return ResponseEntity.ok().body(orderService.findAllNonPageable());
+	public ResponseEntity<List<OrderGetRequestBody>> findAll(){
+		return ResponseEntity.ok().body(OrderMapper.INSTANCE.toOrderGetRequestBody(orderService.findAllNonPageable()));
 	}
 	
 	@GetMapping(value = "/pageable")
@@ -50,16 +51,16 @@ public class OrderController {
 	
 	@GetMapping(value="/{id}")
 	@Operation(summary = "find category by id")
-	public ResponseEntity<Order> findById(@PathVariable long id){
-		Order ped = orderService.findByIdOrElseThrowNewBadRequestException(id);
-		return ResponseEntity.ok().body(ped);
+	public ResponseEntity<OrderGetRequestBody> findById(@PathVariable long id){
+		return ResponseEntity.ok().body(OrderMapper.INSTANCE.toOrderGetRequestBody(orderService.findByIdOrElseThrowNewBadRequestException(id)));
 	}
 	
 	@PostMapping(value = "/{productId}/{quantityOfProduct}")
 	@Operation(description = "for the order to be made,the product Id and the quantity of product are required")
-	public ResponseEntity<Order> save(@RequestBody @Valid OrderPostRequestBody orderPostRequestBody,
+	public ResponseEntity<OrderGetRequestBody> save(@RequestBody @Valid OrderPostRequestBody orderPostRequestBody,
 									   @PathVariable long productId,@PathVariable int quantityOfProduct){
-		return new ResponseEntity<Order>(orderService.save(orderPostRequestBody, productId, quantityOfProduct), 
+		
+		return new ResponseEntity<OrderGetRequestBody>(OrderMapper.INSTANCE.toOrderGetRequestBody(orderService.save(orderPostRequestBody, productId, quantityOfProduct)), 
 													  HttpStatus.CREATED);
 	}
 	

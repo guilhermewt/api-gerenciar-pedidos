@@ -18,12 +18,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.webserviceproject.controllers.UserDomainController;
 import com.webserviceproject.entities.UserDomain;
+import com.webserviceproject.request.UserDomainGetRequestBody;
 import com.webserviceproject.request.UserDomainPostRequestBody;
 import com.webserviceproject.services.UserDomainService;
 import com.webserviceproject.services.authentication.GetAuthenticatedUser;
 import com.webserviceproject.util.UserDomainCreator;
-import com.webserviceproject.util.UserDomainPostRequestBodyCreator;
-import com.webserviceproject.util.UserDomainPutRequestBodyCreator;
 
 @ExtendWith(SpringExtension.class)
 public class UserDomainControllerTest {
@@ -70,9 +69,9 @@ public class UserDomainControllerTest {
 	@Test
 	@DisplayName("findAll return list of userDomain whenSuccessful")
 	void findAll_returnListOfUserDomain_WhenSucceful() {
-		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
+		UserDomainGetRequestBody userDomainSaved = UserDomainCreator.createUserGetRequestBodyCreator();
 
-		List<UserDomain> userDomainEntity = this.userDomainController.findAllNonPageable().getBody();
+		List<UserDomainGetRequestBody> userDomainEntity = this.userDomainController.findAllNonPageable().getBody();
 
 		Assertions.assertThat(userDomainEntity).isNotNull();
 		Assertions.assertThat(userDomainEntity.get(0).getId()).isNotNull();
@@ -94,9 +93,9 @@ public class UserDomainControllerTest {
 	@Test
 	@DisplayName("findById return userDomain whenSuccessful")
 	void findById_ReturnUserDomain_whenSuccessful() {
-		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
+		UserDomainGetRequestBody userDomainSaved = UserDomainCreator.createUserGetRequestBodyCreator();
 
-		UserDomain userDomain = this.userDomainController.findById(userDomainSaved.getId()).getBody();
+		UserDomainGetRequestBody userDomain = this.userDomainController.findById(userDomainSaved.getId()).getBody();
 
 		Assertions.assertThat(userDomain).isNotNull();
 		Assertions.assertThat(userDomain.getId()).isNotNull();
@@ -106,9 +105,9 @@ public class UserDomainControllerTest {
 	@Test
 	@DisplayName("findById return userDomain authenticated whenSuccessful")
 	void findUserAuthenticated_ReturnUserDomain_whenSuccessful() {
-		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
+		UserDomainGetRequestBody userDomainSaved = UserDomainCreator.createUserGetRequestBodyCreator();
 
-		UserDomain userDomain = this.userDomainController.findById(userDomainSaved.getId()).getBody();
+		UserDomainGetRequestBody userDomain = this.userDomainController.findById(userDomainSaved.getId()).getBody();
 
 		Assertions.assertThat(userDomain).isNotNull();
 		Assertions.assertThat(userDomain.getId()).isNotNull();
@@ -118,9 +117,9 @@ public class UserDomainControllerTest {
 	@Test
 	@DisplayName("save return user with role_user whenSuccessful")
 	void save_ReturnUser_whenSuccessful() {
-		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
+		UserDomainGetRequestBody userDomainSaved = UserDomainCreator.createUserGetRequestBodyCreator();
 
-		UserDomain userDomain = this.userDomainController.insertUser(UserDomainPostRequestBodyCreator
+		UserDomainGetRequestBody userDomain = this.userDomainController.insertUser(UserDomainCreator
 				.createUserPostRequestBodyCreator()).getBody();
 
 		Assertions.assertThat(userDomain).isNotNull();
@@ -131,9 +130,9 @@ public class UserDomainControllerTest {
 	@Test
 	@DisplayName("save return user with role_admin whenSuccessful")
 	void save_ReturnUserAdmin_whenSuccessful() {
-		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
+		UserDomainGetRequestBody userDomainSaved = UserDomainCreator.createUserGetRequestBodyCreator();
 
-		UserDomain userDomain = this.userDomainController.insertUserAdmin(UserDomainPostRequestBodyCreator.createUserPostRequestBodyCreator()).getBody();
+		UserDomainGetRequestBody userDomain = this.userDomainController.insertUserAdmin(UserDomainCreator.createUserPostRequestBodyCreator()).getBody();
 
 		Assertions.assertThat(userDomain).isNotNull();
 		Assertions.assertThat(userDomain.getId()).isNotNull();
@@ -150,7 +149,7 @@ public class UserDomainControllerTest {
 	@DisplayName("update replace userDomain whenSuccessful")
 	void update_ReplaveUserDomain_whenSuccessful() {
 		Assertions.assertThatCode(
-				() -> this.userDomainController.update(UserDomainPutRequestBodyCreator.createUserDomainPutRequestBodyCreator()))
+				() -> this.userDomainController.update(UserDomainCreator.createUserDomainPutRequestBodyCreator()))
 				.doesNotThrowAnyException();
 	}
 }

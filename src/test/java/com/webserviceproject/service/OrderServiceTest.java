@@ -28,8 +28,6 @@ import com.webserviceproject.services.authentication.GetAuthenticatedUser;
 import com.webserviceproject.util.CategoryCreator;
 import com.webserviceproject.util.OrderCreator;
 import com.webserviceproject.util.OrderItemsCreator;
-import com.webserviceproject.util.OrderPostRequestBodyCreator;
-import com.webserviceproject.util.OrderPutRequestBodyCreator;
 import com.webserviceproject.util.ProductCreator;
 import com.webserviceproject.util.UserDomainCreator;
 
@@ -117,7 +115,7 @@ public class OrderServiceTest {
 	void save_ReturnOrder_whenSuccessful() {
 		Order orderSaved = OrderCreator.createOrder();
 
-		Order order = this.orderService.save(OrderPostRequestBodyCreator.createOrderPostRequestBodyCreator(), 1l, 1);
+		Order order = this.orderService.save(OrderCreator.createOrderPostRequestBodyCreator(), 1l, 1);
 
 		Assertions.assertThat(order).isNotNull();
 		Assertions.assertThat(order.getId()).isNotNull();
@@ -135,7 +133,7 @@ public class OrderServiceTest {
 	void update_Replaveorder_whenSuccessful() {
 		Assertions
 				.assertThatCode(
-						() -> this.orderService.update(OrderPutRequestBodyCreator.createOrderPutRequestBodyCreator()))
+						() -> this.orderService.update(OrderCreator.createOrderPutRequestBodyCreator()))
 				.doesNotThrowAnyException();
 	}
 }

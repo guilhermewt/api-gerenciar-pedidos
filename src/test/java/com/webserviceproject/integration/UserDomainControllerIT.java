@@ -31,16 +31,13 @@ import com.webserviceproject.entities.UserDomain;
 import com.webserviceproject.repository.RoleModelRepository;
 import com.webserviceproject.repository.UserDomainRepository;
 import com.webserviceproject.request.LoginGetRequestBody;
+import com.webserviceproject.request.UserDomainGetRequestBody;
 import com.webserviceproject.request.UserDomainPostRequestBody;
 import com.webserviceproject.request.UserDomainPutRequestBody;
 import com.webserviceproject.util.RoleModelCreator;
 import com.webserviceproject.util.UserDomainCreator;
-import com.webserviceproject.util.UserDomainPutRequestBodyCreator;
 import com.webserviceproject.wrapper.PageableResponse;
 
-import lombok.extern.log4j.Log4j2;
-
-@Log4j2
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -54,7 +51,6 @@ public class UserDomainControllerIT {
 	@Autowired
 	@Qualifier(value = "testRestTemplateRoleUser")
 	private TestRestTemplate testRestTemplateRoleUser;
-	
 	
 	@Autowired
 	@Qualifier(value = "testRestTemplateWithNonRoles")
@@ -116,18 +112,16 @@ public class UserDomainControllerIT {
 	@DisplayName("findall return list of userDomain whenSuccessful")
 	void findAll_returnListOfUserDomain_whenSuccessful() {
 		this.roleModelRepository.save(roleModelRepository.save(ROLE_ADMIN));
-		UserDomain userDomainToBeSaved = this.userDomainRepository.save(ADMIN);
+		this.userDomainRepository.save(ADMIN);
 		
-		List<UserDomain> userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains/admin/all/", HttpMethod.GET,new HttpEntity<>(httpHeaders()), 
-				new ParameterizedTypeReference<List<UserDomain>>() {
+		List<UserDomainGetRequestBody> userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains/admin/all/", HttpMethod.GET,new HttpEntity<>(httpHeaders()), 
+				new ParameterizedTypeReference<List<UserDomainGetRequestBody>>() {
 				}
 		).getBody();
 		
-		log.info(userDomainEntity.get(0));
-		
 		Assertions.assertThat(userDomainEntity).isNotNull();
 		Assertions.assertThat(userDomainEntity.get(0).getId()).isNotNull();
-		Assertions.assertThat(userDomainEntity.get(0)).isEqualTo(userDomainToBeSaved);
+		Assertions.assertThat(userDomainEntity.get(0)).isEqualTo(UserDomainCreator.createUserGetRequestBodyCreator());
 	}
 	
 	@Test
@@ -151,24 +145,24 @@ public class UserDomainControllerIT {
 		this.roleModelRepository.save(ROLE_ADMIN);
 		UserDomain userDomain = this.userDomainRepository.save(ADMIN);
 			
-		UserDomain userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains/admin/{id}", HttpMethod.GET, new HttpEntity<>(httpHeaders()),UserDomain.class, userDomain.getId()).getBody();
+		UserDomainGetRequestBody userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains/admin/{id}", HttpMethod.GET, new HttpEntity<>(httpHeaders()),UserDomainGetRequestBody.class, userDomain.getId()).getBody();
 		
 		Assertions.assertThat(userDomainEntity).isNotNull();
 		Assertions.assertThat(userDomainEntity.getId()).isNotNull();
-		Assertions.assertThat(userDomainEntity).isEqualTo(userDomain);
+		Assertions.assertThat(userDomainEntity).isEqualTo(UserDomainCreator.createUserGetRequestBodyCreator());
 	}
 	
 	@Test
 	@DisplayName("getUser Return userDomain whenSuccessful")
 	void getUser_ReturnUserDomainAuthenticated_whenSuccessful() {
 		this.roleModelRepository.save(ROLE_ADMIN);
-		UserDomain userDomain = this.userDomainRepository.save(ADMIN);
+		this.userDomainRepository.save(ADMIN);
 			
-		UserDomain userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains/get-user-authenticated",HttpMethod.GET,new HttpEntity<>(httpHeaders()), UserDomain.class).getBody();
+		UserDomainGetRequestBody userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains/get-user-authenticated",HttpMethod.GET,new HttpEntity<>(httpHeaders()), UserDomainGetRequestBody.class).getBody();
 		
 		Assertions.assertThat(userDomainEntity).isNotNull();
 		Assertions.assertThat(userDomainEntity.getId()).isNotNull();
-		Assertions.assertThat(userDomainEntity).isEqualTo(userDomain);
+		Assertions.assertThat(userDomainEntity).isEqualTo(UserDomainCreator.createUserGetRequestBodyCreator());
 	}
 	
 	@Test
@@ -179,7 +173,7 @@ public class UserDomainControllerIT {
 	
 		UserDomainPostRequestBody userDomainPostRequestBody = new UserDomainPostRequestBody("test", "insertNewUser@", "test phone", "test", "new username");
 		
-		ResponseEntity<UserDomain> userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains/admin", HttpMethod.POST,new HttpEntity<>(userDomainPostRequestBody,httpHeaders()),UserDomain.class);
+		ResponseEntity<UserDomainGetRequestBody> userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains/admin", HttpMethod.POST,new HttpEntity<>(userDomainPostRequestBody,httpHeaders()),UserDomainGetRequestBody.class);
 		
 		Assertions.assertThat(userDomainEntity).isNotNull();
 		Assertions.assertThat(userDomainEntity.getBody()).isNotNull();
@@ -223,7 +217,7 @@ public class UserDomainControllerIT {
 		this.roleModelRepository.save(ROLE_ADMIN);
 		this.userDomainRepository.save(ADMIN);
 	
-		UserDomainPutRequestBody userDomainPut = UserDomainPutRequestBodyCreator.createUserDomainPutRequestBodyCreator();
+		UserDomainPutRequestBody userDomainPut = UserDomainCreator.createUserDomainPutRequestBodyCreator();
 			
 		ResponseEntity<Void> userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains", HttpMethod.PUT, 
 				new HttpEntity<>(userDomainPut,httpHeaders()), Void.class);
@@ -238,7 +232,7 @@ public class UserDomainControllerIT {
 		this.roleModelRepository.saveAll(Arrays.asList(ROLE_ADMIN,ROLE_USER));
 		this.userDomainRepository.saveAll(Arrays.asList( ADMIN,USER));
 	
-		UserDomainPutRequestBody userDomainPut = UserDomainPutRequestBodyCreator.createUserDomainPutRequestBodyCreator();
+		UserDomainPutRequestBody userDomainPut = UserDomainCreator.createUserDomainPutRequestBodyCreator();
 			
 		ResponseEntity<Void> userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains/admin/update-full/{id}", HttpMethod.PUT, 
 				new HttpEntity<>(userDomainPut,httpHeaders()), Void.class,1);

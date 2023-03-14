@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webserviceproject.entities.Category;
+import com.webserviceproject.mapper.CategoryMapper;
+import com.webserviceproject.request.CategoryGetRequestBody;
 import com.webserviceproject.request.CategoryPostRequestBody;
 import com.webserviceproject.request.CategoryPutRequestBody;
 import com.webserviceproject.services.CategoryService;
@@ -34,48 +36,51 @@ import lombok.RequiredArgsConstructor;
 public class CategoryController {
 
 	private final CategoryService categoryService;
-	
-	/*no downgrade as exception estao funcionando mas vale resaltar que a url estava errada*/
-	
+
 	@GetMapping(value = "/all/pageable")
 	@Operation(summary = "find all categories paginated")
-	public ResponseEntity<Page<Category>> findAllPageable(@ParameterObject Pageable pageable){
+	public ResponseEntity<Page<Category>> findAllPageable(@ParameterObject Pageable pageable) {
 		return ResponseEntity.ok(categoryService.findAllPageable(pageable));
 	}
-	
+
 	@GetMapping(value = "/all")
 	@Operation(summary = "find all categories non paginated")
-	public ResponseEntity<List<Category>> findAllNonPageable() {
-		return ResponseEntity.ok(categoryService.findAllNonPageable());
+	public ResponseEntity<List<CategoryGetRequestBody>> findAllNonPageable() {
+
+		return ResponseEntity
+				.ok(CategoryMapper.INSTANCE.toCategoryGetRequestBody(categoryService.findAllNonPageable()));
 	}
 
 	@GetMapping(value = "/{id}")
 	@Operation(summary = "find category by id")
-	public ResponseEntity<Category> findById(@PathVariable long id) {
-		return ResponseEntity.ok(categoryService.findByIdOrElseThrowBadRequestException(id));
+	public ResponseEntity<CategoryGetRequestBody> findById(@PathVariable long id) {
+		return ResponseEntity.ok(CategoryMapper.INSTANCE.toCategoryGetRequestBody(categoryService.findByIdOrElseThrowBadRequestException(id)));
 	}
-	
+
 	@PostMapping(value = "/admin")
-	@Operation(description="the user has to be admin")
-	public ResponseEntity<Category> insert(@RequestBody @Valid CategoryPostRequestBody categoryPostRequestBody){
-		return new ResponseEntity<Category>(categoryService.insert(categoryPostRequestBody), HttpStatus.CREATED);
+	@Operation(description = "the user has to be admin")
+	public ResponseEntity<CategoryGetRequestBody> insert(
+			@RequestBody @Valid CategoryPostRequestBody categoryPostRequestBody) {
+
+		return new ResponseEntity<CategoryGetRequestBody>(
+				CategoryMapper.INSTANCE.toCategoryGetRequestBody(categoryService.insert(categoryPostRequestBody)),
+				HttpStatus.CREATED);
 	}
-	
+
 	@DeleteMapping(value = "/admin/{id}")
-	@Operation(description="the user has to be admin")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "204", description = "successful operation"),
-			@ApiResponse(responseCode = "400", description = "when category does not exist in the dataBase")
-	})
-	public ResponseEntity<Void> delete(@PathVariable long id){
+	@Operation(description = "the user has to be admin")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "successful operation"),
+			@ApiResponse(responseCode = "400", description = "when category does not exist in the dataBase") })
+	public ResponseEntity<Void> delete(@PathVariable long id) {
 		categoryService.deleteCategory(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 	@PutMapping(value = "/admin")
-	@Operation(description="the user has to be admin")
-	public ResponseEntity<Void> update(@RequestBody CategoryPutRequestBody categoryPutRequestBody){
+	@Operation(description = "the user has to be admin")
+	public ResponseEntity<Void> update(@RequestBody CategoryPutRequestBody categoryPutRequestBody) {
 		categoryService.updateCategory(categoryPutRequestBody);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
+
 }
