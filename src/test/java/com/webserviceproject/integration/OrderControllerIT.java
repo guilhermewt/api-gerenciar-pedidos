@@ -58,6 +58,7 @@ public class OrderControllerIT {
 	@Autowired
 	private OrderRepository orderRepository;
 	
+	
 	@Autowired
 	private RoleModelRepository roleModelRepository;
 	
@@ -121,16 +122,15 @@ public class OrderControllerIT {
 	void findAll_returnObjectPage_whenSuccessful() {
 		this.roleModelRepository.save(ROLE_ADMIN);
 		this.userDomainRepository.save(ADMIN);
+		this.orderRepository.save(OrderCreator.createOrder());
 		
-		Order order = this.orderRepository.save(OrderCreator.createOrder());
-		
-		PageableResponse<Order> orderEntity = testRestTemplateRoleAdmin.exchange("/orders/pageable", HttpMethod.GET,new HttpEntity<>(headers()),
-										new ParameterizedTypeReference<PageableResponse<Order>>() {
+		PageableResponse<OrderGetRequestBody> orderEntity = testRestTemplateRoleAdmin.exchange("/orders/pageable", HttpMethod.GET,new HttpEntity<>(headers()),
+										new ParameterizedTypeReference<PageableResponse<OrderGetRequestBody>>() {
 										}).getBody();
 		
 		Assertions.assertThat(orderEntity).isNotNull();
 		Assertions.assertThat(orderEntity.toList().get(0)).isNotNull();
-		Assertions.assertThat(orderEntity.toList().get(0)).isEqualTo(order);
+		Assertions.assertThat(orderEntity.toList().get(0)).isEqualTo(OrderCreator.createOrderGetRequestBodyCreator());
 	}
 	
 	@Test

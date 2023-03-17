@@ -75,9 +75,9 @@ public class CategoryControllerTest {
 	@Test
 	@DisplayName("findAll return List of object inside page whenSuccessful")
 	void findAll_returnListOfObjectInsidePage_whenSuccessful() {
-		Category categorySaved = CategoryCreator.createCategory();
+		CategoryGetRequestBody categorySaved = CategoryCreator.createCategoryGetRequestBodyCreator();
 
-		Page<Category> userPage = categoryController.findAllPageable(PageRequest.of(0, 1)).getBody();
+		Page<CategoryGetRequestBody> userPage = categoryController.findAllPageable(PageRequest.of(0, 1)).getBody();
 
 		Assertions.assertThat(userPage).isNotNull();
 		Assertions.assertThat(userPage.toList().get(0).getId()).isNotNull();

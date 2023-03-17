@@ -131,17 +131,17 @@ public class ProductControllerIT {
 		this.roleModelRepository.save(ROLE_ADMIN);
 		this.userDomainRepository.save(ADMIN);
 
-		Product product = this.productRepository.save(ProductCreator.createProduct());
+		this.productRepository.save(ProductCreator.createProduct());
 
-		PageableResponse<Product> productEntity = testRestTemplateRoleAdmin
+		PageableResponse<ProductGetRequestBody> productEntity = testRestTemplateRoleAdmin
 				.exchange("/products/all/pageable", HttpMethod.GET, new HttpEntity<>(headers()),
-						new ParameterizedTypeReference<PageableResponse<Product>>() {
+						new ParameterizedTypeReference<PageableResponse<ProductGetRequestBody>>() {
 						})
 				.getBody();
 
 		Assertions.assertThat(productEntity).isNotNull();
 		Assertions.assertThat(productEntity.toList().get(0)).isNotNull();
-		Assertions.assertThat(productEntity.toList().get(0)).isEqualTo(product);
+		Assertions.assertThat(productEntity.toList().get(0)).isEqualTo(ProductCreator.createProductGetRequestBodyCreator());
 	}
 
 	@Test

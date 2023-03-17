@@ -80,9 +80,9 @@ public class ProductControllerTest {
 	@Test
 	@DisplayName("findAll return List Of Object Inside Page whenSuccessful")
 	void findAll_returnListOfObjectInsidePage_whenSuccessful() {
-		Product productSaved = ProductCreator.createProduct();
+		ProductGetRequestBody productSaved = ProductCreator.createProductGetRequestBodyCreator();
 
-		Page<Product> userPage = productController.findAllPageable(PageRequest.of(0, 1)).getBody();
+		Page<ProductGetRequestBody> userPage = productController.findAllPageable(PageRequest.of(0, 1)).getBody();
 
 		Assertions.assertThat(userPage).isNotNull();
 		Assertions.assertThat(userPage.toList().get(0).getId()).isNotNull();

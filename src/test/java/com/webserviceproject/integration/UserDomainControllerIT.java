@@ -128,15 +128,15 @@ public class UserDomainControllerIT {
 	@DisplayName("findall return list of object page when successful")
 	void findAll_returnObjectPage_whenSuccessful() {
 		this.roleModelRepository.save(ROLE_ADMIN);
-		UserDomain userDomain =this.userDomainRepository.save(ADMIN);
+		this.userDomainRepository.save(ADMIN);
 		
-		PageableResponse<UserDomain> userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains/admin/all/Pageable", HttpMethod.GET,new HttpEntity<>(httpHeaders()),
-										new ParameterizedTypeReference<PageableResponse<UserDomain>>() {
+		PageableResponse<UserDomainGetRequestBody> userDomainEntity = testRestTemplateRoleAdmin.exchange("/userdomains/admin/all/Pageable", HttpMethod.GET,new HttpEntity<>(httpHeaders()),
+										new ParameterizedTypeReference<PageableResponse<UserDomainGetRequestBody>>() {
 										}).getBody();
 		
 		Assertions.assertThat(userDomainEntity).isNotNull();
 		Assertions.assertThat(userDomainEntity.toList().get(0)).isNotNull();
-		Assertions.assertThat(userDomainEntity.toList().get(0)).isEqualTo(userDomain);
+		Assertions.assertThat(userDomainEntity.toList().get(0)).isEqualTo(UserDomainCreator.createUserGetRequestBodyCreator());
 	}
 	
 	@Test

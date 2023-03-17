@@ -2,6 +2,7 @@ package com.webserviceproject.controllers.exceptions;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
@@ -36,6 +37,19 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler{
 				.build(), HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler(NoSuchElementException.class)
+	public ResponseEntity<ExceptionDetails> nosuch(NoSuchElementException ex) {
+		return new ResponseEntity<ExceptionDetails>(BadRequestExceptionDetails.builder()
+				.timestamp(Instant.now())
+				.status(HttpStatus.BAD_REQUEST.value())				
+				.error("Bad Request Exception, check the documentation")
+				.details(ex.getMessage())
+				.developerMessage(ex.getClass().getName())
+				.build(), HttpStatus.BAD_REQUEST);
+	}
+	
+	
+	
 	@ExceptionHandler(AuthenticationException.class)
 	public ResponseEntity<ExceptionDetails> AuthenticationException(AuthenticationException ex) {
 		return new ResponseEntity<ExceptionDetails>(BadRequestExceptionDetails.builder()
@@ -43,7 +57,7 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler{
 				.error("token invalid, expired or not present")
 				.details(ex.getMessage())
 				.developerMessage(ex.getClass().getName())
-				.build(), HttpStatus.BAD_REQUEST);
+				.build(), HttpStatus.FORBIDDEN);
 	}
 	
 	

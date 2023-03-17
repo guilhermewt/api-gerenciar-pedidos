@@ -128,16 +128,15 @@ public class CategoryControllerIT {
 	void findAll_returnObjectPage_whenSuccessful() {
 		this.roleModelRepository.save(ROLE_ADMIN);
 		this.userDomainRepository.save(ADMIN);
+		this.categoryRepository.save(CategoryCreator.createCategory());
 		
-		Category category = this.categoryRepository.save(CategoryCreator.createCategory());
-		
-		PageableResponse<Category> categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/all/pageable", HttpMethod.GET,new HttpEntity<>(headers()),
-										new ParameterizedTypeReference<PageableResponse<Category>>() {
+		PageableResponse<CategoryGetRequestBody> categoryEntity = testRestTemplateRoleAdmin.exchange("/categories/all/pageable", HttpMethod.GET,new HttpEntity<>(headers()),
+										new ParameterizedTypeReference<PageableResponse<CategoryGetRequestBody>>() {
 										}).getBody();
 		
 		Assertions.assertThat(categoryEntity).isNotNull();
 		Assertions.assertThat(categoryEntity.toList().get(0)).isNotNull();
-		Assertions.assertThat(categoryEntity.toList().get(0)).isEqualTo(category);
+		Assertions.assertThat(categoryEntity.toList().get(0)).isEqualTo(CategoryCreator.createCategoryGetRequestBodyCreator());
 	}
 	
 	@Test

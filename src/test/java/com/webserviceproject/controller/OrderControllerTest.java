@@ -76,9 +76,9 @@ public class OrderControllerTest {
 	@Test
 	@DisplayName("findAll return List Of Object Inside Page whenSuccessful")
 	void findAll_returnListOfObjectInsidePage_whenSuccessful() {
-		Order orderSaved = OrderCreator.createOrder();
+		OrderGetRequestBody orderSaved = OrderCreator.createOrderGetRequestBodyCreator();
 
-		Page<Order> userPage = orderController.findAllPageable(PageRequest.of(0, 1)).getBody();
+		Page<OrderGetRequestBody> userPage = orderController.findAllPageable(PageRequest.of(0, 1)).getBody();
 
 		Assertions.assertThat(userPage).isNotNull();
 		Assertions.assertThat(userPage.toList().get(0).getId()).isNotNull();

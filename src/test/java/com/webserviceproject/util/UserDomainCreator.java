@@ -34,7 +34,7 @@ public class UserDomainCreator {
 	}
 	
 	public static UserDomainGetRequestBody createUserGetRequestBodyCreator() {
-		return new UserDomainGetRequestBody(1l, "testName", "test@gmail", "33333333", "$2a$10$zoylFI1DPUqViPq0dA9T1./y9X.5FBdWoxP65B8G6wyXV3//4Ky9m", "username admin test");
+		return new UserDomainGetRequestBody(1l, "testName", "test@gmail", "33333333", "username admin test");
 	}
 	
 }

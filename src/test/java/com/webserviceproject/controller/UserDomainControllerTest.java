@@ -81,9 +81,9 @@ public class UserDomainControllerTest {
 	@Test
 	@DisplayName("findAll return List Of Object Inside Page whenSuccessful")
 	void findAll_returnListOfObjectInsidePage_whenSuccessful() {
-		UserDomain userDomainSaved = UserDomainCreator.createUserDomainAdmin();
+		UserDomainGetRequestBody userDomainSaved = UserDomainCreator.createUserGetRequestBodyCreator();
 
-		Page<UserDomain> userPage = userDomainController.findAllPageable(PageRequest.of(0, 1)).getBody();
+		Page<UserDomainGetRequestBody> userPage = userDomainController.findAllPageable(PageRequest.of(0, 1)).getBody();
 
 		Assertions.assertThat(userPage).isNotNull();
 		Assertions.assertThat(userPage.toList().get(0).getId()).isNotNull();

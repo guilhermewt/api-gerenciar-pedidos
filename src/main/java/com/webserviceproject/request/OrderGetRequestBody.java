@@ -1,9 +1,16 @@
 package com.webserviceproject.request;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Function;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.domain.Page;
+
+import com.webserviceproject.entities.Order;
+import com.webserviceproject.entities.OrderItems;
 import com.webserviceproject.entities.enums.OrderStatus;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,6 +29,8 @@ public class OrderGetRequestBody {
 	@NotNull(message = "orderStatus cannot be null")
 	@Schema(description = "status of the order",example="WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, CANCELED")
 	private Integer orderStatus;
+	
+	private Set<OrderItems> items = new HashSet<>();
 
 	public OrderGetRequestBody(Long id,Instant moment, OrderStatus orderStatus) {
 		super();
@@ -38,5 +47,23 @@ public class OrderGetRequestBody {
 		if (orderStatus != null) {
 			this.orderStatus = orderStatus.getCode();
 		}
+	}
+	
+public static Page<OrderGetRequestBody> toOrderGetRequestBodyPage(Page<Order> order) {
+		
+		Page<OrderGetRequestBody> dtoPage = order.map(new Function<Order, OrderGetRequestBody>() {
+			
+			@Override
+			public OrderGetRequestBody apply(Order order) {
+				OrderGetRequestBody dto = new OrderGetRequestBody();
+				dto.setId(order.getId());
+				dto.setMoment(order.getMoment());
+				dto.setOrderStatus(order.getOrderStatus());
+				dto.setItems(order.getItems());
+				return dto;
+			}
+		});
+		
+		return dtoPage;
 	}
 }
