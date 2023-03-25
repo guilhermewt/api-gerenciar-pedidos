@@ -25,8 +25,6 @@ public class CategoryRepositoryTest {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
-	
-	
 	@Test
 	@DisplayName("find all category by id return list of object inside page whensuccessful")
 	void findAll_returnListOfObjectInsidePage_whenSuccessful() {

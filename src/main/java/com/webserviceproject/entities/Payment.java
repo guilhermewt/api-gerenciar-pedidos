@@ -24,7 +24,11 @@ import lombok.ToString;
 @EqualsAndHashCode(of= {"id"})
 @ToString(exclude = "order")
 public class Payment implements Serializable{
-	
+	/*
+	 * repository
+	 * service:recebe id do pedido e payment associa e salva
+	 * controle: metodo salva
+	 * */
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -37,11 +41,10 @@ public class Payment implements Serializable{
 	@MapsId
 	private Order order;
 
-	public Payment(Long id, Instant moment, Order order) {
+	public Payment(Long id, Instant moment) {
 		super();
 		this.id = id;
 		this.moment = moment;
-		this.order = order;
 	}
 	
 }

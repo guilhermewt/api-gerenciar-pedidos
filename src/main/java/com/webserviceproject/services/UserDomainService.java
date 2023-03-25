@@ -26,11 +26,9 @@ import com.webserviceproject.services.exceptions.BadRequestException;
 import com.webserviceproject.services.exceptions.ConflictException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Log4j2
 public class UserDomainService implements UserDetailsService{
 	
 	private final UserDomainRepository userDomainRepository;
