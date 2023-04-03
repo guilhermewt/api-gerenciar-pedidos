@@ -1,5 +1,7 @@
 # Gerenciador de pedidos
 
+A api gerenciadoras de pedidos tem por objetivo disponibizar end points para fazer o controler dos pedidos,sendo assim ao receber os produtos e a quantidade deles o processamento consiste em montar um ordem de pedido 
+
 Webservice gerenciador de pedidos, um projeto que contém as funcionalidades de fazer pedidos, escolher produtos. o sistema pega estes pedidos e retornar as características como preço,preço total dependendo da quantidade de produtos feitos. Faz a verificação do pagamento do pedido e em que etapa está (pago,aguardando pagamento...). O sistema foi construído com seguindo os conceitos de Rest e Json para transferência de dados
   
   <br>
