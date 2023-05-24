@@ -42,6 +42,7 @@ public class WebSecurityConfig {
 				.antMatchers("/products/admin/**").hasRole("ADMIN")
 				.antMatchers(HttpMethod.POST, "/userdomains/saveuserdomain").permitAll()
 				.antMatchers(HttpMethod.POST, "/login").permitAll()
+				.antMatchers("/actuator/**").permitAll()
 				.antMatchers("/h2-console/**").permitAll()
 				.antMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**","/","/h2-console/**").permitAll()
 				.anyRequest().authenticated().and().headers().frameOptions().sameOrigin().and()
