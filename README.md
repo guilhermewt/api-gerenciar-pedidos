@@ -1,3 +1,13 @@
+<div align="center">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/spring-boot.webp" style="width:200px;height:90px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/java.webp" style="width:150px;height:90px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/jwt.png" style="width:150px;height:100px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/postgre.jpg" style="width:150px;height:100px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/docker.jpg" style="width:150px;height:100px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/JUnit.svg" style="width:150px;height:100px;">
+</div>
+
+
 # API de pedidos
 
 A API Gerenciadora de Pedidos é um projeto desenvolvido em Java utilizando o framework Spring Boot. Seu objetivo é disponibilizar endpoints para o controle de pedidos, permitindo a criação, consulta e atualização de pedidos.
@@ -11,10 +21,6 @@ Portanto, o projeto resolve o problema de controle e gerenciamento de pedidos de
 
 ## Tabela de conteúdos
 
-Aqui você coloca links para acessar mais facilmente cada um dos tópicos do seu README.
-
-Exemplo:
-
 - [Arquitetura](#arquitetura)
 - [Instruçoẽs de execução](#Instruçoẽs-de-execução)
 - [Como usar a Api](#Como-usar-a-Api)
@@ -27,7 +33,7 @@ Exemplo:
 ### UML do banco de dados
 <img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/uml-BD-api-pedidos.png">
 
-### springboot
+### Spring Boot
 É o backend principal da minha aplicação, feita em java somente pelo motivo de eu já conhecer a linguagem e ter experiência com o ecossistema spring, partir pra esse lado me deu muita produtivdade na hora de codificar os endpoints da API.
 
 ### Banco de dados
@@ -66,7 +72,7 @@ Mas aqui tem um problema, no banco de dados eu posso simplesmente criar uma tabe
 -  mas como isso ficaria no backend? já que na orientacao a objetos nao existe chave composta. Eu terei que criar uma classe auxiliar que irá identificar o par produto e pedido ja que a classe order item nao tem um identificador unico e sim o par ligando o pedido e produto.Então eu terei a classe 'order_item' que vai representar a associacao entre pedidos e produtos. Terei tambem uma classe chamada orderItemPK e esta classe sera responsavel pelas chaves compostas. segue a imagem de exemplo:
   <img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/order-item-pk.png">
 
- ## Instruçoẽs de execução 
+ # Instruçoẽs de execução 
 
 1 - Certifique-se de ter o ambiente de desenvolvimento configurado:
 - Instale o Java Development Kit (JDK) em sua máquina. Recomenda-se o JDK 8 ou superior.
