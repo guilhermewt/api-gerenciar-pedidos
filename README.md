@@ -1,10 +1,10 @@
 <div align="center">
-	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/spring-boot.webp" style="width:200px;height:90px;">
-	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/java.webp" style="width:150px;height:90px;">
-	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/jwt.png" style="width:150px;height:100px;">
-	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/postgre.jpg" style="width:150px;height:100px;">
-	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/docker.jpg" style="width:150px;height:100px;">
-	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/JUnit.svg" style="width:150px;height:100px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/spring-boot.webp" style="width:90px;height:50px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/java.webp" style="width:80px;height:60px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/jwt.png" style="width:90px;height:50px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/postgre.jpg" style="width:80px;height:50px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/docker.jpg" style="width:90px;height:50px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/JUnit.svg" style="width:90px;height:50px;">
 </div>
 
 
