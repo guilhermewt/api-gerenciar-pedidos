@@ -16,6 +16,7 @@ Aqui você coloca links para acessar mais facilmente cada um dos tópicos do seu
 Exemplo:
 
 - [Arquitetura](#arquitetura)
+- [Instruçoẽs de execução](#Instruçoẽs-de-execução)
 - [Como usar a Api](#Como-usar-a-Api)
 
 # Arquitetura
@@ -65,7 +66,7 @@ Mas aqui tem um problema, no banco de dados eu posso simplesmente criar uma tabe
 -  mas como isso ficaria no backend? já que na orientacao a objetos nao existe chave composta. Eu terei que criar uma classe auxiliar que irá identificar o par produto e pedido ja que a classe order item nao tem um identificador unico e sim o par ligando o pedido e produto.Então eu terei a classe 'order_item' que vai representar a associacao entre pedidos e produtos. Terei tambem uma classe chamada orderItemPK e esta classe sera responsavel pelas chaves compostas. segue a imagem de exemplo:
   <img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/order-item-pk.png">
 
- ## instruçoẽs de execução 
+ ## Instruçoẽs de execução 
 
 1 - Certifique-se de ter o ambiente de desenvolvimento configurado:
 - Instale o Java Development Kit (JDK) em sua máquina. Recomenda-se o JDK 8 ou superior.
