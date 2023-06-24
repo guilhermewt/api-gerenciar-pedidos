@@ -24,6 +24,7 @@ Portanto, o projeto resolve o problema de controle e gerenciamento de pedidos de
 - [Arquitetura](#arquitetura)
 - [Instruçoẽs de execução](#Instruçoẽs-de-execução)
 - [Como usar a Api](#Como-usar-a-Api)
+- [Endpoints da Api](#Endpoints-da-Api)
 
 # Arquitetura
 
@@ -72,7 +73,17 @@ Mas aqui tem um problema, no banco de dados eu posso simplesmente criar uma tabe
 -  mas como isso ficaria no backend? já que na orientacao a objetos nao existe chave composta. Eu terei que criar uma classe auxiliar que irá identificar o par produto e pedido ja que a classe order item nao tem um identificador unico e sim o par ligando o pedido e produto.Então eu terei a classe 'order_item' que vai representar a associacao entre pedidos e produtos. Terei tambem uma classe chamada orderItemPK e esta classe sera responsavel pelas chaves compostas. segue a imagem de exemplo:
   <img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/order-item-pk.png">
 
+
  # Endpoints da Api
+
+ ## Tabela de conteúdos
+
+- [Endpoints para manipular informaçoẽs dos usuários](#Endpoints-para-manipular-informaçoẽs-dos-usuários)
+- [Endpoints para manipular informaçoẽs de pedidos](#Endpoints-para-manipular-informaçoẽs-de-pedidos)
+- [Endpoints para manipular informaçoẽs dos produtos](#Endpoints-para-manipular-informaçoẽs-dos-produtos)
+- [Endpoints para manipular informaçoẽs das categorias dos produtos](#Endpoints-para-manipular-informaçoẽs-das-categorias-dos-produtos)
+- [Endpoints para manipular informaçoẽs dos pagamentos de pedidos](#Endpoints-para-manipular-informaçoẽs-dos-pagamentos-de-pedidos)
+
  
  ## Endpoints para manipular informaçoẽs dos usuários
  #### cadastrar usuário
@@ -192,7 +203,7 @@ Mas aqui tem um problema, no banco de dados eu posso simplesmente criar uma tabe
  ## Endpoints para manipular informaçoẽs de pedidos
 
  #### Realizar pedidos
- Endpoint para usuário administrador possa cadastrar um outro usuário administrador
+ 
  * Para criar um pedido é necessario o id do produto e a quantidade.      
  * A data (moment) dever estar neste formato
  * Escolhe um dos status do pedido(orderStatus): WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, CANCELED
@@ -273,7 +284,225 @@ Mas aqui tem um problema, no banco de dados eu posso simplesmente criar uma tabe
 		    }
 	      ]
       }
- # Instruçoẽs de execução 
+ 
+ #### Buscar pedidos por Id
+ 
+ ### 
+       GET - http://localhost:8080/orders/{id do pedido}
+ ### 
+     {
+		  "id": 0,
+		  "moment": "2023-06-22T20:27:03.023Z",
+		  "orderStatus": "WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, CANCELED",
+		  "items": [
+		      {
+		        "quantity": 0,
+		        "price": 0,
+		        "product": {
+		          "id": 0,
+		          "name": "nome do produto",
+		          "description": "descricao do produto",
+		          "price": 0,
+		          "imgUrl": "string",
+		          "category": [
+		            {
+		              "id": 0,
+		              "name": "nome da categoria do pedido"
+		            }
+		          ]
+		      },
+		      "subTotal": 0
+		    }
+		  ]
+	
+     }
+ ### Atualizar pedidos
+ * esta rota pode ser usada para atualizar o status do pedido a cada etapa da venda.
+ * Coloque o id do pedido
+ * selecione um desses status: WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, CANCELED
+
+ ### 
+       PUT - http://localhost:8080/orders/{id}
+ ###     
+     {
+	    "id": 1,
+  	    "moment": "2023-06-22T20:29:15.864Z",
+  	    "orderStatus": "PAID"
+      }      
+
+ #### Atualizar pedidos
+ 
+ ### 
+       DELETE - http://localhost:8080/orders/{id do pedido}
+
+ ## Endpoints para manipular informaçoẽs dos produtos
+ 
+ ### Listar todos Produtos paginados
+
+ ### 
+       GET - http://localhost:8080/products/all/pageable   
+ ###     
+     {
+	 content:[
+		    {
+			"id": 0,
+			"name": "nome do produto",
+			"description": "descricao do produto",
+			"price": 0,
+			"imgUrl": "string",
+			"category": [
+			{
+				"id": 0,
+				"name": "nome da categoria"
+			}
+			]
+            	     }   
+      }
+ 
+     
+
+ ### Listar todos Produtos
+
+ ### 
+       GET - http://localhost:8080/products/all  
+ ###
+     [
+	    {
+		"id": 0,
+    		"name": "nome do produto",
+    		"description": "descricao do produto",
+    		"price": 0,
+    		"imgUrl": "string",
+    		"category": [
+      			{
+        			"id": 0,
+        			"name": "nome da categoria"
+      			}
+    		]
+	    }
+      ]
+
+ ### Busca produtos pelo id
+
+ ### 
+       GET - http://localhost:8080/products/{id} 
+ ###
+     {
+	"id": 0,
+	"name": "nome do produto",
+	"description": "descricao do produto",
+	"price": 0,
+	"imgUrl": "string",
+	"category": [
+	      {
+	        "id": 0,
+	        "name": "nome da categoria"
+	      }
+	]
+      }
+
+ * OS SEGUINTES END POINTS SÓ TERÃO ACESSO USUÁRIOS ADMINISTRADORES
+
+ ### Busca produtos pelo id
+ * salvar um novo produto. É necessário enviar o produto e o id da categoria do dele
+ ### 
+     POST - http://localhost:8080/products/admin/{categoryId} 
+ ###
+     {
+	"id": 0,
+    	"name": "nome do produto",
+    	"description": "descricao do produto",
+    	"price": 0,
+    	"imgUrl": "string"
+      }
+
+ ### Atualizar um produto
+ * salvar um novo produto. É necessário enviar o produto e o id da categoria do dele
+ ### 
+     PUT - http://localhost:8080/products/admin/
+ ###
+     {
+    	"id": 1,
+    	"name": "nome do produto",
+    	"description": "descricao do produto",
+    	"price": 0,
+    	"imgUrl": "string"
+      }
+
+ ### Deletar um produto
+ * deletar um produto (só é possível deletar um produto caso ele não tenha nenhuma associação com nenheum pedido)
+ ### 
+     DELETE - http://localhost:8080/products/admin/{id}
+
+## Endpoints para manipular informaçoẽs das categorias dos produtos
+
+### Listar todas categorias paginadas
+    GET - http://localhost:8080/products/Pageable&size=20&page=2f
+###
+    {
+      "content": [
+	    {
+	      "id": 1,
+	      "name": "eletronicos"
+	    }
+       ]
+     }
+
+### Listar todas categorias
+    GET - http://localhost:8080/categories/all
+###
+    [
+  	{
+    	  "id": 0,
+          "name": "nome da categoria"
+         }
+    ]
+
+### Buscar categorias pelo Id 
+    GET - http://localhost:8080/categories/{id}
+###
+    {
+      "id": 1,
+      "name": "nome da categoria"
+    }
+
+* OS SEGUINTES END POINTS SÓ TERÃO ACESSO USUÁRIOS ADMINISTRADORES    
+
+### Cadastrar categoria 
+    POST - http://localhost:8080/categories/admin
+###
+    {
+      "id": 1,
+      "name": "nome da categoria"
+    }
+
+### Atualizar categoria 
+    PUT - http://localhost:8080/categories/admin
+###
+    {
+      "id": 1,
+      "name": "nome da categoria"
+     }
+
+### Deletar categoria 
+ Deletar uma categoria (só é possível deletar um categoria caso ela não tenha nenhuma associação)
+### 
+    DELETE - http://localhost:8080/categories/admin/{id da categoria}
+
+## Endpoints para manipular informaçoẽs dos pagamentos de pedidos
+
+### Buscar o pagamento do pedido
+    GET - http://localhost:8080/payment/findOrderId/{id do pedido}
+###
+
+### Realizar o pagamento
+    POST - http://localhost:8080/payment/{id do pedido}
+###
+    {
+      "moment": "2023-06-23T14:04:29.308Z"
+     }
+
+# Instruçoẽs de execução 
 
 1 - Certifique-se de ter o ambiente de desenvolvimento configurado:
 - Instale o Java Development Kit (JDK) em sua máquina. Recomenda-se o JDK 8 ou superior.
