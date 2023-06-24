@@ -1,6 +1,6 @@
 <div align="center">
 	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/spring-boot.webp" style="width:90px;height:50px;">
-	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/java.webp" style="width:80px;height:60px;">
+	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/java.webp" style="width:70px;height:50px;">
 	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/jwt.png" style="width:90px;height:50px;">
 	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/postgre.jpg" style="width:80px;height:50px;">
 	<img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/docker.jpg" style="width:90px;height:50px;">
@@ -72,6 +72,207 @@ Mas aqui tem um problema, no banco de dados eu posso simplesmente criar uma tabe
 -  mas como isso ficaria no backend? já que na orientacao a objetos nao existe chave composta. Eu terei que criar uma classe auxiliar que irá identificar o par produto e pedido ja que a classe order item nao tem um identificador unico e sim o par ligando o pedido e produto.Então eu terei a classe 'order_item' que vai representar a associacao entre pedidos e produtos. Terei tambem uma classe chamada orderItemPK e esta classe sera responsavel pelas chaves compostas. segue a imagem de exemplo:
   <img src="https://github.com/guilhermewt/assets/blob/main/Api%20de%20pedidos/order-item-pk.png">
 
+ # Endpoints da Api
+ 
+ ## Endpoints para manipular informaçoẽs dos usuários
+ #### cadastrar usuário
+ Nesta rota qualquer usuários podem se cadastrar seguindo o json abaixo:
+ ### 
+       POST - http://localhost:8080/userdomains/saveuserdomain
+ ###     
+     {
+	    "name": "nome do usuario",
+	    "email": "email do usuario",
+	    "phone": "celular do usuario",
+	    "password": "senha do usuario",
+	    "username": "nome de login do usuario"
+      }
+
+ #### Buscar informaçoẽs do usuário
+ End point para o usuário poder visualizar seus dados:
+ ### 
+       GET - http://localhost:8080/userdomains/get-user-authenticated
+ ###     
+     {
+	    "name": "nome do usuario",
+	    "email": "email do usuario",
+	    "phone": "celular do usuario",
+	    "username": "nome de login do usuario"
+      }
+ 
+ #### Atualizar informaçoẽs do usuário
+ End point para o usuário atualizar seus dados:
+ ### 
+       PUT - http://localhost:8080/userdomains
+ ###     
+     {
+	    "name": "nome do usuario",
+  	    "email": "email do usuario",
+  	    "phone": "celular do usuario",
+  	    "password": "senha do usuario",
+  	    "username": "nome de login do usuario"
+      }
+
+ * OS SEGUINTES END POINTS SÓ TERÃO ACESSO USUÁRIOS ADMINISTRADORES
+ 
+ #### Cadastrar usuário administrador
+ Endpoint para usuário administrador possa cadastrar um outro usuário administrador
+ ### 
+       POST - http://localhost:8080/userdomains/admin
+ ###     
+     {
+	    "name": "nome do usuario",
+  	    "email": "email do usuario",
+  	    "phone": "celular do usuario",
+  	    "password": "senha do usuario",
+  	    "username": "nome de login do usuario"
+      }      
+ 
+ #### Listar todos usuários
+ Endpoint para listar todos usuários 
+ ### 
+       GET - http://localhost:8080/userdomains/admin/all/
+ ### 
+     [
+	     {
+		    "name": "nome do usuario",
+	  	    "email": "email do usuario",
+	  	    "phone": "celular do usuario",
+	  	    "password": "senha do usuario",
+	  	    "username": "nome de login do usuario"
+	      }
+      ]
+
+ #### Listar todos usuários paginados
+ Endpoint para listar todos usuários com paginação 
+ ### 
+       GET - http://localhost:8080/userdomains/admin/all/Pageable&size=20&page=2f
+ ### 
+     {
+	content:[
+		   {
+			"name": "nome do usuario",
+			"email": "email do usuario",
+			"phone": "celular do usuario",
+			"password": "senha do usuario",
+			"username": "nome de login do usuario"
+		    }
+		 ]
+      }
+
+  #### Buscar usuários por id
+ Endpoint para usuário administrador buscar um usuário por id
+ ### 
+       GET - http://localhost:8080/userdomains/admin/{id do usuario}
+ ###     
+     {
+	    "name": "nome do usuario",
+  	    "email": "email do usuario",
+  	    "phone": "celular do usuario",
+  	    "username": "nome de login do usuario"
+      }
+
+ #### Atualizar usuário
+ Endpoint para usuário administrador atualizar os dados de um outro usuario
+ ### 
+       PUT - http://localhost:8080/admin/update-full/{id do usuario que sera atualizado}
+ ###     
+     {
+	    "name": "nome do usuario",
+  	    "email": "email do usuario",
+  	    "phone": "celular do usuario",
+  	    "username": "nome de login do usuario"
+      }
+ 
+ #### Deletar um usuário
+
+ ### 
+       DELETE - http://localhost:8080/admin/update-full/{id do usuario que sera atualizado}
+
+ ## Endpoints para manipular informaçoẽs de pedidos
+
+ #### Realizar pedidos
+ Endpoint para usuário administrador possa cadastrar um outro usuário administrador
+ * Para criar um pedido é necessario o id do produto e a quantidade.      
+ * A data (moment) dever estar neste formato
+ * Escolhe um dos status do pedido(orderStatus): WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, CANCELED
+ ### 
+       POST - http://localhost:8080/orders/{id do produto}/{quantidade do produto}     
+ ###     
+     {
+	    "moment": "2023-06-22T20:15:52.641Z",
+  	    "orderStatus": "WAITING_PAYMENT"
+      }
+
+ 
+ #### Listar todos pedidos do usuário
+
+ ### 
+       GET - http://localhost:8080/orders    
+ ###     
+     [
+	    {
+		    "id": 0,
+		    "moment": "2023-06-22T20:25:19.436Z",
+		    "orderStatus": "WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, CANCELED",
+		    "items": [
+		      {
+		        "quantity": 0,
+		        "price": 0,
+		        "product": {
+			          "id": 0,
+			          "name": "nome do produto",
+			          "description": "descricao do produto",
+			          "price": 0,
+			          "imgUrl": "string",
+			          "category": [
+				            {
+				              "id": 0,
+				              "name": "nome da categoria do pedido"
+				            }
+			          ]
+		          },
+		          "subTotal": 0
+	                }
+	              ]
+	    }
+      ]    
+
+ #### Listar todos pedidos do usuário paginados
+ * Listar todos os pedidos do usuário logado com paginação
+ * o padrão é tamanho 20 e página 0
+ ### 
+       GET - http://localhost:8080/orders/Pageable&size=20&page=2f    
+ ###     
+      {
+	 content:[
+		    {
+			    "id": 0,
+			    "moment": "2023-06-22T20:25:19.436Z",
+			    "orderStatus": "WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, CANCELED",
+			    "items": [
+			      {
+			        "quantity": 0,
+			        "price": 0,
+			        "product": {
+				          "id": 0,
+				          "name": "nome do produto",
+				          "description": "descricao do produto",
+				          "price": 0,
+				          "imgUrl": "string",
+				          "category": [
+					            {
+					              "id": 0,
+					              "name": "nome da categoria do pedido"
+					            }
+				          ]
+			          },
+			          "subTotal": 0
+		                }
+		              ]
+		    }
+	      ]
+      }
  # Instruçoẽs de execução 
 
 1 - Certifique-se de ter o ambiente de desenvolvimento configurado:
