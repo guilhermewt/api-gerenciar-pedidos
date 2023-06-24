@@ -76,7 +76,7 @@ Mas aqui tem um problema, no banco de dados eu posso simplesmente criar uma tabe
 
  # Endpoints da Api
 
- ## Tabela de conteúdos
+ ## Tabela de endpoints
 
 - [Endpoints para manipular informaçoẽs dos usuários](#Endpoints-para-manipular-informaçoẽs-dos-usuários)
 - [Endpoints para manipular informaçoẽs de pedidos](#Endpoints-para-manipular-informaçoẽs-de-pedidos)
